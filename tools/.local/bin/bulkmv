@@ -1,0 +1,57 @@
+#!/usr/bin/env perl
+use strict;
+use warnings FATAL => 'all';
+use Getopt::Long;
+use File::Copy;
+
+my $VERSION = "2.0.0";
+#
+# bulkmv - bulk file mv
+# makes mv commands to all input files based on a perlexpr
+#
+
+my $exec = 0;
+my $help = 0;
+my $version = 0;
+my $result = GetOptions(
+	'exec' => \$exec,
+	'help' => \$help,
+	'version' => \$version,
+);
+help(1) if !$result;
+help(0) if $help;
+version() if $version;
+
+my $expr = shift @ARGV or help(1);
+
+unless(@ARGV) {
+	warn "reading filenames from STDIN\n";
+	@ARGV = <STDIN>;
+	chomp(@ARGV);
+}
+
+for(@ARGV) {
+	my $was = $_;
+	eval $expr;
+	die $@ if $@;
+	next if $was eq $_; # name didn't changed, ignore
+	my @cmd = qq[mv "$was" "$_"];
+	print "@cmd\n";
+
+	if($exec) {
+		move($was, $_) or die "Move error: $! [$was] [$_]";
+	}
+}
+
+sub help {
+	warn "bulkmv $VERSION - bulk file mv\n";
+	warn "makes mv commands to all input files based on a perlexpr\n";
+	warn "Usage: makemv [--exec] perlexpr [filenames..]\n";
+	exit $_[0];
+}
+
+sub version {
+	print "bulkmv $VERSION\n";
+	exit 0;
+}
+

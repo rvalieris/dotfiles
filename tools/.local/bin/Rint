@@ -1,0 +1,11 @@
+#!/usr/bin/expect
+
+set fh [open [lindex $argv 0] r]
+set rargs [lrange $argv 1 end]
+set lines [split [read $fh] "\n"]
+close $fh
+spawn R --quiet --no-save --args {*}$rargs
+foreach l $lines {
+	send "$l\r"
+}
+interact

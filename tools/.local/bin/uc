@@ -1,0 +1,68 @@
+#!/usr/bin/perl
+use strict;
+use warnings;
+use Scalar::Util qw( looks_like_number );
+use Getopt::Long;
+#
+# a Byte Unit Converter
+# Usage: ./uc [--frombase=<src_unit>] [--tobase=<dest_unit>] [--precision=<number>] <number>[unit] [<number><unit>...]
+# or reads whitespace delimited <number>[unit] from STDIN
+# 
+# OUTPUT:
+# if [--tobase=<dest_unit>] is defined convert all <number>[unit] to <dest_unit>, if not,
+# convert <number>[unit] to the best fitting representation of the number
+# 
+# supported units:
+# if [unit] is not defined or is 'B' assume <number> is in bytes
+# else, [unit] can be the first letter from one of the following units:
+# Kilobyte,Megabyte,Gigabyte,Terabyte,Petabyte,Exabyte,Zettabyte or Yottabyte
+#
+
+my ($base_mult,$bases,$tobase,$frombase,$precision) = (1024,'BKMGTPEZY',undef,'B',1);
+GetOptions (
+	'precision=n' => \$precision,
+	'frombase=s' => \$frombase,
+	'tobase=s' => \$tobase,
+);
+
+if(@ARGV) {
+	print map { conv_number($_,$frombase,$tobase)."\n" } @ARGV;
+}
+else {
+	while(<STDIN>) {
+		print join '',map {
+			looks_like_unit($_) ? conv_number($_,$frombase,$tobase) : $_
+		} split /(\s)/;
+	}
+}
+exit;
+
+sub looks_like_unit {
+	my $n = shift;
+	$n =~ s/([$bases]+?)I?B?$//i;
+	looks_like_number($n) ? $1 ? $1 : 'B' : 0;
+}
+
+sub conv_number
+{
+	my($number,$frombase,$tobase) = map {defined && uc}@_;
+	
+	$number =~ s/([A-Z]+?)I?B?$//;
+
+	my $type = $1 ? $1 : $frombase;
+	die "unknown format: [$type]\n" unless $type =~ /^[$bases]$/;
+
+	unless($tobase)
+	{
+		my $i = index $bases,$type;
+		$i += int(log($number)/log($base_mult)) if $number != 0;
+		$i = $number == 0 ? 0 : $i >= length $bases ? -1 : $i;
+		$tobase = substr $bases, $i, 1;
+	}
+	die "unknown format: [$tobase]\n" unless $tobase =~ /^[$bases]$/;
+	
+	my $exp = index($bases,$type) - index($bases, $tobase);
+	$number *= $base_mult ** $exp;
+
+	return sprintf "%.*f%s", $precision, $number, $tobase;
+}

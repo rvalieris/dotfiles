@@ -1,0 +1,155 @@
+#
+# i3 config file
+#
+
+# mod key
+set $mod Mod4
+set $alt Mod1
+
+# Font 
+font pango:DejaVu Sans Mono 11
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec termite
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# program launcher
+bindsym $mod+d exec "rofi -show run -lines 3 -font \\"DejaVu Sans Mono 14\\" -separator-style none -hide-scrollbar -color-window \\"#222222,#b5bd56,#222222\\" -color-normal \\"#222222,#ffffff,#222222,#b5bd56,#222222\\" -color-active \\"#fdf6e3,#268bd2,#eee8d5,#268bd2,#fdf6e3\\""
+
+# lock screen
+bindsym $mod+l exec xscreensaver-command -lock
+
+# change focus
+bindsym $mod+Up    focus up
+bindsym $mod+Down  focus down
+bindsym $mod+Right focus right
+bindsym $mod+Left  focus left
+
+# move focused window
+bindsym $mod+Shift+Up    move up
+bindsym $mod+Shift+Down  move down
+bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+Left  move left
+
+# resize window
+bindsym $mod+Control+Up    resize grow   height 10 px or 10 ppt
+bindsym $mod+Control+Down  resize shrink height 10 px or 10 ppt
+bindsym $mod+Control+Right resize grow   width  10 px or 10 ppt
+bindsym $mod+Control+Left  resize shrink width  10 px or 10 ppt
+
+# split in horizontal/vertical orientation
+bindsym $mod+h split h
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# rename window
+bindsym $mod+n exec xdotool getactivewindow set_window --name $(zenity --entry --text "Rename window:")
+
+# rename workspace
+bindsym $mod+shift+n exec i3-msg "rename workspace to "$(zenity --entry --text "Rename workspace:" --entry-text $(i3-msg -t get_workspaces | jq -r '.[]|select(.visible)|.name'))
+
+# switch to workspace
+bindsym $mod+$alt+Left workspace prev
+bindsym $mod+$alt+Right workspace next
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+# reload the configuration file
+bindsym $mod+Shift+c reload
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+r restart
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+
+
+# colors
+set $red    #c40233
+set $green3 #B5BD56
+set $green4 #8c9440
+set $white  #ffffff
+set $black  #000000
+
+#                         border  background  text    indicator
+client.focused            $green3 $green3     $black  $green4
+client.urgent             $red    $red        $white  $red
+#client.unfocused         
+#client.focused_inative  
+
+
+# Start i3bar to display a workspace bar (plus the system information i3status
+# finds out, if available)
+bar {
+	font pango:DejaVu Sans Mono 14
+	status_command i3blocks
+	tray_output primary
+	position bottom
+
+	#mode hide
+	#hidden_state hide
+
+	colors {
+		background $black
+		separator $green3
+		#                  border  background  text
+		focused_workspace  $green4 $green3     $black
+		urgent_workspace   $red    $red        $white
+		#inactive_workspace
+	}
+}
+
+for_window [title=".*"] border pixel 1
+for_window [class="Firefox"] border pixel 0
+bindsym $mod+b border toggle
+
+# volume keys
+bindsym XF86AudioRaiseVolume exec "amixer -q sset Master,0 3+ unmute"
+bindsym XF86AudioLowerVolume exec "amixer -q sset Master,0 3- unmute"
+bindsym XF86AudioMute exec "amixer -q sset Master,0 toggle"
+
+# starting apps
+exec --no-startup-id xrandr --output eDP-1 --primary
+exec --no-startup-id ~/.fehbg
+exec --no-startup-id xscreensaver -no-splash
+exec --no-startup-id dunst -fn "DejaVu Sans Mono 11" -geometry "0x0-0-30" -nb "#111111" -nf "#B5BD56"
+

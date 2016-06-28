@@ -1,0 +1,33 @@
+
+[options]
+font = DejaVu Sans Mono Book 15
+allow_bold = true
+cursor_blink = off
+cursor_shape = block
+size_hints = true
+dynamic_title = false
+scrollback_lines = 10000
+
+[colors]
+background = #272822
+background_bold = #686868
+foreground = #e1e1da
+foreground_bold = #ffffff
+color0 = #272822
+color8 = #686868
+color1 = #E52222
+color9 = #E51818
+color2 = #A6E32D
+color10 = #B1E332
+color3 = #FC951E
+color11 = #FC5209
+color4 = #764CFF
+color12 = #4866FF
+color5 = #FA2573
+color13 = #FA4594
+color6 = #67D9F0
+color14 = #1CDBF0
+color7 = #e1e1da
+color15 = #FFFFFF
+
+# vim: ft=dosini
