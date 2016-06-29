@@ -2,7 +2,7 @@
 # my dotfiles
 
 
-### install
+### get the files
 
 ```bash
 git clone --recursive this.repo ~/dotfiles

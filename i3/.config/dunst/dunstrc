@@ -1,0 +1,8 @@
+
+[global]
+  font = DejaVu Sans Mono 11
+  geometry = 0x0-0-30
+
+[urgency_normal]
+  background = "#111111"
+  foreground = "#B5BD56"

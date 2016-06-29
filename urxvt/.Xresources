@@ -1,0 +1,35 @@
+
+
+Xft*dpi:       96
+Xft*antialias: True
+Xft*hinting:   Full
+URxvt.perl-ext-common: default,clipboard
+URxvt.iso14755: false
+URxvt.iso14755_52: false
+URxvt.keysym.Shift-Control-C: perl:clipboard:copy
+URxvt.keysym.Shift-Control-V: perl:clipboard:paste
+URxvt.font: xft:DejaVuSansMono:book:size=12, xft:Symbola:pixelsize=13
+URxvt.scrollBar: false
+URxvt.allowTitleOps: false
+URxvt.letterSpace: 0
+
+! colors
+URxvt*foreground: #e1e1da
+URxvt*background: #272822
+URxvt*color0: #272822
+URxvt*color1: #E52222
+URxvt*color2: #A6E32D
+URxvt*color3: #FC951E
+URxvt*color4: #764CFF
+URxvt*color5: #FA2573
+URxvt*color6: #67D9F0
+URxvt*color7: #e1e1da
+URxvt*color8: #686868
+URxvt*color9: #E51818
+URxvt*color10: #B1E332
+URxvt*color11: #FC5209
+URxvt*color12: #4866FF
+URxvt*color13: #FA4594
+URxvt*color14: #1CDBF0
+URxvt*color15: #FFFFFF
+
