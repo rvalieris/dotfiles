@@ -3,15 +3,29 @@
 Xft*dpi:       96
 Xft*antialias: True
 Xft*hinting:   Full
+URxvt.depth: 32
 URxvt.perl-ext-common: default,clipboard
 URxvt.iso14755: false
 URxvt.iso14755_52: false
+URxvt.font: xft:DejaVuSansMono:book:size=15, xft:Symbola:pixelsize=15
+URxvt.allowTitleOps: false
+URxvt.letterSpace: -1
+
+! scroll
+URxvt.scrollBar: false
+URxvt*scrollTtyOutput: false
+URxvt*scrollWithBuffer: true
+URxvt*scrollTtyKeypress: true
+URxvt.secondaryScreen: 1
+URxvt.secondaryScroll: 0
+
+! keys
 URxvt.keysym.Shift-Control-C: perl:clipboard:copy
 URxvt.keysym.Shift-Control-V: perl:clipboard:paste
-URxvt.font: xft:DejaVuSansMono:book:size=12, xft:Symbola:pixelsize=13
-URxvt.scrollBar: false
-URxvt.allowTitleOps: false
-URxvt.letterSpace: 0
+URxvt.keysym.Home: \033[1~
+URxvt.keysym.End: \033[4~
+URxvt.keysym.KP_Home: \033[1~
+URxvt.keysym.KP_End:  \033[4~
 
 ! colors
 URxvt*foreground: #e1e1da
