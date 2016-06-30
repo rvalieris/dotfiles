@@ -7,6 +7,7 @@ cursor_shape = block
 size_hints = true
 dynamic_title = false
 scrollback_lines = 10000
+clickable_url = false
 
 [colors]
 background = #272822
