@@ -67,7 +67,7 @@ bindsym $mod+a focus parent
 bindsym $mod+n exec xdotool getactivewindow set_window --name $(zenity --entry --text "Rename window:")
 
 # rename workspace
-bindsym $mod+shift+n exec i3-msg "rename workspace to "$(zenity --entry --text "Rename workspace:" --entry-text $(i3-msg -t get_workspaces | jq -r '.[]|select(.visible)|.name'))
+bindsym $mod+shift+n exec i3-msg "rename workspace to "$(zenity --entry --text "Rename workspace:" --entry-text $(i3-msg -t get_workspaces | jq -r '.[]|select(.focused)|.name'))
 
 # switch to workspace
 bindsym $mod+$alt+Left workspace prev
