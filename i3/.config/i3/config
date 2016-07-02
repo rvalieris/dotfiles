@@ -19,7 +19,7 @@ bindsym $mod+Return exec termite
 bindsym $mod+Shift+q kill
 
 # program launcher
-bindsym $mod+d exec "rofi -show run -lines 3 -font \\"DejaVu Sans Mono 14\\" -separator-style none -hide-scrollbar -color-window \\"#222222,#b5bd56,#222222\\" -color-normal \\"#222222,#ffffff,#222222,#b5bd56,#222222\\" -color-active \\"#fdf6e3,#268bd2,#eee8d5,#268bd2,#fdf6e3\\""
+bindsym $mod+d exec rofi -show run -config ~/.config/rofi
 
 # lock screen
 bindsym $mod+l exec xscreensaver-command -lock
@@ -151,5 +151,5 @@ bindsym XF86AudioMute exec "amixer -q sset Master,0 toggle"
 exec --no-startup-id xrandr --output eDP-1 --primary
 exec --no-startup-id ~/.fehbg
 exec --no-startup-id xscreensaver -no-splash
-exec --no-startup-id dunst -fn "DejaVu Sans Mono 11" -geometry "0x0-0-30" -nb "#111111" -nf "#B5BD56"
+exec --no-startup-id dunst
 
