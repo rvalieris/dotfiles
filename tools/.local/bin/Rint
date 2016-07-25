@@ -1,5 +1,10 @@
 #!/usr/bin/expect
 
+if {$argc != 1} {
+	puts "Usage: Rint script.R \[args...\]"
+	exit 1
+}
+
 set fh [open [lindex $argv 0] r]
 set rargs [lrange $argv 1 end]
 set lines [split [read $fh] "\n"]
