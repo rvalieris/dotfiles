@@ -1,6 +1,6 @@
 
 rofi.lines: 3
-rofi.font: DejaVu Sans Mono 14
+rofi.font: DejaVu Sans Mono 16
 
 rofi.color-enabled: true
 rofi.color-window: #222222, #b5bd56, #222222
