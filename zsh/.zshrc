@@ -28,6 +28,7 @@ setopt hist_no_store
 setopt hist_verify
 setopt inc_append_history
 unsetopt share_history
+setopt interactive_comments
 
 # advanced tab completion
 autoload -U compinit && compinit
