@@ -104,7 +104,6 @@ bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
-
 # colors
 set $red    #c40233
 set $green3 #B5BD56
@@ -133,13 +132,14 @@ bar {
 	colors {
 		background $black
 		separator $black
-		#separator $green3
 		#                  border  background  text
 		focused_workspace  $green4 $green3     $black
 		urgent_workspace   $red    $red        $white
 		#inactive_workspace
 	}
 }
+
+focus_on_window_activation urgent
 
 for_window [title=".*"] border pixel 1
 for_window [class="Firefox"] border pixel 0
