@@ -49,6 +49,7 @@ bindsym $mod+v split v
 
 # enter fullscreen mode for the focused container
 bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+f fullscreen toggle global
 
 # change container layout (stacked, tabbed, toggle split)
 bindsym $mod+s layout stacking
@@ -141,8 +142,9 @@ bar {
 
 focus_on_window_activation urgent
 
-for_window [title=".*"] border pixel 1
-for_window [class="Firefox"] border pixel 0
+# borders
+new_window pixel 1
+hide_edge_borders smart
 bindsym $mod+b border toggle
 
 # volume keys
