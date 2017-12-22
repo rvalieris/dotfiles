@@ -14,7 +14,7 @@ font pango:$font 13
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec termite
+bindsym $mod+Return exec exec termite
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -123,12 +123,9 @@ client.urgent             $red    $red        $white  $red
 # finds out, if available)
 bar {
 	font pango:$font 16, FontAwesome 15
-	status_command python3 ~/Dropbox/scripts/bitter3.py
+	status_command python3 ~/Dropbox/scripts/bitter4.py
 	tray_output primary
 	position bottom
-
-	#mode hide
-	#hidden_state hide
 
 	colors {
 		background $black
@@ -147,10 +144,14 @@ new_window pixel 1
 hide_edge_borders smart
 bindsym $mod+b border toggle
 
+# scratchpad
+bindsym $mod+F3 move scratchpad
+bindsym $mod+F2 scratchpad show
+
 # volume keys
-bindsym XF86AudioRaiseVolume exec "amixer -q sset Master,0 3+ unmute"
-bindsym XF86AudioLowerVolume exec "amixer -q sset Master,0 3- unmute"
-bindsym XF86AudioMute exec "amixer -q sset Master,0 toggle"
+bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-volume @DEFAULT_SINK@ +3%"
+bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume @DEFAULT_SINK@ -- -3%"
+bindsym XF86AudioMute        exec --no-startup-id "pactl set-sink-mute   @DEFAULT_SINK@ toggle"
 
 # starting apps
 exec --no-startup-id xrandr --output eDP-1-1 --primary
