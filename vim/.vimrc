@@ -1,7 +1,8 @@
 
-set nocompatible
+" organized by vim :options order
 
-" bootstrap pathogen & submodules
+" important, bootstrap pathogen & submodules
+set nocompatible
 runtime bundle/pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 filetype plugin on
@@ -47,6 +48,10 @@ set report=0
 " editing text
 set backspace=indent,eol,start
 
+" tabs and indenting
+set noexpandtab
+set softtabstop=0
+
 " mapping
 set ttimeoutlen=50
 let mapleader = " "
@@ -80,15 +85,13 @@ set directory=$HOME/.vimswaps//
 set wildmenu
 set wildmode=longest:full
 
+" override some ftplugins set's
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o noexpandtab softtabstop=0
+
 " etc
-
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o
-
 let g:netrw_liststyle=3
-
 let g:unite_source_history_yank_enable=1
 let g:unite_source_history_yank_limit=50
-
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline#extensions#whitespace#enabled = 0
