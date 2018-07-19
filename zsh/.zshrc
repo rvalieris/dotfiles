@@ -1,6 +1,6 @@
 
 # local conf
-typeset -U path
+typeset -U path PATH
 [ -r $HOME/.local_shell_env ] && source $HOME/.local_shell_env
 
 # end of non-interactive conf
