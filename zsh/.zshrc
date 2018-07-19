@@ -1,4 +1,10 @@
 
+# local conf
+typeset -U path
+[ -r $HOME/.local_shell_env ] && source $HOME/.local_shell_env
+
+# end of non-interactive conf
+[ -z "$PS1" ] && return
 
 # set prompt
 autoload colors && colors
@@ -53,15 +59,10 @@ setopt no_flow_control
 # aliases
 [ -r $HOME/.shell/aliases.sh ] && source $HOME/.shell/aliases.sh
 
-# local scripts and binaries
-path=(~/.local/bin $path)
-typeset -U path
-
 # prevent exiting the shell with ^D
 setopt ignoreeof
 
 # key bindings
-
 bindkey -e
 bindkey -r "${terminfo[kich1]}" # disable insert key
 bindkey '\e[A' up-line-or-history
@@ -79,10 +80,7 @@ bindkey '\e[3~' delete-char
 bindkey '\e3;5~' delete-char
 bindkey ' ' magic-space
 
-
 source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 
-# local conf
-[ -r $HOME/.zsh_localrc ] && source $HOME/.zsh_localrc
 return 0
