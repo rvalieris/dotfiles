@@ -3,6 +3,8 @@
 
 " important, bootstrap pathogen & submodules
 set nocompatible
+set encoding=utf-8
+scriptencoding utf-8
 runtime bundle/pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 filetype plugin on

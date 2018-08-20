@@ -2,6 +2,9 @@
 # local conf
 [ -r $HOME/.local_shell_env ] && source $HOME/.local_shell_env
 
+# remove duplicates from PATH
+export PATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $ENV{PATH}))')"
+
 # end of non-interactive conf
 [ -z "$PS1" ] && return
 

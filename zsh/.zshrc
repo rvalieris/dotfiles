@@ -1,7 +1,9 @@
 
 # local conf
-typeset -U path PATH
 [ -r $HOME/.local_shell_env ] && source $HOME/.local_shell_env
+
+# prevent duplicates on PATH
+typeset -U path PATH
 
 # end of non-interactive conf
 [ -z "$PS1" ] && return
