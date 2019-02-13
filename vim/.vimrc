@@ -88,7 +88,7 @@ set wildmenu
 set wildmode=longest:full
 
 " override some ftplugins set's
-autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o noexpandtab softtabstop=0
+autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o noexpandtab softtabstop=0 tabstop=8 nosmartindent
 
 " etc
 let g:netrw_liststyle=3
