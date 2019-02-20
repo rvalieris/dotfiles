@@ -14,7 +14,6 @@ setopt prompt_subst
 PROMPT='%(?..%{$fg_no_bold[red]%}%?) %{$fg_bold[black]%}%m %{$fg_bold[blue]%}%c%{$fg_no_bold[green]%}%#%{$reset_color%} '
 
 [ -x "$(which dircolors)" ] && eval "`dircolors -b`"
-[ -x "$(which lesspipe.sh)" ] && eval "`lesspipe.sh`"
 
 export EDITOR='vim'
 

@@ -1,0 +1,16 @@
+# less
+export LESSOPEN="| /usr/bin/lesspipe %s";
+export LESSCLOSE="/usr/bin/lesspipe %s %s";
+
+# rust
+export PATH=~/.cargo/bin:$PATH
+
+# nix
+source ~/.nix-profile/etc/profile.d/nix.sh
+
+# conda
+export MANPATH=~/conda/man:~/conda/share/man:$MANPATH
+export PATH=~/conda/bin:$PATH
+
+# local scripts
+export PATH=~/.local/bin:$PATH

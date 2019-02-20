@@ -24,6 +24,7 @@ set listchars=tab:»\
 " syntax, highlighting and spelling
 syntax on
 colorscheme molokai
+set background=dark
 set hlsearch
 set cursorline
 

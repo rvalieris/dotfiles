@@ -17,16 +17,7 @@ stty start undef
 
 # aliases
 [ -r $HOME/.shell/aliases.sh ] && source $HOME/.shell/aliases.sh
-[ -x "$(which lesspipe.sh)" ] && eval "`lesspipe.sh`"
 [ -x "$(which dircolors)" ] && eval "`dircolors -b`"
-
-# local scripts and binaries
-for i in $HOME/.local/bin; do
-	case ":$PATH:" in
-		*":$i:"*) :;;
-		*) PATH="$i:$PATH";;
-	esac
-done
 
 export EDITOR='vim'
 export HISTCONTROL=ignoredups
