@@ -1,0 +1,10 @@
+[user]
+	email = rvalieris@users.noreply.github.com
+	name = rvalieris
+[push]
+	default = simple
+[core]
+	pager = less -+XF
+
+[pager]
+	branch = false
