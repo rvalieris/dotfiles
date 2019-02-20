@@ -10,9 +10,15 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias grep='grep --color=auto'
-alias cl="xsv table -d'\t'"
+
+# haskell stuff
 alias ghm='ghc --make -O3 -outputdir=/tmp/ -fforce-recomp'
 alias ghi='ghci +RTS -M1G -RTS'
 alias ghp='ghc -prof -fprof-auto -rtsopts -outputdir=/tmp/'
-alias R='R --quiet --no-save'
 
+# etc
+alias cl="xsv table -d'\t'"
+alias R='R --quiet --no-save'
+alias nix-up="nix-channel --update nixpkgs && nix-env -u '*'"
+alias apt-up='sudo apt update && sudo apt upgrade'
+alias up-up='apt-up && nix-up && rustup update && conda update --all'
