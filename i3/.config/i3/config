@@ -7,14 +7,17 @@ set $mod Mod4
 set $alt Mod1
 
 # Font
+#set $font Source Code Pro
+#set $font Inconsolata
 set $font DejaVu Sans Mono
-font pango:$font 13
+font pango:$font 14
 
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
 # start a terminal
 bindsym $mod+Return exec exec termite
+#bindsym $mod+Return exec exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -66,7 +69,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # go to
-bindsym $mod+n exec i3-msg $(zenity --entry --text "i3-msg:")
+#bindsym $mod+n exec i3-msg $(zenity --entry --text "i3-msg:")
 
 # rename workspace
 bindsym $mod+shift+n exec i3-msg "rename workspace to "$(zenity --entry --text "Rename workspace:" --entry-text $(i3-msg -t get_workspaces | jq -r '.[]|select(.focused)|.name'))
@@ -119,21 +122,18 @@ client.urgent             $red    $red        $white  $red
 #client.focused_inative  
 
 
-# Start i3bar to display a workspace bar (plus the system information i3status
-# finds out, if available)
 bar {
-	font pango:$font 16, FontAwesome 15
+	font pango:$font 16
 	status_command python3 ~/Sync/projects/scripts/bitter5.py
 	tray_output primary
 	position bottom
 
 	colors {
-		background $black
-		separator $black
+		background #272822
+		separator  #272822
 		#                  border  background  text
 		focused_workspace  $green4 $green3     $black
 		urgent_workspace   $red    $red        $white
-		#inactive_workspace
 	}
 }
 
