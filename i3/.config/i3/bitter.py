@@ -13,6 +13,13 @@ import multiprocessing
 from collections import OrderedDict
 
 sys.stderr = open("/tmp/bitter.stderr","w")
+icon_font = sys.argv[1]
+
+def pango(txt):
+	return '<span font="%s">%s</span>'%(icon_font,txt)
+
+def wakeup():
+	os.kill(os.getpid(), signal.SIGUSR1)
 
 def run_command(*args):
 	return subprocess.Popen(
@@ -23,11 +30,11 @@ def run_command(*args):
 
 class Module(object):
 	def name(self): return type(self).__name__
-	def getData(self): return {'full_text': '<empty>', 'name':self.name() }
+	def getData(self): return {'full_text': '<empty>', 'name':self.name(), 'markup': 'pango' }
 	def onClick(self,data): pass
 
 class LoadAvg(Module):
-	icon = '🔥'
+	icon = pango('🔥')
 	n_cores = multiprocessing.cpu_count()
 	def getData(self):
 		t0, _, _ = os.getloadavg()
@@ -36,8 +43,8 @@ class LoadAvg(Module):
 		return d
 
 class Datetime(Module):
-	icon1 = '📅'
-	icon2 = '⏲'
+	icon1 = pango('📅')
+	icon2 = pango('⏲')
 	def getData(self):
 		txt = datetime.datetime.now().strftime(self.icon1+' %b %Y, %A %d '+self.icon2+' %H:%M:%S')
 		d = super().getData()
@@ -45,10 +52,9 @@ class Datetime(Module):
 		return d
 
 class Volume(Module):
-	icon = '🔊'
+	icon = pango('🔊')
 	increment = 3/100
-	def __init__(self, bitter):
-		self.bitter = bitter
+	def __init__(self):
 		self.pulse = pulsectl.Pulse(threading_lock=True)
 		self.sink_name = self.pulse.server_info().default_sink_name
 		self.start_pulse_thread()
@@ -80,15 +86,13 @@ class Volume(Module):
 		self.events_t.start()
 
 	def eventWatcher(self):
-		def events(ev):
-			os.kill(os.getpid(), signal.SIGUSR1) # wake up
 		self.pulse2.event_mask_set('all')
-		self.pulse2.event_callback_set(events)
+		self.pulse2.event_callback_set(lambda ev: wakeup())
 		self.pulse2.event_listen()
 
 class Battery(Module):
-	icon = '⚡'
-	icon2 = '🔌'
+	icon = pango('⚡')
+	icon2 = pango('🔌')
 	get_pct = re.compile(r'(\d+)%')
 	get_chr_time = re.compile(r'(\d+:\d+:\d+)')
 	critical = 20
@@ -107,10 +111,9 @@ class Battery(Module):
 		return d
 
 class Temperature(Module):
-	icon = '🌡'
+	icon = pango('🌡')
 	critical = 80
 	temp_path = '/sys/devices/virtual/thermal/thermal_zone0/temp'
-	#temp_path = '/sys/devices/platform/coretemp.0/hwmon/hwmon1/temp1_input'
 	def getData(self):
 		temp = int(open(self.temp_path).read().rstrip())/1000
 		d = super().getData()
@@ -118,11 +121,11 @@ class Temperature(Module):
 		return d
 
 class Bitter(object):
-	update_time = 5
+	update_time = 5 # seconds
 	def __init__(self):
 		self.modules = OrderedDict(
 			map(lambda m: (m.name(), m),[
-			Volume(self),
+			Volume(),
 			Temperature(),
 			LoadAvg(),
 			#Battery(),
@@ -143,7 +146,7 @@ class Bitter(object):
 			else:
 				if data['name'] in self.modules:
 					self.modules[data['name']].onClick(data)
-					os.kill(os.getpid(), signal.SIGUSR1) # wake up
+					wakeup()
 
 	def write(self, data):
 		sys.stdout.write('%s\n' % data)

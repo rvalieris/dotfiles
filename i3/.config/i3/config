@@ -10,6 +10,7 @@ set $alt Mod1
 #set $font Source Code Pro
 #set $font Inconsolata
 set $font DejaVu Sans Mono
+set $icon_font NotoColorEmoji
 font pango:$font 14
 
 # Use Mouse+$mod to drag floating windows to their wanted position
@@ -110,8 +111,8 @@ bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcu
 
 # colors
 set $red    #c40233
-set $green3 #B5BD56
-set $green4 #8c9440
+set $green3 #009F6B
+set $green4 #008080
 set $white  #ffffff
 set $black  #000000
 
@@ -124,7 +125,7 @@ client.urgent             $red    $red        $white  $red
 
 bar {
 	font pango:$font 16
-	status_command ~/.config/i3/bitter.py
+	status_command ~/.config/i3/bitter.py "$icon_font 16"
 	tray_output primary
 	position bottom
 
