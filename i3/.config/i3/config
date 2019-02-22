@@ -124,7 +124,7 @@ client.urgent             $red    $red        $white  $red
 
 bar {
 	font pango:$font 16
-	status_command python3 ~/Sync/projects/scripts/bitter5.py
+	status_command ~/.config/i3/bitter.py
 	tray_output primary
 	position bottom
 
