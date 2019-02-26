@@ -1,9 +1,6 @@
 
 [options]
-#font = DejaVu Sans Mono Book 16
-#font = Noto Mono 15
-#font = Inconsolata 18
-font = Source Code Pro 16
+font = Source Code Pro 15
 allow_bold = true
 cursor_blink = off
 cursor_shape = block

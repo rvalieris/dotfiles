@@ -7,9 +7,7 @@ set $mod Mod4
 set $alt Mod1
 
 # Font
-#set $font Source Code Pro
-#set $font Inconsolata
-set $font DejaVu Sans Mono
+set $font SourceCodePro
 set $icon_font NotoColorEmoji
 font pango:$font 14
 
@@ -24,10 +22,10 @@ bindsym $mod+Return exec exec termite
 bindsym $mod+Shift+q kill
 
 # program launcher
-bindsym $mod+d exec rofi -show run -config ~/.config/rofi
+bindsym $mod+d exec exec rofi -show run -config ~/.config/rofi
 
 # lock screen
-bindsym $mod+l exec xscreensaver-command -lock
+bindsym $mod+l exec exec xscreensaver-command -lock
 
 # change focus
 bindsym $mod+Up    focus up
@@ -150,15 +148,15 @@ bindsym $mod+F3 move scratchpad
 bindsym $mod+F2 scratchpad show
 
 # volume keys
-bindsym XF86AudioRaiseVolume exec --no-startup-id "pactl set-sink-volume @DEFAULT_SINK@ +3%"
-bindsym XF86AudioLowerVolume exec --no-startup-id "pactl set-sink-volume @DEFAULT_SINK@ -- -3%"
-bindsym XF86AudioMute        exec --no-startup-id "pactl set-sink-mute   @DEFAULT_SINK@ toggle"
+bindsym XF86AudioRaiseVolume exec --no-startup-id exec pactl set-sink-volume @DEFAULT_SINK@ +3%
+bindsym XF86AudioLowerVolume exec --no-startup-id exec pactl set-sink-volume @DEFAULT_SINK@ -3%
+bindsym XF86AudioMute        exec --no-startup-id exec pactl set-sink-mute   @DEFAULT_SINK@ toggle
 
 # starting apps
 exec --no-startup-id xrandr --output eDP-1-1 --primary
 exec --no-startup-id ~/.fehbg
-exec --no-startup-id xscreensaver -no-splash
-exec --no-startup-id dunst
-exec --no-startup-id redshift-gtk
-exec --no-startup-id syncthing
+exec --no-startup-id exec xscreensaver -no-splash
+exec --no-startup-id exec dunst
+exec --no-startup-id exec redshift-gtk
+exec --no-startup-id exec syncthing
 

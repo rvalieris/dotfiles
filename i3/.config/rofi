@@ -1,9 +1,9 @@
 
 rofi.lines: 3
-rofi.font: DejaVu Sans Mono 16
+rofi.font: Source Code Pro 16
 
 rofi.color-enabled: true
-rofi.color-window: #222222, #b5bd56, #222222
-rofi.color-normal: #222222, #ffffff, #222222, #b5bd56, #222222
+rofi.color-window: #222222, #009f6b, #222222
+rofi.color-normal: #222222, #ffffff, #222222, #009f6b, #222222
 rofi.color-active: #fdf6e3, #268bd2, #eee8d5, #268bd2, #fdf6e3
 rofi.color-urgent: #fdf6e3, #dc322f, #eee8d5, #dc322f, #fdf6e3
