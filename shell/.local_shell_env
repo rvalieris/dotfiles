@@ -14,3 +14,6 @@ export PATH=~/conda/bin:$PATH
 
 # local scripts
 export PATH=~/.local/bin:$PATH
+
+# browser
+export BROWSER=firefox

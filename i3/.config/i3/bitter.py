@@ -44,7 +44,7 @@ class LoadAvg(Module):
 
 class Datetime(Module):
 	icon1 = pango('📅')
-	icon2 = pango('⏲')
+	icon2 = pango('⌚')
 	def getData(self):
 		txt = datetime.datetime.now().strftime(self.icon1+' %b %Y, %A %d '+self.icon2+' %H:%M:%S')
 		d = super().getData()
