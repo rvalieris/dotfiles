@@ -8,7 +8,12 @@ export PATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $ENV
 # end of non-interactive conf
 [ -z "$PS1" ] && return
 
-PS1='\e[0;31m$(ec=$?;[ $ec -ne 0 ] && echo -n "$ec") \e[1;30m\h \e[1;34m\W\e[0;32m\$ \e[0;40m'
+PS1="\[$(tput setaf 1)\]"
+PS1+='$(ec=$?;[ $ec -ne 0 ] && echo -n "$ec") '
+PS1+="\[$(tput bold;tput setaf 0)\]"'\h '
+PS1+="\[$(tput setaf 4)\]"'\W'
+PS1+="\[$(tput setaf 2)\]"'\$ '"\[$(tput sgr0)\]"
+export PATH
 
 # disable flow control
 stty ixoff -ixon
@@ -17,12 +22,10 @@ stty start undef
 
 # aliases
 [ -r $HOME/.shell/aliases.sh ] && source $HOME/.shell/aliases.sh
-[ -x "$(which dircolors)" ] && eval "`dircolors -b`"
 
-export EDITOR='vim'
 export HISTCONTROL=ignoredups
 
 # prevent shell from exiting with Ctrl-d
 IGNOREEOF=10
 
-
+shopt -s checkwinsize

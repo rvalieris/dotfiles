@@ -1,6 +1,9 @@
-# less
-export LESSOPEN="| /usr/bin/lesspipe %s";
-export LESSCLOSE="/usr/bin/lesspipe %s %s";
+
+# lesspipe
+[ -x /bin/lesspipe ] && eval "$(/bin/lesspipe)"
+
+# dircolors
+[ -x /usr/bin/dircolors ] && eval "$(/usr/bin/dircolors -b)"
 
 # rust
 export PATH=~/.cargo/bin:$PATH
@@ -15,5 +18,7 @@ export PATH=~/conda/bin:$PATH
 # local scripts
 export PATH=~/.local/bin:$PATH
 
-# browser
+# etc
 export BROWSER=firefox
+export EDITOR=vim
+export PAGER=less

@@ -13,10 +13,6 @@ autoload colors && colors
 setopt prompt_subst
 PROMPT='%(?..%{$fg_no_bold[red]%}%?) %{$fg_bold[black]%}%m %{$fg_bold[blue]%}%c%{$fg_no_bold[green]%}%#%{$reset_color%} '
 
-[ -x "$(which dircolors)" ] && eval "`dircolors -b`"
-
-export EDITOR='vim'
-
 # disable auto-correct
 unsetopt correct_all
 
@@ -39,6 +35,7 @@ setopt interactive_comments
 
 # advanced tab completion
 autoload -U compinit && compinit
+setopt glob_dots
 zstyle ':completion:*' menu select
 zmodload zsh/complist
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
