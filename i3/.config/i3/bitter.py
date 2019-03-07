@@ -4,10 +4,11 @@ import re
 import os
 import sys
 import json
+import glob
 import signal
 import datetime
-import threading
 import pulsectl
+import threading
 import subprocess
 import multiprocessing
 from collections import OrderedDict
@@ -53,17 +54,20 @@ class Datetime(Module):
 
 class Volume(Module):
 	icon = pango('🔊')
+	icon2 = pango('🔈')
 	increment = 3/100
+
 	def __init__(self):
 		self.pulse = pulsectl.Pulse(threading_lock=True)
 		self.sink_name = self.pulse.server_info().default_sink_name
 		self.start_pulse_thread()
+
 	def getData(self):
 		d = super().getData()
 		sink = self.getSink()
 		pct = round(100 * self.pulse.volume_get_all_chans(sink))
 
-		if sink.mute: t = self.icon+' mute'
+		if sink.mute: t = self.icon2+' mute'
 		else: t = '{:s} {:d}%'.format(self.icon,pct)
 		d.update({'full_text': t })
 		return d
@@ -113,12 +117,22 @@ class Battery(Module):
 class Temperature(Module):
 	icon = pango('🌡')
 	critical = 80
-	temp_path = '/sys/devices/virtual/thermal/thermal_zone0/temp'
+	thermal_zone = ""
+	def __init__(self):
+		zones = glob.glob("/sys/devices/virtual/thermal/thermal_zone*")
+		for z in zones:
+			if re.search("pkg_temp",open(z+"/type").read()):
+				self.thermal_zone = z+"/temp"
+				break
+
 	def getData(self):
-		temp = int(open(self.temp_path).read().rstrip())/1000
-		d = super().getData()
-		d.update({'full_text': "{:s}{:.1f}°C".format(self.icon,temp), 'urgent': temp > self.critical })
-		return d
+		if os.path.isfile(self.thermal_zone):
+			temp = int(open(self.thermal_zone).read().rstrip())/1000
+			d = super().getData()
+			d.update({'full_text': "{:s}{:.1f}°C".format(self.icon,temp), 'urgent': temp > self.critical })
+			return d
+		else:
+			return {}
 
 class Bitter(object):
 	update_time = 5 # seconds
