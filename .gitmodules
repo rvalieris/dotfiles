@@ -10,9 +10,6 @@
 [submodule "vim/.vim/bundle/airline"]
 	path = vim/.vim/bundle/airline
 	url = https://github.com/vim-airline/vim-airline
-[submodule "vim/.vim/bundle/airline-themes"]
-	path = vim/.vim/bundle/airline-themes
-	url = https://github.com/vim-airline/vim-airline-themes
 [submodule "zsh/.zsh/zsh-syntax-highlighting"]
 	path = zsh/.zsh/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting

@@ -27,6 +27,7 @@ colorscheme molokai
 set background=dark
 set hlsearch
 set cursorline
+set termguicolors
 
 " multiple windows
 set laststatus=2
@@ -40,20 +41,22 @@ set ttyfast
 set guicursor+=a:blinkon0-block-Cursor
 set guioptions-=T
 set guifont=DejaVu\ Sans\ Mono\ 10
-set guiheadroom=0
 
 " messages and info
 set ruler
 set showcmd
 set noshowmode
 set report=0
+set belloff=all
 
 " editing text
 set backspace=indent,eol,start
 
 " tabs and indenting
+set tabstop=8
 set noexpandtab
 set softtabstop=0
+set nosmarttab
 
 " mapping
 set ttimeoutlen=50
