@@ -19,6 +19,6 @@ alias ghp='ghc -prof -fprof-auto -rtsopts -outputdir=/tmp/'
 # etc
 alias cl="xsv table -d'\t'"
 alias R='R --quiet --no-save'
-alias nix-up="nix-channel --update nixpkgs && nix-env -u '*' && nix-collect-garbage -d"
+alias nix-up="nix-channel --update && nix-env -u"
 alias apt-up='sudo apt update && sudo apt upgrade'
 alias up-up='apt-up && nix-up && rustup update && conda update --all'
