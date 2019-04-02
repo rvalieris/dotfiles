@@ -14,5 +14,7 @@ if(!interactive()) {
 			q("no",status=1,FALSE)
 		})
 	)
+}else{
+	require(colorout)
 }
 

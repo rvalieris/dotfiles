@@ -10,20 +10,15 @@ if len(sys.argv) < 2:
 	print("Usage: Rint script.R [args...]")
 	sys.exit(1)
 
-def terminal_size():
-	h, w, hp, wp = struct.unpack('HHHH', fcntl.ioctl(0, termios.TIOCGWINSZ, struct.pack('HHHH', 0, 0, 0, 0)))
-	return h, w
-
-def sigwinch_passthrough(sig, data):
-	h, w = terminal_size()
+def update_winsize(p):
+	h, w, _, _ = struct.unpack('HHHH', fcntl.ioctl(0, termios.TIOCGWINSZ, struct.pack('HHHH', 0, 0, 0, 0)))
 	if not p.closed:
 		p.setwinsize(h, w)
 
 rargs = sys.argv[2:]
 p = pexpect.spawn(command="R", args=["--quiet","--no-save","--args"]+rargs)
-rows, cols = terminal_size()
-p.setwinsize(rows, cols)
-signal.signal(signal.SIGWINCH, sigwinch_passthrough)
+update_winsize(p)
+signal.signal(signal.SIGWINCH, lambda sig, data: update_winsize(p))
 for l in open(sys.argv[1]):
 	p.send(l)
 p.interact()
