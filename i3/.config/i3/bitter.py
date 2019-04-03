@@ -6,6 +6,7 @@ import sys
 import json
 import glob
 import signal
+import pathlib
 import datetime
 import pulsectl
 import threading
@@ -13,7 +14,7 @@ import subprocess
 import multiprocessing
 from collections import OrderedDict
 
-sys.stderr = open("/tmp/bitter.stderr","w")
+sys.stderr = pathlib.Path(os.getenv("XDG_RUNTIME_DIR","/tmp"), 'bitter.log').open('w')
 icon_font = sys.argv[1]
 
 def pango(txt):
@@ -77,6 +78,8 @@ class Volume(Module):
 
 	def onClick(self,data):
 		sink = self.getSink()
+		if data['button'] == 2: # open pavucontrol
+			subprocess.Popen(['i3-msg','-q','exec','pavucontrol'])
 		if data['button'] == 3: # toggle mute
 			self.pulse.mute(sink, not sink.mute)
 		if data['button'] == 4: # increase vol
