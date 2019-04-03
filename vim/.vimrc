@@ -34,7 +34,7 @@ set laststatus=2
 set hidden
 
 " terminal
-set title
+set notitle
 set ttyfast
 
 " GUI
