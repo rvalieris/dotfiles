@@ -1,6 +1,6 @@
 
 options(
-	"repos" = c(CRAN = "http://cran.rstudio.com/"),
+	"repos" = c(CRAN = "https://cran.rstudio.com/"),
 	"width" = 120,
 	"browser" = "firefox",
 	"menu.graphics" = FALSE,
@@ -9,7 +9,7 @@ options(
 
 if(!interactive()) {
 	options(
-		#warn=2,
+		warn=1,
 		error=quote({
 			q("no",status=1,FALSE)
 		})

@@ -14,8 +14,8 @@ source ~/.nix-profile/etc/profile.d/nix.sh
 
 # conda
 export MANPATH=~/conda/man:~/conda/share/man:$MANPATH
-export PATH=~/conda/bin:$PATH
 source ~/conda/etc/profile.d/conda.sh
+export PATH=~/conda/bin:$PATH
 
 # local scripts
 export PATH=~/.local/bin:$PATH
