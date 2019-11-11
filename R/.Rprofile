@@ -7,6 +7,9 @@ options(
 	"digits" = 15
 )
 
+# autocomplete library/require
+utils::rc.settings(ipck=TRUE)
+
 if(!interactive()) {
 	options(
 		warn=1,
@@ -16,5 +19,11 @@ if(!interactive()) {
 	)
 }else{
 	require(colorout)
+}
+
+shell = function(cmdline,capture=F) {
+	sym = substitute(cmdline)
+	if(!is.symbol(sym)) { stop("use backticks") }
+	.Internal(system(deparse(sym),capture,0))
 }
 

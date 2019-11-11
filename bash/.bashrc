@@ -4,6 +4,7 @@
 
 # remove duplicates from PATH
 export PATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $ENV{PATH}))')"
+export MANPATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $ENV{MANPATH}))')"
 
 # end of non-interactive conf
 [ -z "$PS1" ] && return

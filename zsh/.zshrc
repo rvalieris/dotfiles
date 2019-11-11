@@ -3,7 +3,7 @@
 [ -r $HOME/.local_shell_env ] && source $HOME/.local_shell_env
 
 # prevent duplicates on PATH
-typeset -U path PATH
+typeset -U path manpath
 
 # end of non-interactive conf
 [ -z "$PS1" ] && return

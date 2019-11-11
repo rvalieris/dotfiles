@@ -19,6 +19,10 @@ sub_get_window_title() {
 	echo $TITLE
 }
 
+sub_set_terminal_title() {
+	echo -ne "\033]0;${1}\007"
+}
+
 subcmd=$1
 if [ "${subcmd}" == "" ]; then
 	compgen -A function | sed 's/sub_//'
