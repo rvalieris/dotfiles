@@ -39,7 +39,7 @@ bindsym $mod+Shift+q kill
 bindsym $mod+d exec exec rofi -show run
 
 # lock screen
-exec --no-startup-id exec xset dpms 240 240 240
+exec --no-startup-id exec xset dpms 250 260 270
 exec --no-startup-id exec xset s 240 0
 exec --no-startup-id exec xss-lock -- i3lock -f -n -i $wallpaper
 bindsym $mod+l exec exec xset s activate
