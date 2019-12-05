@@ -11,6 +11,8 @@ export PATH=~/.cargo/bin:$PATH
 
 # nix
 source ~/.nix-profile/etc/profile.d/nix.sh
+# https://github.com/NixOS/nixpkgs/issues/8398
+export LOCALE_ARCHIVE=/usr/lib/locale/locale-archive
 
 # conda
 export MANPATH=~/conda/man:~/conda/share/man:$MANPATH
