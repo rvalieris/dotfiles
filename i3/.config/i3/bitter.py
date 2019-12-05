@@ -151,6 +151,7 @@ class Bitter(object):
 		signal.setitimer(signal.ITIMER_REAL, self.update_time, self.update_time)
 		signal.signal(signal.SIGALRM, lambda n,f: None)
 		signal.signal(signal.SIGUSR1, lambda n,f: None)
+		signal.signal(signal.SIGCONT, lambda n,f: self.update())
 		self.events_t = threading.Thread(target=self.eventWatcher, daemon=True)
 
 	def eventWatcher(self):
@@ -169,13 +170,16 @@ class Bitter(object):
 		sys.stdout.write('%s\n' % data)
 		sys.stdout.flush()
 
+	def update(self):
+		module_data = list(filter(len,map(lambda m: m.getData(), self.modules.values())))
+		self.write('%s,' % json.dumps(module_data))
+
 	def run_loop(self):
 		self.events_t.start()
 		self.write('{"version":1,"click_events":true}')
 		self.write('[')
 		while True:
-			module_data = list(filter(len,map(lambda m: m.getData(), self.modules.values())))
-			self.write('%s,' % json.dumps(module_data))
+			self.update()
 			signal.pause() # wait until SIGALRM or another signal
 
 if __name__ == '__main__':
