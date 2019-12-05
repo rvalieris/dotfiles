@@ -1,13 +1,14 @@
 #!/bin/bash
 set -e
-ST="stow -R -t $HOME $@"
 
-$ST zsh
-$ST vim
-$ST bash
-$ST tmux
-$ST shell
-$ST R
-$ST --no-folding tools
-$ST --no-folding vimswaps
+# check .stowrc file with extra args
+
+stow zsh
+stow vim
+stow bash
+stow tmux
+stow shell
+stow R
+stow --no-folding tools
+stow --no-folding vimswaps
 
