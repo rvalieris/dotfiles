@@ -169,6 +169,7 @@ exec --no-startup-id xrandr --output $mon1 --primary
 exec --no-startup-id exec dunst
 exec --no-startup-id exec redshift-gtk
 exec --no-startup-id exec syncthing
+exec --no-startup-id exec udiskie -A -t
 
 # assigns
 assign [class="keepassxc"] keepass

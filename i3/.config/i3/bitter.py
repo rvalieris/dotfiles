@@ -60,7 +60,7 @@ class Volume(Module):
 
 	def __init__(self):
 		self.pulse = pulsectl.Pulse(threading_lock=True)
-		self.sink_name = self.pulse.server_info().default_sink_name
+		self.sink_name = '@DEFAULT_SINK@'
 		self.start_pulse_thread()
 
 	def getData(self):
