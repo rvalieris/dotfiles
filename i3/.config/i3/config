@@ -172,8 +172,8 @@ exec --no-startup-id exec syncthing
 exec --no-startup-id exec udiskie -A -t
 
 # assigns
-assign [class="keepassxc"] keepass
-for_window [class="keepassxc"] floating enable, resize set 600 600
+assign [class="KeePassXC"] keepass
+for_window [class="KeePassXC"] floating enable, resize set 600 600
 for_window [class="R_x11"] floating enable
 for_window [class="MuPDF"] floating enable
 for_window [class="Pavucontrol"] floating enable

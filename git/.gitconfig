@@ -8,3 +8,7 @@
 
 [pager]
 	branch = false
+[color]
+	ui = true
+[diff]
+	wsErrorHighlight = all

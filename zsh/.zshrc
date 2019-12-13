@@ -49,7 +49,7 @@ TIMEFMT=$'\nreal\t%E\nuser\t%U\nsys\t%S\ncpu\t%P'
 setopt no_beep
 
 # disable flow control
-stty ixoff -ixon 
+stty ixoff -ixon
 stty stop undef
 stty start undef
 setopt no_flow_control
@@ -57,7 +57,7 @@ setopt no_flow_control
 # aliases
 [ -r $HOME/.shell/aliases.sh ] && source $HOME/.shell/aliases.sh
 
-# prevent exiting the shell with ^D
+# prevent shell from exiting with Ctrl-d
 setopt ignoreeof
 
 # key bindings
