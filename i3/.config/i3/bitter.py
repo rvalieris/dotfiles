@@ -5,6 +5,7 @@ import os
 import sys
 import json
 import glob
+import shutil
 import signal
 import pathlib
 import datetime
@@ -14,7 +15,6 @@ import subprocess
 import multiprocessing
 from collections import OrderedDict
 
-sys.stderr = pathlib.Path(os.getenv("XDG_RUNTIME_DIR","/tmp"), 'bitter.log').open('w')
 icon_font = sys.argv[1]
 
 def pango(txt):
@@ -57,24 +57,33 @@ class Volume(Module):
 	icon = pango('🔊')
 	icon2 = pango('🔈')
 	increment = 3/100
+	pct = 0
+	dunstify = None
+	sink_name = ''
 
 	def __init__(self):
 		self.pulse = pulsectl.Pulse(threading_lock=True)
-		self.sink_name = '@DEFAULT_SINK@'
 		self.start_pulse_thread()
+		self.dunstify = shutil.which('dunstify')
 
 	def getData(self):
 		d = super().getData()
 		sink = self.getSink()
 		pct = round(100 * self.pulse.volume_get_all_chans(sink))
-
+		if self.dunstify:
+			if self.pct != pct:
+				subprocess.run([self.dunstify,'-r',str(os.getpid()),'Volume {:d}%'.format(pct)])
+				self.pct = pct
+			if self.sink_name != sink.name:
+				subprocess.run([self.dunstify,'-r',str(os.getpid()),'Sink {}'.format(sink.name)])
+				self.sink_name = sink.name
 		if sink.mute: t = self.icon2+' mute'
 		else: t = '{:s} {:d}%'.format(self.icon,pct)
 		d.update({'full_text': t })
 		return d
 
 	def getSink(self):
-		return self.pulse.get_sink_by_name(self.sink_name)
+		return self.pulse.get_sink_by_name('@DEFAULT_SINK@')
 
 	def onClick(self,data):
 		sink = self.getSink()
@@ -88,11 +97,11 @@ class Volume(Module):
 			self.pulse.volume_change_all_chans(sink, -self.increment)
 
 	def start_pulse_thread(self):
-		self.pulse2 = pulsectl.Pulse(threading_lock=True)
 		self.events_t = threading.Thread(target=self.eventWatcher,daemon=True)
 		self.events_t.start()
 
 	def eventWatcher(self):
+		self.pulse2 = pulsectl.Pulse(threading_lock=True)
 		self.pulse2.event_mask_set('all')
 		self.pulse2.event_callback_set(lambda ev: wakeup())
 		self.pulse2.event_listen()
@@ -139,6 +148,7 @@ class Temperature(Module):
 
 class Bitter(object):
 	update_time = 5 # seconds
+	stop = False
 	def __init__(self):
 		self.modules = OrderedDict(
 			map(lambda m: (m.name(), m),[
@@ -148,10 +158,11 @@ class Bitter(object):
 			#Battery(),
 			Datetime()
 		]))
-		signal.setitimer(signal.ITIMER_REAL, self.update_time, self.update_time)
 		signal.signal(signal.SIGALRM, lambda n,f: None)
 		signal.signal(signal.SIGUSR1, lambda n,f: None)
-		signal.signal(signal.SIGCONT, lambda n,f: self.update())
+		signal.signal(signal.SIGTSTP, lambda n,f: self.setStop(True))
+		signal.signal(signal.SIGCONT, lambda n,f: self.setStop(False))
+		#signal.setitimer(signal.ITIMER_REAL, self.update_time, self.update_time)
 		self.events_t = threading.Thread(target=self.eventWatcher, daemon=True)
 
 	def eventWatcher(self):
@@ -170,17 +181,30 @@ class Bitter(object):
 		sys.stdout.write('%s\n' % data)
 		sys.stdout.flush()
 
+	def setStop(self, st):
+		signal.alarm(0)
+		self.stop = st
+
 	def update(self):
 		module_data = list(filter(len,map(lambda m: m.getData(), self.modules.values())))
 		self.write('%s,' % json.dumps(module_data))
 
 	def run_loop(self):
 		self.events_t.start()
-		self.write('{"version":1,"click_events":true}')
+		self.write(json.dumps({
+			'version':1,
+			'click_events':True,
+			'stop_signal':signal.SIGTSTP,
+			'cont_signal':signal.SIGCONT
+		}))
 		self.write('[')
 		while True:
 			self.update()
-			signal.pause() # wait until SIGALRM or another signal
+			if self.stop:
+				os.kill(os.getpid(), signal.SIGSTOP)
+			else:
+				signal.alarm(self.update_time)
+				signal.pause() # wait until SIGALRM or another signal
 
 if __name__ == '__main__':
 	Bitter().run_loop()
