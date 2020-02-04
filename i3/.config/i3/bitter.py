@@ -23,13 +23,6 @@ def pango(txt):
 def wakeup():
 	os.kill(os.getpid(), signal.SIGUSR1)
 
-def run_command(*args):
-	return subprocess.Popen(
-		args,
-		stdout=subprocess.PIPE,
-		stderr=subprocess.PIPE
-	).communicate()
-
 class Module(object):
 	def name(self): return type(self).__name__
 	def getData(self): return {'full_text': '<empty>', 'name':self.name(), 'markup': 'pango' }
@@ -113,7 +106,8 @@ class Battery(Module):
 	get_chr_time = re.compile(r'(\d+:\d+:\d+)')
 	critical = 20
 	def getData(self):
-		txt, _ = run_command('acpi', '-b')
+		p = subprocess.run(['acpi','-b'],stdout=subprocess.PIPE)
+		txt = p.stdout
 		if len(txt) == 0: return {}
 		txt = txt.decode()
 		pct = float(self.get_pct.search(txt).group(1))
