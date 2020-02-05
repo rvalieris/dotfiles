@@ -1,7 +1,13 @@
 
 [global]
-  font = Source Code Pro 12
-  geometry = 0x0-0-30
+  font = Source Code Pro 16
+  geometry = 0x0-20-40
+  markup = full
+  format = "%s %b"
+  icon_position = off
+  frame_color = "#009f6b"
+  frame_width = 2
+  horizontal_padding = 10
 
 [urgency_normal]
   background = "#272822"
