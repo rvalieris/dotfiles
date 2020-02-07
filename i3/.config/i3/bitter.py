@@ -156,7 +156,6 @@ class Bitter(object):
 		signal.signal(signal.SIGUSR1, lambda n,f: None)
 		signal.signal(signal.SIGTSTP, lambda n,f: self.setStop(True))
 		signal.signal(signal.SIGCONT, lambda n,f: self.setStop(False))
-		#signal.setitimer(signal.ITIMER_REAL, self.update_time, self.update_time)
 		self.events_t = threading.Thread(target=self.eventWatcher, daemon=True)
 
 	def eventWatcher(self):
@@ -176,7 +175,6 @@ class Bitter(object):
 		sys.stdout.flush()
 
 	def setStop(self, st):
-		signal.alarm(0)
 		self.stop = st
 
 	def update(self):
@@ -199,6 +197,7 @@ class Bitter(object):
 			else:
 				signal.alarm(self.update_time)
 				signal.pause() # wait until SIGALRM or another signal
+				signal.alarm(0)
 
 if __name__ == '__main__':
 	Bitter().run_loop()
