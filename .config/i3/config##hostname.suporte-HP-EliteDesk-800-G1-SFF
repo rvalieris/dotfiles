@@ -1,0 +1,204 @@
+#
+# i3 config file (v4)
+#
+
+# mod key
+set $mod Mod4
+set $alt Mod1
+
+# monitors
+set $mon1 VGA-1
+set $mon2 DP-2
+
+# fonts
+set $font SourceCodePro
+set $icon_font NotoColorEmoji
+font pango:$font 14
+
+# wallpaper
+set $wallpaper ~/Desktop/wallpaper.png
+exec --no-startup-id exec feh --no-fehbg --no-xinerama --bg-scale $wallpaper
+
+# colors
+set $red    #c40233
+set $green3 #009F6B
+set $green4 #008080
+set $white  #ffffff
+set $black  #000000
+set $dgray  #272822
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# start a terminal
+bindsym $mod+Return exec exec alacritty
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# program launcher
+bindsym $mod+d exec exec rofi -show run
+
+# lock screen
+exec --no-startup-id exec xset dpms 250 260 270
+exec --no-startup-id exec xset s 240 0
+exec --no-startup-id exec xss-lock -- i3lock -f -n -i $wallpaper
+bindsym $mod+l exec exec xset s activate
+
+# change focus
+bindsym $mod+Up    focus up
+bindsym $mod+Down  focus down
+bindsym $mod+Right focus right
+bindsym $mod+Left  focus left
+
+# move focused window
+bindsym $mod+Shift+Up    move up
+bindsym $mod+Shift+Down  move down
+bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+Left  move left
+
+# resize window
+bindsym $mod+Control+Up    resize grow   height 10 px or 10 ppt
+bindsym $mod+Control+Down  resize shrink height 10 px or 10 ppt
+bindsym $mod+Control+Right resize grow   width  10 px or 10 ppt
+bindsym $mod+Control+Left  resize shrink width  10 px or 10 ppt
+
+# split in horizontal/vertical orientation
+bindsym $mod+h split h
+bindsym $mod+v split v
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+f fullscreen toggle global
+popup_during_fullscreen leave_fullscreen
+
+# change container layout (stacked, tabbed, toggle split)
+bindsym $mod+s layout stacking
+bindsym $mod+w layout tabbed
+bindsym $mod+e layout toggle split
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# toggle sticky window
+bindsym $mod+Shift+s sticky toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# rename workspace
+bindsym $mod+shift+n exec ~/.config/i3/i3cmds.sh prompt_rename_workspace
+
+# switch to workspace
+workspace_auto_back_and_forth yes
+bindsym $mod+Shift+Tab workspace prev_on_output
+bindsym $mod+Tab workspace next_on_output
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+# reload config / restart i3
+bindsym $mod+r reload
+bindsym $mod+Shift+r restart
+
+# exit i3 (logs you out of your X session)
+bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'exit i3?' -b 'Yes' 'i3-msg exit'"
+
+# colors                  border  background  text    indicator
+client.focused            $green3 $green3     $black  $green4
+client.urgent             $red    $red        $white  $red
+#client.unfocused         
+#client.focused_inative  
+
+bar {
+	output $mon1
+	tray_output none
+	font pango:$font 15
+	mode hide
+	modifier $mod
+	position bottom
+	colors {
+		background $dgray
+		separator  $dgray
+		#                  border  background  text
+		focused_workspace  $green4 $green3     $black
+		urgent_workspace   $red    $red        $white
+	}
+}
+bar {
+	output $mon2
+	tray_output $mon2
+	font pango:$font 15
+	mode hide
+	modifier $mod
+	position bottom
+	status_command exec ~/.config/i3/bitter.py "$icon_font 15"
+	colors {
+		background $dgray
+		separator  $dgray
+		#                  border  background  text
+		focused_workspace  $green4 $green3     $black
+		urgent_workspace   $red    $red        $white
+	}
+}
+
+
+focus_on_window_activation urgent
+
+# borders
+new_window pixel 1
+hide_edge_borders smart
+bindsym $mod+b border toggle
+
+# scratchpad
+bindsym $mod+minus move scratchpad
+bindsym $mod+plus scratchpad show
+
+# volume keys
+bindsym XF86AudioRaiseVolume exec --no-startup-id exec pactl set-sink-volume @DEFAULT_SINK@ +3%
+bindsym XF86AudioLowerVolume exec --no-startup-id exec pactl set-sink-volume @DEFAULT_SINK@ -3%
+bindsym XF86AudioMute        exec --no-startup-id exec pactl set-sink-mute   @DEFAULT_SINK@ toggle
+
+# starting apps
+exec --no-startup-id xrandr --output $mon1 --auto --output $mon2 --primary --auto --right-of $mon1
+exec --no-startup-id exec dunst
+exec --no-startup-id exec redshift-gtk
+exec --no-startup-id exec syncthing
+exec --no-startup-id exec udiskie -A -t
+
+# assigns
+for_window [class=".*"] floating enable
+for_window [instance="Navigator" class="Firefox"] floating disable
+for_window [class="Alacritty"] floating disable
+#assign [class="Firefox"] number 1
+assign [class="KeePassXC"] keepass
+#for_window [class="KeePassXC"] floating enable, resize set 600 600
+#for_window [class="R_x11"] floating enable
+#for_window [class="MuPDF"] floating enable
+#for_window [class="Pavucontrol"] floating enable
+#for_window [instance="libreoffice"] floating enable
+#for_window [class="matplotlib"] floating enable
+#for_window [instance="Devtools" class="Firefox"] floating enable
+
