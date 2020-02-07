@@ -1,24 +1,12 @@
 
 # my dotfiles
 
+use at your own risk.
 
-### get the files
+## install
 
-```bash
-git clone --recursive this.repo ~/dotfiles
-# or
-rsync -crPl ~/dotfiles remote:~
-# and sometimes --delete
-```
+`yadm clone https://github.com/rvalieris/dotfiles`
 
-### update submodules
-```bash
-cd dotfiles
-git submodule foreach git pull origin master
-```
+## update submodules
 
-### init the dotfiles
-```bash
-./stow.sh
-```
-
+`yadm submodule foreach git pull origin master`
