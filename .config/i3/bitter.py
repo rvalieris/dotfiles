@@ -7,7 +7,6 @@ import json
 import glob
 import shutil
 import signal
-import pathlib
 import datetime
 import pulsectl
 import threading
@@ -19,9 +18,6 @@ icon_font = sys.argv[1]
 
 def pango(txt):
 	return '<span font="%s">%s</span>'%(icon_font,txt)
-
-def wakeup():
-	os.kill(os.getpid(), signal.SIGUSR1)
 
 class Module(object):
 	def name(self): return type(self).__name__
@@ -54,7 +50,8 @@ class Volume(Module):
 	dunstify = None
 	sink_name = ''
 
-	def __init__(self):
+	def __init__(self, wakeup_event):
+		self.wakeup_event = wakeup_event
 		self.pulse = pulsectl.Pulse(threading_lock=True)
 		self.start_pulse_thread()
 		self.dunstify = shutil.which('dunstify')
@@ -96,7 +93,7 @@ class Volume(Module):
 	def eventWatcher(self):
 		self.pulse2 = pulsectl.Pulse(threading_lock=True)
 		self.pulse2.event_mask_set('all')
-		self.pulse2.event_callback_set(lambda ev: wakeup())
+		self.pulse2.event_callback_set(lambda ev: self.wakeup_event.set())
 		self.pulse2.event_listen()
 
 class Battery(Module):
@@ -143,17 +140,17 @@ class Temperature(Module):
 class Bitter(object):
 	update_time = 5 # seconds
 	stop = False
+	wakeup_event = threading.Event()
+
 	def __init__(self):
 		self.modules = OrderedDict(
 			map(lambda m: (m.name(), m),[
-			Volume(),
+			Volume(self.wakeup_event),
 			Temperature(),
 			LoadAvg(),
 			#Battery(),
 			Datetime()
 		]))
-		signal.signal(signal.SIGALRM, lambda n,f: None)
-		signal.signal(signal.SIGUSR1, lambda n,f: None)
 		signal.signal(signal.SIGTSTP, lambda n,f: self.setStop(True))
 		signal.signal(signal.SIGCONT, lambda n,f: self.setStop(False))
 		self.events_t = threading.Thread(target=self.eventWatcher, daemon=True)
@@ -168,7 +165,7 @@ class Bitter(object):
 			else:
 				if data['name'] in self.modules:
 					self.modules[data['name']].onClick(data)
-					wakeup()
+					self.wakeup_event.set()
 
 	def write(self, data):
 		sys.stdout.write('%s\n' % data)
@@ -176,6 +173,7 @@ class Bitter(object):
 
 	def setStop(self, st):
 		self.stop = st
+		self.wakeup_event.set()
 
 	def update(self):
 		module_data = list(filter(len,map(lambda m: m.getData(), self.modules.values())))
@@ -193,11 +191,10 @@ class Bitter(object):
 		while True:
 			self.update()
 			if self.stop:
-				os.kill(os.getpid(), signal.SIGSTOP)
+				self.wakeup_event.wait() # wait for events
 			else:
-				signal.alarm(self.update_time)
-				signal.pause() # wait until SIGALRM or another signal
-				signal.alarm(0)
+				self.wakeup_event.wait(self.update_time)
+			self.wakeup_event.clear()
 
 if __name__ == '__main__':
 	Bitter().run_loop()
