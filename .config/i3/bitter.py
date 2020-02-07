@@ -1,4 +1,4 @@
-#!/home/users/renan.valieris/conda/envs/pulse/bin/python
+#!/usr/bin/env python
 
 import re
 import os

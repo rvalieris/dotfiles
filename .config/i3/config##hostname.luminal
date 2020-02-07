@@ -7,8 +7,7 @@ set $mod Mod4
 set $alt Mod1
 
 # monitors
-set $mon1 VGA-1
-set $mon2 DP-2
+set $mon1 DP-2
 
 # fonts
 set $font SourceCodePro
@@ -133,12 +132,13 @@ client.urgent             $red    $red        $white  $red
 #client.focused_inative  
 
 bar {
-	output $mon1
-	tray_output none
-	font pango:$font 15
-	mode hide
+	output primary
+	tray_output primary
+	font pango:$font 16
+	mode dock
 	modifier $mod
 	position bottom
+	status_command ~/.config/i3/bitter.py "$icon_font 16"
 	colors {
 		background $dgray
 		separator  $dgray
@@ -147,23 +147,6 @@ bar {
 		urgent_workspace   $red    $red        $white
 	}
 }
-bar {
-	output $mon2
-	tray_output $mon2
-	font pango:$font 15
-	mode hide
-	modifier $mod
-	position bottom
-	status_command exec ~/conda/envs/pulse/bin/python ~/.config/i3/bitter.py "$icon_font 15"
-	colors {
-		background $dgray
-		separator  $dgray
-		#                  border  background  text
-		focused_workspace  $green4 $green3     $black
-		urgent_workspace   $red    $red        $white
-	}
-}
-
 
 focus_on_window_activation urgent
 
@@ -182,23 +165,20 @@ bindsym XF86AudioLowerVolume exec --no-startup-id exec pactl set-sink-volume @DE
 bindsym XF86AudioMute        exec --no-startup-id exec pactl set-sink-mute   @DEFAULT_SINK@ toggle
 
 # starting apps
-exec --no-startup-id xrandr --output $mon1 --auto --output $mon2 --primary --auto --right-of $mon1
+exec --no-startup-id xrandr --output $mon1 --primary
 exec --no-startup-id exec dunst
 exec --no-startup-id exec redshift-gtk
 exec --no-startup-id exec syncthing
 exec --no-startup-id exec udiskie -A -t
+exec --no-startup-id exec blueman-tray
 
 # assigns
-for_window [class=".*"] floating enable
-for_window [instance="Navigator" class="Firefox"] floating disable
-for_window [class="Alacritty"] floating disable
-#assign [class="Firefox"] number 1
 assign [class="KeePassXC"] keepass
-#for_window [class="KeePassXC"] floating enable, resize set 600 600
-#for_window [class="R_x11"] floating enable
-#for_window [class="MuPDF"] floating enable
-#for_window [class="Pavucontrol"] floating enable
-#for_window [instance="libreoffice"] floating enable
-#for_window [class="matplotlib"] floating enable
-#for_window [instance="Devtools" class="Firefox"] floating enable
+for_window [class="KeePassXC"] floating enable, resize set 600 600
+for_window [class="R_x11"] floating enable
+for_window [class="MuPDF"] floating enable
+for_window [class="Pavucontrol"] floating enable
+assign [class="Steam"] steam
+assign [class="qBittorrent"] torrent
+assign [class="JDownloader"] jdown
 

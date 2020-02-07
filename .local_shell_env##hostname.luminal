@@ -1,0 +1,23 @@
+
+# less
+source ~/.shell/less_colors.sh
+[ -x /bin/lesspipe ] && eval "$(/bin/lesspipe)"
+
+# dircolors
+[ -x /usr/bin/dircolors ] && eval "$(/usr/bin/dircolors -b)"
+
+# rust
+export PATH=~/.cargo/bin:$PATH
+
+# conda
+export MANPATH=~/conda/man:~/conda/share/man:$MANPATH
+source ~/conda/etc/profile.d/conda.sh
+export PATH=~/conda/bin:$PATH
+
+# local scripts
+export PATH=~/.local/bin:$PATH
+
+# etc
+export BROWSER=firefox
+export EDITOR=vim
+export PAGER=less
