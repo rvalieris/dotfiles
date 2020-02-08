@@ -1,1 +1,1 @@
-[ -r $HOME/.local_shell_env ] && source $HOME/.local_shell_env
+[ -r $HOME/.config/shell/env.sh ] && source $HOME/.config/shell/env.sh

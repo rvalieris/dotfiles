@@ -1,6 +1,6 @@
 
 # local conf
-[ -r $HOME/.local_shell_env ] && source $HOME/.local_shell_env
+[ -r $HOME/.config/shell/env.sh ] && source $HOME/.config/shell/env.sh
 
 # remove duplicates from PATH
 export PATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $ENV{PATH}))')"
@@ -22,7 +22,8 @@ stty stop undef
 stty start undef
 
 # aliases
-[ -r $HOME/.shell/aliases.sh ] && source $HOME/.shell/aliases.sh
+[ -r $HOME/.config/shell/aliases.sh ] && source $HOME/.config/shell/aliases.sh
+source $HOME/.config/shell/less_colors.sh
 
 export HISTCONTROL=ignoredups
 

@@ -11,5 +11,5 @@
 	path = .vim/bundle/airline
 	url = https://github.com/vim-airline/vim-airline
 [submodule "zsh/.zsh/zsh-syntax-highlighting"]
-	path = .zsh/zsh-syntax-highlighting
+	path = .config/shell/zsh/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting

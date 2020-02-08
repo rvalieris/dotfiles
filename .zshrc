@@ -1,6 +1,6 @@
 
 # local conf
-[ -r $HOME/.local_shell_env ] && source $HOME/.local_shell_env
+[ -r $HOME/.config/shell/env.sh ] && source $HOME/.config/shell/env.sh
 
 # prevent duplicates on PATH
 typeset -U path manpath
@@ -55,7 +55,8 @@ stty start undef
 setopt no_flow_control
 
 # aliases
-[ -r $HOME/.shell/aliases.sh ] && source $HOME/.shell/aliases.sh
+[ -r $HOME/.config/shell/aliases.sh ] && source $HOME/.config/shell/aliases.sh
+source $HOME/.config/shell/less_colors.sh
 
 # prevent shell from exiting with Ctrl-d
 setopt ignoreeof
@@ -78,7 +79,7 @@ bindkey '\e[3~' delete-char
 bindkey '\e3;5~' delete-char
 bindkey ' ' magic-space
 
-source ~/.zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source ~/.config/shell/zsh/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 ZSH_HIGHLIGHT_HIGHLIGHTERS=(main brackets)
 
 return 0
