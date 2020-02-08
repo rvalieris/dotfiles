@@ -144,6 +144,31 @@ class Temperature(Module):
 		else:
 			return {}
 
+class WindowTitle(Module):
+	icon = '💠'
+	def __init__(self, wakeup_event):
+		self.wakeup_event = wakeup_event
+		self.title = ''
+		self.events_t = threading.Thread(target=self.eventWatcher,daemon=True)
+		self.events_t.start()
+
+	def getData(self):
+		d = super().getData()
+		if len(self.title) > 0: d.update({'full_text': self.icon+' '+self.title })
+		else: return {}
+		return d
+
+	def eventWatcher(self):
+		p = subprocess.Popen(['i3-msg','-t','subscribe','-m','["window"]'], stdout=subprocess.PIPE)
+		while True:
+			l = json.loads(p.stdout.readline())
+			if l['change'] in ['focus','title']:
+				self.title = l['container']['window_properties']['title']
+			elif l['change'] == 'close':
+				self.title = ''
+			else: continue
+			self.wakeup_event.set()
+
 class Bitter(object):
 	update_time = 5 # seconds
 	stop = False
@@ -151,6 +176,7 @@ class Bitter(object):
 
 	def __init__(self):
 		modules = filter(lambda m: m is not None, [
+			WindowTitle(self.wakeup_event),
 			Volume(self.wakeup_event),
 			Temperature(),
 			LoadAvg(),
