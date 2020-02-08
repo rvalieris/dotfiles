@@ -5,7 +5,7 @@
 set nocompatible
 set encoding=utf-8
 scriptencoding utf-8
-set runtimepath^=.config/vim
+set runtimepath^=~/.config/vim
 runtime bundle/pathogen/autoload/pathogen.vim
 execute pathogen#infect()
 filetype plugin on
