@@ -18,7 +18,9 @@ if(!interactive()) {
 		})
 	)
 }else{
-	require(colorout)
+	if("colorout" %in% rownames(utils::installed.packages())) {
+		require(colorout)
+	}
 }
 
 #sh = function(cmdline,capture=F) {
