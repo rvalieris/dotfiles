@@ -57,8 +57,8 @@ class Volume(Module):
 		except:
 			return None
 
-	def __init__(self, wakeup_event):
-		self.wakeup_event = wakeup_event
+	def __init__(self, wakeup):
+		self.wakeup = wakeup
 		self.pulse = pulsectl.Pulse(threading_lock=True)
 		self.start_pulse_thread()
 		self.dunstify = shutil.which('dunstify')
@@ -100,7 +100,7 @@ class Volume(Module):
 	def eventWatcher(self):
 		self.pulse2 = pulsectl.Pulse(threading_lock=True)
 		self.pulse2.event_mask_set('all')
-		self.pulse2.event_callback_set(lambda ev: self.wakeup_event.set())
+		self.pulse2.event_callback_set(lambda ev: self.wakeup.set())
 		self.pulse2.event_listen()
 
 class Battery(Module):
@@ -109,6 +109,13 @@ class Battery(Module):
 	get_pct = re.compile(r'(\d+)%')
 	get_chr_time = re.compile(r'(\d+:\d+:\d+)')
 	critical = 20
+
+	def __new__(cls, *args):
+		if shutil.which('acpi') is None: return None
+		p = subprocess.run(['acpi','-b'],stdout=subprocess.PIPE)
+		if len(p.stdout) == 0: return None
+		return super(Battery,cls).__new__(cls)
+
 	def getData(self):
 		p = subprocess.run(['acpi','-b'],stdout=subprocess.PIPE)
 		txt = p.stdout
@@ -127,13 +134,23 @@ class Battery(Module):
 class Temperature(Module):
 	icon = pango('🌡')
 	critical = 80
-	thermal_zone = ""
-	def __init__(self):
+
+	@staticmethod
+	def find_thermal_zone():
 		zones = glob.glob("/sys/devices/virtual/thermal/thermal_zone*")
 		for z in zones:
 			if re.search("pkg_temp",open(z+"/type").read()):
-				self.thermal_zone = z+"/temp"
-				break
+				return z+"/temp"
+		return None
+
+	def __new__(cls, *args):
+		if Temperature.find_thermal_zone() is not None:
+			return super(Temperature,cls).__new__(cls)
+		else:
+			return None
+
+	def __init__(self):
+		self.thermal_zone = Temperature.find_thermal_zone()
 
 	def getData(self):
 		if os.path.isfile(self.thermal_zone):
@@ -146,8 +163,8 @@ class Temperature(Module):
 
 class WindowTitle(Module):
 	icon = '💠'
-	def __init__(self, wakeup_event):
-		self.wakeup_event = wakeup_event
+	def __init__(self, wakeup):
+		self.wakeup = wakeup
 		self.title = ''
 		self.events_t = threading.Thread(target=self.eventWatcher,daemon=True)
 		self.events_t.start()
@@ -159,28 +176,32 @@ class WindowTitle(Module):
 		return d
 
 	def eventWatcher(self):
-		p = subprocess.Popen(['i3-msg','-t','subscribe','-m','["window"]'], stdout=subprocess.PIPE)
+		p = subprocess.Popen(['i3-msg','-t','subscribe','-m','["window","workspace"]'], stdout=subprocess.PIPE)
 		while True:
 			l = json.loads(p.stdout.readline())
-			if l['change'] in ['focus','title']:
-				self.title = l['container']['window_properties']['title']
-			elif l['change'] == 'close':
-				self.title = ''
+			if 'container' in l: # window event
+				if l['change'] in ['focus','title']:
+					self.title = l['container']['window_properties']['title']
+				elif l['change'] == 'close':
+					self.title = ''
+				else: continue
+			elif l['change'] == 'focus': # workspace event
+				self.title = l['current']['name']
 			else: continue
-			self.wakeup_event.set()
+			self.wakeup.set()
 
 class Bitter(object):
 	update_time = 5 # seconds
 	stop = False
-	wakeup_event = threading.Event()
+	wakeup = threading.Event()
 
 	def __init__(self):
 		modules = filter(lambda m: m is not None, [
-			WindowTitle(self.wakeup_event),
-			Volume(self.wakeup_event),
+			WindowTitle(self.wakeup),
+			Volume(self.wakeup),
 			Temperature(),
 			LoadAvg(),
-			#Battery(),
+			Battery(),
 			Datetime()
 		])
 		self.modules = OrderedDict(map(lambda m: (m.name(), m),modules))
@@ -198,7 +219,7 @@ class Bitter(object):
 			else:
 				if data['name'] in self.modules:
 					self.modules[data['name']].onClick(data)
-					self.wakeup_event.set()
+					self.wakeup.set()
 
 	def write(self, data):
 		sys.stdout.write('%s\n' % data)
@@ -206,7 +227,7 @@ class Bitter(object):
 
 	def setStop(self, st):
 		self.stop = st
-		self.wakeup_event.set()
+		self.wakeup.set()
 
 	def update(self):
 		module_data = list(filter(len,map(lambda m: m.getData(), self.modules.values())))
@@ -223,11 +244,8 @@ class Bitter(object):
 		self.write('[')
 		while True:
 			self.update()
-			if self.stop:
-				self.wakeup_event.wait() # wait for events
-			else:
-				self.wakeup_event.wait(self.update_time)
-			self.wakeup_event.clear()
+			self.wakeup.wait(None if self.stop else self.update_time)
+			self.wakeup.clear()
 
 if __name__ == '__main__':
 	Bitter().run_loop()
