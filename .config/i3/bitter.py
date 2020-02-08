@@ -8,7 +8,6 @@ import glob
 import shutil
 import signal
 import datetime
-import pulsectl
 import threading
 import subprocess
 import multiprocessing
@@ -49,6 +48,14 @@ class Volume(Module):
 	pct = 0
 	dunstify = None
 	sink_name = ''
+
+	def __new__(cls, *args):
+		try:
+			global pulsectl
+			import pulsectl
+			return super(Volume,cls).__new__(cls)
+		except:
+			return None
 
 	def __init__(self, wakeup_event):
 		self.wakeup_event = wakeup_event
@@ -143,14 +150,14 @@ class Bitter(object):
 	wakeup_event = threading.Event()
 
 	def __init__(self):
-		self.modules = OrderedDict(
-			map(lambda m: (m.name(), m),[
+		modules = filter(lambda m: m is not None, [
 			Volume(self.wakeup_event),
 			Temperature(),
 			LoadAvg(),
 			#Battery(),
 			Datetime()
-		]))
+		])
+		self.modules = OrderedDict(map(lambda m: (m.name(), m),modules))
 		signal.signal(signal.SIGTSTP, lambda n,f: self.setStop(True))
 		signal.signal(signal.SIGCONT, lambda n,f: self.setStop(False))
 		self.events_t = threading.Thread(target=self.eventWatcher, daemon=True)
