@@ -5,12 +5,12 @@ import os
 import sys
 import json
 import glob
+import html
 import shutil
 import signal
 import datetime
 import threading
 import subprocess
-import multiprocessing
 from collections import OrderedDict
 
 icon_font = sys.argv[1]
@@ -25,7 +25,7 @@ class Module(object):
 
 class LoadAvg(Module):
 	icon = pango('🔥')
-	n_cores = multiprocessing.cpu_count()
+	n_cores = os.cpu_count()
 	def getData(self):
 		t0, _, _ = os.getloadavg()
 		d = super().getData()
@@ -162,7 +162,17 @@ class Temperature(Module):
 			return {}
 
 class WindowTitle(Module):
-	icon = '💠'
+	icon = pango('💠')
+	max_short_text = 45
+
+	def __new__(cls, *args):
+		try:
+			global i3ipc
+			import i3ipc
+			return super(WindowTitle,cls).__new__(cls)
+		except:
+			return None
+
 	def __init__(self, wakeup):
 		self.wakeup = wakeup
 		self.title = ''
@@ -171,24 +181,30 @@ class WindowTitle(Module):
 
 	def getData(self):
 		d = super().getData()
-		if len(self.title) > 0: d.update({'full_text': self.icon+' '+self.title })
+		if len(self.title) > 0:
+			d.update({'full_text': self.icon+' '+html.escape(self.title) })
+			if len(self.title) > self.max_short_text:
+				d.update({'short_text': self.icon+' '+html.escape(self.title[:self.max_short_text])})
 		else: return {}
 		return d
 
 	def eventWatcher(self):
-		p = subprocess.Popen(['i3-msg','-t','subscribe','-m','["window","workspace"]'], stdout=subprocess.PIPE)
-		while True:
-			l = json.loads(p.stdout.readline())
-			if 'container' in l: # window event
-				if l['change'] in ['focus','title']:
-					self.title = l['container']['window_properties']['title']
-				elif l['change'] == 'close':
-					self.title = ''
-				else: continue
-			elif l['change'] == 'focus': # workspace event
-				self.title = l['current']['name']
-			else: continue
+		def on_workspace(i3, event):
+			if event.change == 'focus':
+				self.title = event.current.name
+			else: return
 			self.wakeup.set()
+		def on_window(i3, event):
+			if event.change in ['focus','title']:
+				self.title = event.container.window_title
+			elif event.change == 'close':
+				self.title = ''
+			else: return
+			self.wakeup.set()
+		i3 = i3ipc.Connection()
+		i3.on(i3ipc.Event.WORKSPACE, on_workspace)
+		i3.on(i3ipc.Event.WINDOW, on_window)
+		i3.main()
 
 class Bitter(object):
 	update_time = 5 # seconds
@@ -201,7 +217,7 @@ class Bitter(object):
 			Volume(self.wakeup),
 			Temperature(),
 			LoadAvg(),
-			Battery(),
+			#Battery(),
 			Datetime()
 		])
 		self.modules = OrderedDict(map(lambda m: (m.name(), m),modules))
