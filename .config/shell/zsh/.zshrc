@@ -1,10 +1,4 @@
 
-# local conf
-[ -r $HOME/.config/shell/env.sh ] && source $HOME/.config/shell/env.sh
-
-# prevent duplicates on PATH
-typeset -U path manpath
-
 # end of non-interactive conf
 [ -z "$PS1" ] && return
 
@@ -17,7 +11,7 @@ PROMPT='%(?..%{$fg_no_bold[red]%}%?) %{$fg_bold[black]%}%m %{$fg_bold[blue]%}%c%
 unsetopt correct_all
 
 ## Command history configuration
-HISTFILE=$HOME/.cache/zsh_history
+HISTFILE=~/.cache/zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt append_history
@@ -54,9 +48,8 @@ stty stop undef
 stty start undef
 setopt no_flow_control
 
-# aliases
-[ -r $HOME/.config/shell/aliases.sh ] && source $HOME/.config/shell/aliases.sh
-source $HOME/.config/shell/less_colors.sh
+# interactive stuff
+source ~/.config/shell/interactive.env.sh
 
 # prevent shell from exiting with Ctrl-d
 setopt ignoreeof
