@@ -17,7 +17,7 @@ PROMPT='%(?..%{$fg_no_bold[red]%}%?) %{$fg_bold[black]%}%m %{$fg_bold[blue]%}%c%
 unsetopt correct_all
 
 ## Command history configuration
-HISTFILE=$HOME/.zsh_history
+HISTFILE=$HOME/.cache/zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
 setopt append_history
