@@ -92,6 +92,9 @@ set directory=$HOME/.cache/vim/swap//
 set wildmenu
 set wildmode=longest:full
 
+" 25 various
+set viminfo+=n~/.cache/vim/viminfo
+
 " override some ftplugins set's
 autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o noexpandtab softtabstop=0 tabstop=8 nosmartindent
 
