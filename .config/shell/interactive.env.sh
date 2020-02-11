@@ -11,3 +11,6 @@ source ~/.config/shell/aliases.sh
 
 # less colors
 source ~/.config/shell/less_colors.sh
+
+# conda base
+export PATH=~/conda/bin:$PATH
