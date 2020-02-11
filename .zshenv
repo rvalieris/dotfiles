@@ -5,4 +5,4 @@ ZDOTDIR=~/.config/shell/zsh
 source ~/.config/shell/env.sh
 
 # prevent duplicates on PATH
-typeset -U path manpath
+typeset -U path PATH manpath MANPATH

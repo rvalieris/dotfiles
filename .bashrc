@@ -14,7 +14,6 @@ PS1+='$(ec=$?;[ $ec -ne 0 ] && echo -n "$ec") '
 PS1+="\[$(tput bold;tput setaf 0)\]"'\h '
 PS1+="\[$(tput setaf 4)\]"'\W'
 PS1+="\[$(tput setaf 2)\]"'\$ '"\[$(tput sgr0)\]"
-export PATH
 
 # disable flow control
 stty ixoff -ixon
@@ -24,6 +23,7 @@ stty start undef
 # interactive stuff
 source ~/.config/shell/interactive.env.sh
 
+export HISTFILE=~/.cache/bash_history
 export HISTCONTROL=ignoredups
 
 # prevent shell from exiting with Ctrl-d
