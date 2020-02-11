@@ -1,15 +1,15 @@
-[submodule "vim/.vim/bundle/pathogen"]
-	path = .config/vim/bundle/pathogen
-	url = https://github.com/tpope/vim-pathogen
-[submodule "vim/.vim/bundle/molokai"]
-	path = .config/vim/bundle/molokai
-	url = https://github.com/tomasr/molokai
-[submodule "vim/.vim/bundle/unite"]
-	path = .config/vim/bundle/unite
-	url = https://github.com/Shougo/unite.vim
-[submodule "vim/.vim/bundle/airline"]
-	path = .config/vim/bundle/airline
-	url = https://github.com/vim-airline/vim-airline
-[submodule "zsh/.zsh/zsh-syntax-highlighting"]
+[submodule ".config/shell/zsh/zsh-syntax-highlighting"]
 	path = .config/shell/zsh/zsh-syntax-highlighting
 	url = https://github.com/zsh-users/zsh-syntax-highlighting
+[submodule ".config/vim/bundle/pathogen"]
+	path = .config/vim/bundle/pathogen
+	url = https://github.com/tpope/vim-pathogen
+[submodule ".config/vim/bundle/molokai"]
+	path = .config/vim/bundle/molokai
+	url = https://github.com/tomasr/molokai
+[submodule ".config/vim/bundle/unite"]
+	path = .config/vim/bundle/unite
+	url = https://github.com/Shougo/unite.vim
+[submodule ".config/vim/bundle/airline"]
+	path = .config/vim/bundle/airline
+	url = https://github.com/vim-airline/vim-airline
