@@ -9,6 +9,7 @@ import html
 import shutil
 import signal
 import datetime
+import importlib
 import threading
 import subprocess
 from collections import OrderedDict
@@ -19,6 +20,20 @@ def pango(txt):
 	return '<span font="%s">%s</span>'%(icon_font,txt)
 
 class Module(object):
+	IMPORTS = []
+
+	def __new__(cls, *args):
+		try:
+			for m in cls.IMPORTS:
+				globals()[m] = importlib.import_module(m)
+			return super(Module, cls).__new__(cls)
+		except ModuleNotFoundError as e:
+			print(sys.argv[0]+' could not load ['+e.name+'] '+cls.__name__+' will be disabled', file=sys.stderr)
+			return None
+		except Exception as e:
+			print(e, file=sys.stderr)
+			return None
+
 	def name(self): return type(self).__name__
 	def getData(self): return {'full_text': '<empty>', 'name':self.name(), 'markup': 'pango' }
 	def onClick(self,data): pass
@@ -42,20 +57,13 @@ class Datetime(Module):
 		return d
 
 class Volume(Module):
+	IMPORTS = ['pulsectl']
 	icon = pango('🔊')
 	icon2 = pango('🔈')
-	increment = 3/100
+	increment = 1/100
 	pct = 0
 	dunstify = None
 	sink_name = ''
-
-	def __new__(cls, *args):
-		try:
-			global pulsectl
-			import pulsectl
-			return super(Volume,cls).__new__(cls)
-		except:
-			return None
 
 	def __init__(self, wakeup):
 		self.wakeup = wakeup
@@ -63,16 +71,19 @@ class Volume(Module):
 		self.start_pulse_thread()
 		self.dunstify = shutil.which('dunstify')
 
+	def notify(self, msg):
+		subprocess.run([self.dunstify,'-r',str(os.getpid()),msg])
+
 	def getData(self):
 		d = super().getData()
 		sink = self.getSink()
 		pct = round(100 * self.pulse.volume_get_all_chans(sink))
 		if self.dunstify:
 			if self.pct != pct:
-				subprocess.run([self.dunstify,'-r',str(os.getpid()),'Volume {:d}%'.format(pct)])
+				self.notify('Volume {:d}%'.format(pct))
 				self.pct = pct
 			if self.sink_name != sink.name:
-				subprocess.run([self.dunstify,'-r',str(os.getpid()),'Sink {}'.format(sink.name)])
+				self.notify('Sink {}'.format(sink.name))
 				self.sink_name = sink.name
 		if sink.mute: t = self.icon2+' mute'
 		else: t = '{:s} {:d}%'.format(self.icon,pct)
@@ -162,16 +173,9 @@ class Temperature(Module):
 			return {}
 
 class WindowTitle(Module):
+	IMPORTS = ['i3ipc']
 	icon = pango('💠')
 	max_short_text = 45
-
-	def __new__(cls, *args):
-		try:
-			global i3ipc
-			import i3ipc
-			return super(WindowTitle,cls).__new__(cls)
-		except:
-			return None
 
 	def __init__(self, wakeup):
 		self.wakeup = wakeup
@@ -181,7 +185,7 @@ class WindowTitle(Module):
 
 	def getData(self):
 		d = super().getData()
-		if len(self.title) > 0:
+		if self.title is not None and len(self.title) > 0:
 			d.update({'full_text': self.icon+' '+html.escape(self.title) })
 			if len(self.title) > self.max_short_text:
 				d.update({'short_text': self.icon+' '+html.escape(self.title[:self.max_short_text])})
@@ -190,7 +194,7 @@ class WindowTitle(Module):
 
 	def eventWatcher(self):
 		def on_workspace(i3, event):
-			if event.change == 'focus':
+			if event.change in ['focus','rename']:
 				self.title = event.current.name
 			else: return
 			self.wakeup.set()
@@ -198,10 +202,11 @@ class WindowTitle(Module):
 			if event.change in ['focus','title']:
 				self.title = event.container.window_title
 			elif event.change == 'close':
-				self.title = ''
+				self.title = i3.get_tree().find_focused().name
 			else: return
 			self.wakeup.set()
-		i3 = i3ipc.Connection()
+		i3 = i3ipc.Connection(auto_reconnect=True)
+		self.title = i3.get_tree().find_focused().name
 		i3.on(i3ipc.Event.WORKSPACE, on_workspace)
 		i3.on(i3ipc.Event.WINDOW, on_window)
 		i3.main()
