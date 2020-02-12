@@ -13,4 +13,4 @@ source ~/.config/shell/aliases.sh
 source ~/.config/shell/less_colors.sh
 
 # conda base
-export PATH=~/conda/bin:$PATH
+CONDA_CHANGEPS1=false conda activate base
