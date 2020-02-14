@@ -28,31 +28,31 @@ class Module(object):
 				globals()[m] = importlib.import_module(m)
 			return super(Module, cls).__new__(cls)
 		except ModuleNotFoundError as e:
-			print(sys.argv[0]+' could not load ['+e.name+'] '+cls.__name__+' will be disabled', file=sys.stderr)
+			print(sys.argv[0]+': '+cls.__name__+' disabled: ModuleNotFoundError: '+e.name, file=sys.stderr)
 			return None
 		except Exception as e:
 			print(e, file=sys.stderr)
 			return None
 
 	def name(self): return type(self).__name__
-	def getData(self): return {'full_text': '<empty>', 'name':self.name(), 'markup': 'pango' }
-	def onClick(self,data): pass
+	def get_data(self): return {'full_text': '<empty>', 'name':self.name(), 'markup': 'pango' }
+	def on_click(self,data): pass
 
 class LoadAvg(Module):
 	icon = pango('🔥')
 	n_cores = os.cpu_count()
-	def getData(self):
+	def get_data(self):
 		t0, _, _ = os.getloadavg()
-		d = super().getData()
+		d = super().get_data()
 		d.update({'full_text': "{:s} {:.2f}".format(self.icon,t0), 'urgent': t0 > self.n_cores })
 		return d
 
 class Datetime(Module):
 	icon1 = pango('📅')
 	icon2 = pango('⌚')
-	def getData(self):
+	def get_data(self):
 		txt = datetime.datetime.now().strftime(self.icon1+' %b %Y, %A %d '+self.icon2+' %H:%M:%S')
-		d = super().getData()
+		d = super().get_data()
 		d.update({'full_text': txt })
 		return d
 
@@ -74,9 +74,9 @@ class Volume(Module):
 	def notify(self, msg):
 		subprocess.run([self.dunstify,'-r',str(os.getpid()),msg])
 
-	def getData(self):
-		d = super().getData()
-		sink = self.getSink()
+	def get_data(self):
+		d = super().get_data()
+		sink = self.get_sink()
 		pct = round(100 * self.pulse.volume_get_all_chans(sink))
 		if self.dunstify:
 			if self.pct != pct:
@@ -90,11 +90,11 @@ class Volume(Module):
 		d.update({'full_text': t })
 		return d
 
-	def getSink(self):
+	def get_sink(self):
 		return self.pulse.get_sink_by_name('@DEFAULT_SINK@')
 
-	def onClick(self,data):
-		sink = self.getSink()
+	def on_click(self,data):
+		sink = self.get_sink()
 		if data['button'] == 2: # open pavucontrol
 			subprocess.Popen(['i3-msg','-q','exec','pavucontrol'])
 		if data['button'] == 3: # toggle mute
@@ -105,10 +105,10 @@ class Volume(Module):
 			self.pulse.volume_change_all_chans(sink, -self.increment)
 
 	def start_pulse_thread(self):
-		self.events_t = threading.Thread(target=self.eventWatcher,daemon=True)
+		self.events_t = threading.Thread(target=self.event_watcher,daemon=True)
 		self.events_t.start()
 
-	def eventWatcher(self):
+	def event_watcher(self):
 		self.pulse2 = pulsectl.Pulse(threading_lock=True)
 		self.pulse2.event_mask_set('all')
 		self.pulse2.event_callback_set(lambda ev: self.wakeup.set())
@@ -127,7 +127,7 @@ class Battery(Module):
 		if len(p.stdout) == 0: return None
 		return super(Battery,cls).__new__(cls)
 
-	def getData(self):
+	def get_data(self):
 		p = subprocess.run(['acpi','-b'],stdout=subprocess.PIPE)
 		txt = p.stdout
 		if len(txt) == 0: return {}
@@ -138,7 +138,7 @@ class Battery(Module):
 			icon2 = self.icon2
 			t2 = self.get_chr_time.search(txt)
 			if t2: icon2 += t2.group(0)
-		d = super().getData()
+		d = super().get_data()
 		d.update({'full_text': "{:s} {:.0f}% {:s}".format(self.icon,pct,icon2), 'urgent': pct < self.critical })
 		return d
 
@@ -158,15 +158,16 @@ class Temperature(Module):
 		if Temperature.find_thermal_zone() is not None:
 			return super(Temperature,cls).__new__(cls)
 		else:
+			print(sys,argv[0]+': Temperature disabled: cant find a valid thermal_zone.', file=sys.stderr)
 			return None
 
 	def __init__(self):
 		self.thermal_zone = Temperature.find_thermal_zone()
 
-	def getData(self):
+	def get_data(self):
 		if os.path.isfile(self.thermal_zone):
 			temp = int(open(self.thermal_zone).read().rstrip())/1000
-			d = super().getData()
+			d = super().get_data()
 			d.update({'full_text': "{:s}{:.1f}°C".format(self.icon,temp), 'urgent': temp > self.critical })
 			return d
 		else:
@@ -180,11 +181,11 @@ class WindowTitle(Module):
 	def __init__(self, wakeup):
 		self.wakeup = wakeup
 		self.title = ''
-		self.events_t = threading.Thread(target=self.eventWatcher,daemon=True)
+		self.events_t = threading.Thread(target=self.event_watcher,daemon=True)
 		self.events_t.start()
 
-	def getData(self):
-		d = super().getData()
+	def get_data(self):
+		d = super().get_data()
 		if self.title is not None and len(self.title) > 0:
 			d.update({'full_text': self.icon+' '+html.escape(self.title) })
 			if len(self.title) > self.max_short_text:
@@ -192,7 +193,7 @@ class WindowTitle(Module):
 		else: return {}
 		return d
 
-	def eventWatcher(self):
+	def event_watcher(self):
 		def on_workspace(i3, event):
 			if event.change in ['focus','rename']:
 				self.title = event.current.name
@@ -217,20 +218,21 @@ class Bitter(object):
 	wakeup = threading.Event()
 
 	def __init__(self):
-		modules = filter(lambda m: m is not None, [
-			WindowTitle(self.wakeup),
-			Volume(self.wakeup),
-			Temperature(),
-			LoadAvg(),
-			#Battery(),
-			Datetime()
-		])
-		self.modules = OrderedDict(map(lambda m: (m.name(), m),modules))
-		signal.signal(signal.SIGTSTP, lambda n,f: self.setStop(True))
-		signal.signal(signal.SIGCONT, lambda n,f: self.setStop(False))
-		self.events_t = threading.Thread(target=self.eventWatcher, daemon=True)
+		self.modules = OrderedDict(map(lambda m: (m.name(), m),
+			filter(lambda m: m is not None, [
+				WindowTitle(self.wakeup),
+				Volume(self.wakeup),
+				Temperature(),
+				LoadAvg(),
+				#Battery(),
+				Datetime()
+			])
+		))
+		signal.signal(signal.SIGTSTP, lambda n,f: self.set_stop(True))
+		signal.signal(signal.SIGCONT, lambda n,f: self.set_stop(False))
+		self.events_t = threading.Thread(target=self.event_watcher, daemon=True)
 
-	def eventWatcher(self):
+	def event_watcher(self):
 		while True:
 			line = sys.stdin.readline().strip(',')
 			try:
@@ -239,19 +241,19 @@ class Bitter(object):
 				continue
 			else:
 				if data['name'] in self.modules:
-					self.modules[data['name']].onClick(data)
+					self.modules[data['name']].on_click(data)
 					self.wakeup.set()
 
 	def write(self, data):
 		sys.stdout.write('%s\n' % data)
 		sys.stdout.flush()
 
-	def setStop(self, st):
+	def set_stop(self, st):
 		self.stop = st
 		self.wakeup.set()
 
 	def update(self):
-		module_data = list(filter(len,map(lambda m: m.getData(), self.modules.values())))
+		module_data = list(filter(len,map(lambda m: m.get_data(), self.modules.values())))
 		self.write('%s,' % json.dumps(module_data))
 
 	def run_loop(self):
