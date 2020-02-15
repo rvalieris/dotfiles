@@ -12,3 +12,4 @@
 [urgency_normal]
   background = "#272822"
   foreground = "#009f6b"
+  icon = ""
