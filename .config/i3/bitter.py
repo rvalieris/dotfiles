@@ -11,8 +11,12 @@ import signal
 import datetime
 import importlib
 import threading
+import functools
 import subprocess
 from collections import OrderedDict
+
+# always flush
+print = functools.partial(print, flush=True)
 
 icon_font = sys.argv[1]
 
@@ -158,7 +162,7 @@ class Temperature(Module):
 		if Temperature.find_thermal_zone() is not None:
 			return super(Temperature,cls).__new__(cls)
 		else:
-			print(sys,argv[0]+': Temperature disabled: cant find a valid thermal_zone.', file=sys.stderr)
+			print(sys.argv[0]+': Temperature disabled: cant find a valid thermal_zone.', file=sys.stderr)
 			return None
 
 	def __init__(self):
@@ -254,17 +258,17 @@ class Bitter(object):
 
 	def update(self):
 		module_data = list(filter(len,map(lambda m: m.get_data(), self.modules.values())))
-		self.write('%s,' % json.dumps(module_data))
+		print(json.dumps(module_data)+',')
 
 	def run_loop(self):
 		self.events_t.start()
-		self.write(json.dumps({
+		print(json.dumps({
 			'version':1,
 			'click_events':True,
 			'stop_signal':signal.SIGTSTP,
 			'cont_signal':signal.SIGCONT
 		}))
-		self.write('[')
+		print('[')
 		while True:
 			self.update()
 			self.wakeup.wait(None if self.stop else self.update_time)
