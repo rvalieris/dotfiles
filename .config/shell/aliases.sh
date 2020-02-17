@@ -24,8 +24,5 @@ alias nix-up="nix-channel --update && nix-env -u"
 alias apt-up='sudo apt update && sudo apt upgrade'
 alias up-up='apt-up && nix-up && rustup update && conda update --all'
 
-# tmux
-alias tmux='tmux -S ~/.ssh/tmux.sock'
-
 # singularity
 alias sgl=singularity

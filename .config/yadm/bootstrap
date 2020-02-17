@@ -3,6 +3,9 @@
 cd "$HOME"
 yadm submodule update --recursive --init
 
+# permissions
+chmod 700 ~/.cache
+
 # sparse checkout
 yadm gitconfig core.sparseCheckout true
 cat << EOF > "$HOME/.config/yadm/repo.git/info/sparse-checkout"
