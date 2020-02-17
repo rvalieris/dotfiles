@@ -1,0 +1,7 @@
+[Unit]
+Description=set a random wallpaper
+
+[Service]
+Type=oneshot
+ExecStart=%h/.config/i3/random_wallpaper.py -o %h/.cache/wallpaper.png
+

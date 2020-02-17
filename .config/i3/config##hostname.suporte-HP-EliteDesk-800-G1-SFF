@@ -16,7 +16,7 @@ set $icon_font NotoColorEmoji
 font pango:$font 14
 
 # wallpaper
-set $wallpaper ~/Desktop/wallpaper.png
+set $wallpaper ~/.cache/wallpaper.png
 exec --no-startup-id exec feh --no-fehbg --no-xinerama --bg-scale $wallpaper
 
 # colors

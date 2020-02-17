@@ -86,7 +86,7 @@ noremap <leader><up> <C-W>+
 noremap <leader><right> <C-w>>
 
 " the swap file
-set directory=$HOME/.cache/vim/swap//
+set directory=~/.cache/vim/swap//
 
 " command line editing
 set wildmenu

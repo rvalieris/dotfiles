@@ -1,0 +1,11 @@
+[Unit]
+Description=set a new wallpaper every day
+
+[Timer]
+OnCalendar=*-*-* 7:00:00
+Persistent=true
+AccuracySec=1hour
+RandomizedDelaySec=1hour
+
+[Install]
+WantedBy=timers.target
