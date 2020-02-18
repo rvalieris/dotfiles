@@ -23,12 +23,15 @@ set list " make tabs visible
 set listchars=tab:»\ 
 
 " syntax, highlighting and spelling
+" https://github.com/vim/vim/issues/3608
+let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
+set termguicolors
 syntax on
 colorscheme molokai
 set background=dark
 set hlsearch
 set cursorline
-set termguicolors
 
 " multiple windows
 set laststatus=2
