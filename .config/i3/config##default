@@ -30,7 +30,7 @@ set $dgray  #272822
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec exec alacritty
+bindsym $mod+Return exec --no-startup-id exec alacritty
 
 # kill focused window
 bindsym $mod+Shift+q kill
@@ -41,8 +41,8 @@ bindsym $mod+d exec exec rofi -show run
 # lock screen
 exec --no-startup-id exec xset dpms 250 260 270
 exec --no-startup-id exec xset s 240 0
-exec --no-startup-id exec xss-lock -- i3lock -f -n -i $wallpaper
-bindsym $mod+l exec exec xset s activate
+exec --no-startup-id exec xss-lock -l -- i3lock -f -n -i $wallpaper
+bindsym $mod+l exec --no-startup-id exec xset s activate
 
 # change focus
 bindsym $mod+Up    focus up
@@ -89,7 +89,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # rename workspace
-bindsym $mod+shift+n exec ~/.config/i3/i3cmds.sh prompt_rename_workspace
+bindsym $mod+shift+n exec --no-startup-id ~/.config/i3/i3cmds.sh prompt_rename_workspace
 
 # switch to workspace
 workspace_auto_back_and_forth yes
@@ -165,7 +165,7 @@ bindsym XF86AudioLowerVolume exec --no-startup-id exec pactl set-sink-volume @DE
 bindsym XF86AudioMute        exec --no-startup-id exec pactl set-sink-mute   @DEFAULT_SINK@ toggle
 
 # starting apps
-exec --no-startup-id xrandr --output $mon1 --primary
+exec --no-startup-id exec xrandr --output $mon1 --primary
 exec --no-startup-id exec dunst
 exec --no-startup-id exec redshift-gtk
 exec --no-startup-id exec syncthing
