@@ -2,10 +2,13 @@
 # end of non-interactive conf
 [ -z "$PS1" ] && return
 
+# interactive stuff
+source ~/.config/shell/interactive.env.sh
+
 # set prompt
 autoload colors && colors
 setopt prompt_subst
-PROMPT='%(?..%{$fg_no_bold[red]%}%?) %{$fg_bold[black]%}%m %{$fg_bold[blue]%}%c%{$fg_no_bold[green]%}%#%{$reset_color%} '
+PROMPT='%(?..%{$fg_bold[red]%}%?) %{$fg_bold[black]%}%m %{$fg_bold[blue]%}%c%{$fg_no_bold[green]%}%#%{$reset_color%} '
 
 # disable auto-correct
 unsetopt correct_all
@@ -47,9 +50,6 @@ stty ixoff -ixon
 stty stop undef
 stty start undef
 setopt no_flow_control
-
-# interactive stuff
-source ~/.config/shell/interactive.env.sh
 
 # prevent shell from exiting with Ctrl-d
 setopt ignoreeof

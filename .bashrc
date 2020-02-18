@@ -9,6 +9,9 @@ export MANPATH="$(perl -e 'print join(":", grep { not $seen{$_}++ } split(/:/, $
 # end of non-interactive conf
 [ -z "$PS1" ] && return
 
+# interactive stuff
+source ~/.config/shell/interactive.env.sh
+
 PS1="\[$(tput setaf 1)\]"
 PS1+='$(ec=$?;[ $ec -ne 0 ] && echo -n "$ec") '
 PS1+="\[$(tput bold;tput setaf 0)\]"'\h '
@@ -19,9 +22,6 @@ PS1+="\[$(tput setaf 2)\]"'\$ '"\[$(tput sgr0)\]"
 stty ixoff -ixon
 stty stop undef
 stty start undef
-
-# interactive stuff
-source ~/.config/shell/interactive.env.sh
 
 export HISTFILE=~/.cache/bash_history
 export HISTCONTROL=ignoredups
