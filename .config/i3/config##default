@@ -166,6 +166,7 @@ bindsym XF86AudioMute        exec --no-startup-id exec pactl set-sink-mute   @DE
 
 # starting apps
 exec --no-startup-id exec xrandr --output $mon1 --primary
+exec --no-startup-id exec ~/.config/i3/auto-floating.py
 exec --no-startup-id exec dunst
 exec --no-startup-id exec redshift-gtk
 exec --no-startup-id exec syncthing
@@ -173,8 +174,4 @@ exec --no-startup-id exec udiskie -A -t
 
 # assigns
 assign [class="KeePassXC"] keepass
-for_window [class="KeePassXC"] floating enable, resize set 600 600
-for_window [class="R_x11"] floating enable
-for_window [class="MuPDF"] floating enable
-for_window [class="Pavucontrol"] floating enable
 
