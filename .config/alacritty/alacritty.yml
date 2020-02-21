@@ -3,14 +3,14 @@
 # Any items in the `env` entry below will be added as
 # environment variables. Some entries may override variables
 # set by alacritty itself.
-#env:
+env:
   # TERM variable
   #
   # This value is used to set the `$TERM` environment variable for
   # each instance of Alacritty. If it is not present, alacritty will
   # check the local terminfo database and use `alacritty` if it is
   # available, otherwise `xterm-256color` is used.
-  #TERM: xterm-256color
+  TERM: xterm-256color
 
 window:
   # Window dimensions (changes require restart)
@@ -182,12 +182,12 @@ font:
 # If `true`, bold text is drawn using the bright color variants.
 #draw_bold_text_with_bright_colors: true
 
-# Colors (molokai)
+# Colors
 colors:
   # Default colors
   primary:
-    background: '0x272822'
-    foreground: '0xe1e1da'
+    background: '0x0e1019'
+    foreground: '0xfffaf4'
 
     # Bright and dim foreground colors
     #
@@ -216,25 +216,25 @@ colors:
 
   # Normal colors
   normal:
-    black:   '0x272822'
-    red:     '0xE52222'
-    green:   '0xA6E32D'
-    yellow:  '0xFC951E'
-    blue:    '0x764CFF'
-    magenta: '0xFA2573'
-    cyan:    '0x67D9F0'
-    white:   '0xe1e1da'
+    black:   '0x232323'
+    red:     '0xff000f'
+    green:   '0x2cc631'
+    yellow:  '0xffb900'
+    blue:    '0x1670ff'
+    magenta: '0xF92672'
+    cyan:    '0x00d8eb'
+    white:   '0xb9c0cb'
 
   # Bright colors
   bright:
-    black:   '0x686868'
-    red:     '0xE51818'
-    green:   '0xB1E332'
-    yellow:  '0xFC5209'
-    blue:    '0x4866FF'
-    magenta: '0xFA4594'
-    cyan:    '0x1CDBF0'
-    white:   '0xFFFFFF'
+    black:   '0x444444'
+    red:     '0xf8282a'
+    green:   '0x8ce10b'
+    yellow:  '0xfdd727'
+    blue:    '0x008df8'
+    magenta: '0xFF5590'
+    cyan:    '0x3ad5ce'
+    white:   '0xffffff'
 
   # Dim colors
   #

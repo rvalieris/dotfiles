@@ -2,9 +2,15 @@
 # lesspipe
 [ -x "$(command -v lesspipe)" ] && eval "$(lesspipe)"
 [ -x "$(command -v lesspipe.sh)" ] && eval "$(lesspipe.sh)"
+export LESSHISTFILE=~/.cache/lesshst
 
-# dircolors
-[ -x "$(command -v dircolors)" ] && eval "$(dircolors -b)"
+# ls colors
+if [ -r ~/.cache/LS_COLORS ]; then
+	source ~/.cache/LS_COLORS
+elif [ -x "$(command -v dircolors)" ]; then
+	source ~/.config/shell/LS_COLORS.gen.sh | dircolors -b - > ~/.cache/LS_COLORS
+	source ~/.cache/LS_COLORS
+fi
 
 # aliases
 source ~/.config/shell/aliases.sh
