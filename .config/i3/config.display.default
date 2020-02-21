@@ -1,0 +1,20 @@
+set $mon1 VGA-1
+
+exec --no-startup-id exec xrandr --output $mon1 --primary
+
+bar {
+	output primary
+	tray_output primary
+	font pango:$font 16
+	mode dock
+	modifier $mod
+	position bottom
+	status_command ~/.config/i3/bitter.py "$icon_font 16"
+	colors {
+		background $dgray
+		separator  $dgray
+		#                  border  background  text
+		focused_workspace  $green4 $green3     $black
+		urgent_workspace   $red    $red        $white
+	}
+}

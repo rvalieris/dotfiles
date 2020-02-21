@@ -6,9 +6,6 @@
 set $mod Mod4
 set $alt Mod1
 
-# monitors
-set $mon1 VGA-1
-
 # fonts
 set $font SourceCodePro
 set $icon_font NotoColorEmoji
@@ -131,22 +128,8 @@ client.urgent             $red    $red        $white  $red
 #client.unfocused         
 #client.focused_inative  
 
-bar {
-	output primary
-	tray_output primary
-	font pango:$font 16
-	mode dock
-	modifier $mod
-	position bottom
-	status_command ~/.config/i3/bitter.py "$icon_font 16"
-	colors {
-		background $dgray
-		separator  $dgray
-		#                  border  background  text
-		focused_workspace  $green4 $green3     $black
-		urgent_workspace   $red    $red        $white
-	}
-}
+# display and bars
+{% include ".config/i3/config.display."+env("YADM_HOSTNAME") ignore missing %}
 
 focus_on_window_activation urgent
 
@@ -164,14 +147,5 @@ bindsym XF86AudioRaiseVolume exec --no-startup-id exec pactl set-sink-volume @DE
 bindsym XF86AudioLowerVolume exec --no-startup-id exec pactl set-sink-volume @DEFAULT_SINK@ -3%
 bindsym XF86AudioMute        exec --no-startup-id exec pactl set-sink-mute   @DEFAULT_SINK@ toggle
 
-# starting apps
-exec --no-startup-id exec xrandr --output $mon1 --primary
-exec --no-startup-id exec ~/.config/i3/auto-floating.py
-exec --no-startup-id exec dunst
-exec --no-startup-id exec redshift-gtk
-exec --no-startup-id exec syncthing
-exec --no-startup-id exec udiskie -A -t
-
-# assigns
-assign [class="KeePassXC"] keepass
-
+# apps
+{% include ".config/i3/config.apps."+env("YADM_HOSTNAME") ignore missing %}

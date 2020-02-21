@@ -1,0 +1,36 @@
+set $mon1 VGA-1
+set $mon2 DP-2
+
+exec --no-startup-id exec xrandr --output $mon1 --auto --output $mon2 --primary --auto --right-of $mon1
+
+bar {
+	output $mon1
+	tray_output none
+	font pango:$font 15
+	mode hide
+	modifier $mod
+	position bottom
+	colors {
+		background $dgray
+		separator  $dgray
+		#                  border  background  text
+		focused_workspace  $green4 $green3     $black
+		urgent_workspace   $red    $red        $white
+	}
+}
+bar {
+	output $mon2
+	tray_output $mon2
+	font pango:$font 15
+	mode hide
+	modifier $mod
+	position bottom
+	status_command exec ~/conda/envs/pulse/bin/python ~/.config/i3/bitter.py "$icon_font 15"
+	colors {
+		background $dgray
+		separator  $dgray
+		#                  border  background  text
+		focused_workspace  $green4 $green3     $black
+		urgent_workspace   $red    $red        $white
+	}
+}

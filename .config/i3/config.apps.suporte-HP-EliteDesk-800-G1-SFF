@@ -1,0 +1,13 @@
+# autostart
+exec --no-startup-id exec ~/conda/envs/pulse/bin/python ~/.config/i3/auto-floating.py
+exec --no-startup-id exec dunst
+exec --no-startup-id exec redshift-gtk
+exec --no-startup-id exec syncthing
+exec --no-startup-id exec udiskie -A -t
+
+# assigns
+assign [class="Firefox"] number 1
+assign [class="KeePassXC"] keepass
+
+# i3-auto-floating
+{% include ".cache/i3-auto-floating.config" ignore missing %}
