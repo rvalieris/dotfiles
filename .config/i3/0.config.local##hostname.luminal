@@ -1,0 +1,37 @@
+set $mon1 DP-2
+
+exec --no-startup-id exec xrandr --output $mon1 --primary
+
+bar {
+	output primary
+	tray_output primary
+	font pango:$font 16
+	mode dock
+	modifier $mod
+	position bottom
+	status_command ~/.config/i3/bitter.py "$icon_font 16"
+	colors {
+		background $dgray
+		separator  $dgray
+		#                  border  background  text
+		focused_workspace  $green4 $green3     $black
+		urgent_workspace   $red    $red        $white
+	}
+}
+
+# autostart
+exec_always --no-startup-id exec ~/.config/i3/auto-floating.py
+exec --no-startup-id exec dunst
+exec --no-startup-id exec redshift-gtk
+exec --no-startup-id exec syncthing
+exec --no-startup-id exec udiskie -A -t
+exec --no-startup-id exec blueman-tray
+
+# assigns
+assign [class="KeePassXC"] keepass
+assign [class="Steam"] steam
+assign [class="qBittorrent"] torrent
+assign [class="JDownloader"] jdown
+
+# i3-auto-floating
+{% include ".cache/i3-auto-floating.config" ignore missing %}

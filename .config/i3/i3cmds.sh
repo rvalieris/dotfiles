@@ -22,6 +22,18 @@ sub_set_terminal_title() {
 	echo -ne "\033]0;${1}\007"
 }
 
+sub_prompt_select_workspace() {
+	if SEL="$(i3-msg -t get_workspaces | jq -r '.[].name' | rofi -dmenu -lines 10 -p "Select workspace")"; then
+		i3-msg "workspace $SEL"
+	fi
+}
+
+sub_prompt_i3_command() {
+	if CMD="$(grep '^bindsym' ~/.config/i3/config | perl -wpe 's/\s+/\|/;s/\s+/\|/' | column -s'|' -t | rofi -dmenu -lines 15 -width 90 -p 'i3-msg' | perl -wpe 's/^bindsym\s*\S+\s*//')"; then
+		i3-msg "$CMD"
+	fi
+}
+
 subcmd=$1
 if [ "${subcmd}" == "" ]; then
 	compgen -A function | sed 's/sub_//'
