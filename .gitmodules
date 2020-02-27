@@ -7,9 +7,6 @@
 [submodule ".config/vim/bundle/molokai"]
 	path = .config/vim/bundle/molokai
 	url = https://github.com/tomasr/molokai
-[submodule ".config/vim/bundle/unite"]
-	path = .config/vim/bundle/unite
-	url = https://github.com/Shougo/unite.vim
 [submodule ".config/vim/bundle/airline"]
 	path = .config/vim/bundle/airline
 	url = https://github.com/vim-airline/vim-airline

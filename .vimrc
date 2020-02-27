@@ -68,8 +68,6 @@ let mapleader = " "
 noremap <leader><space> :noh<cr>
 noremap <leader>n :Vexplore .<cr>
 noremap <leader>m :Sexplore .<cr>
-noremap <leader>b :Unite -no-split -quick-match buffer<cr>
-noremap <leader>y :Unite -no-split history/yank<cr>
 noremap <leader>h 0
 noremap <leader>j <pagedown>
 noremap <leader>k <pageup>
@@ -103,8 +101,6 @@ autocmd FileType * setlocal formatoptions-=c formatoptions-=r formatoptions-=o n
 
 " etc
 let g:netrw_liststyle=3
-let g:unite_source_history_yank_enable=1
-let g:unite_source_history_yank_limit=50
 let g:airline_left_sep=''
 let g:airline_right_sep=''
 let g:airline#extensions#whitespace#enabled = 0
