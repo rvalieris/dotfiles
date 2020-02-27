@@ -10,10 +10,7 @@ autoload colors && colors
 setopt prompt_subst
 PROMPT='%(?..%{$fg_bold[red]%}%?) %{$fg_bold[black]%}%m %{$fg_bold[blue]%}%c%{$fg_no_bold[green]%}%#%{$reset_color%} '
 
-# disable auto-correct
-unsetopt correct_all
-
-## Command history configuration
+# Command history configuration
 HISTFILE=~/.cache/zsh_history
 HISTSIZE=10000
 SAVEHIST=10000
@@ -28,7 +25,13 @@ setopt hist_no_store
 setopt hist_verify
 setopt inc_append_history
 unsetopt share_history
+
+# etc
+unsetopt correct_all
 setopt interactive_comments
+unsetopt bang_hist
+disable r # zshbuiltins
+setopt no_beep
 
 # advanced tab completion
 autoload -U compinit && compinit
@@ -41,9 +44,6 @@ zstyle ':completion:*' tag-order '!urls'
 
 # zsh time format
 TIMEFMT=$'\nreal\t%E\nuser\t%U\nsys\t%S\ncpu\t%P'
-
-# no beeps please
-setopt no_beep
 
 # disable flow control
 stty ixoff -ixon

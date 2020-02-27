@@ -23,7 +23,7 @@ sub_set_terminal_title() {
 }
 
 sub_prompt_select_workspace() {
-	if SEL="$(i3-msg -t get_workspaces | jq -r '.[].name' | rofi -dmenu -lines 10 -p "Select workspace")"; then
+	if SEL="$(i3-msg -t get_workspaces | jq -r '.[].name' | rofi -dmenu -lines 10 -p "workspace")"; then
 		i3-msg "workspace $SEL"
 	fi
 }
