@@ -2,10 +2,9 @@
 Description=set a new wallpaper every day
 
 [Timer]
-OnCalendar=*-*-* 7:00:00
+OnCalendar=*-*-* 7:07:07
 Persistent=true
-AccuracySec=1hour
-RandomizedDelaySec=1hour
+RandomizedDelaySec=7s
 
 [Install]
 WantedBy=timers.target
