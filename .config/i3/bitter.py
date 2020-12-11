@@ -60,6 +60,10 @@ class Datetime(Module):
 		d.update({'full_text': txt })
 		return d
 
+	def on_click(self,data):
+		p = subprocess.run(['cal'],capture_output=True)
+		subprocess.run(['notify-send',p.stdout.decode()])
+
 class Volume(Module):
 	IMPORTS = ['pulsectl']
 	icon = pango('🔊')
@@ -247,10 +251,6 @@ class Bitter(object):
 				if data['name'] in self.modules:
 					self.modules[data['name']].on_click(data)
 					self.wakeup.set()
-
-	def write(self, data):
-		sys.stdout.write('%s\n' % data)
-		sys.stdout.flush()
 
 	def set_stop(self, st):
 		self.stop = st
