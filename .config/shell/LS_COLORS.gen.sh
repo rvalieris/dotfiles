@@ -39,7 +39,7 @@ for i in {mpg,mpeg,webm,ogm,mp4,mp4v,vob,wmv,asf,rmvb,avi,flv,mkv}; do
 done
 
 # audios
-for i in {aac,au,flac,m4a,mid,midi,mp3,ogg,wav}; do
+for i in {aac,au,flac,m4a,mid,midi,mp3,ogg,wav,opus}; do
 	echo ".$i 00;36"
 done
 

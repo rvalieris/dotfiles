@@ -8,10 +8,12 @@ import re
 
 collections = [
 	'1459961', # photo of the day
-	'317099', # unsplash editorial
+	'317099',  # unsplash editorial
 	'3330448', # nature
 	'1065976', # wallpapers
+	'7282015', # wallpapers for macos
 	'3330445', # textures and patterns
+	'266986',  # wild
 ]
 
 def get_screen_dims():
