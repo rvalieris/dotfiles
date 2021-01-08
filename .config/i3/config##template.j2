@@ -72,6 +72,7 @@ bindsym $mod+s split toggle
 
 # move workspace to next output
 bindsym $mod+x move workspace to output right
+bindsym $mod+shift+x exec ~/.config/i3/i3tricks.py swap_workspaces
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -86,7 +87,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # rename workspace
-bindsym $mod+shift+n exec --no-startup-id ~/.config/i3/i3cmds.sh prompt_rename_workspace
+bindsym $mod+shift+n exec --no-startup-id ~/.config/i3/i3tricks.py prompt_rename_workspace
 
 # switch to workspace
 workspace_auto_back_and_forth yes
@@ -117,10 +118,7 @@ bindsym $mod+Shift+0 move container to workspace number 10
 
 # list workspaces
 bindsym $mod+Shift+w exec --no-startup-id exec rofi -show window -lines 10
-bindsym $mod+w exec --no-startup-id exec ~/.config/i3/i3cmds.sh prompt_select_workspace
-
-# list bindsyms
-bindsym $mod+z exec --no-startup-id exec ~/.config/i3/i3cmds.sh prompt_i3_command
+bindsym $mod+w exec --no-startup-id exec ~/.config/i3/i3tricks.py prompt_select_workspace
 
 # reload config / restart i3
 bindsym $mod+r reload
@@ -143,6 +141,7 @@ new_window pixel 1
 hide_edge_borders smart
 bindsym $mod+b border toggle
 
+mouse_warping none
 focus_on_window_activation urgent
 
 # colors                  border  background  text    indicator
