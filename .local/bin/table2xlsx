@@ -1,74 +1,55 @@
-#!/usr/bin/perl
-use strict;
-use warnings FATAL => 'all';
-use Excel::Writer::XLSX;
-use File::Basename;
-use Getopt::Long;
+#!/usr/bin/env python3
+import argparse
+import xlsxwriter
+import os
+import re
+import math
 
-my $header = undef;
-my $header_line = undef;
-my $separator = "\t";
-my $no_text = undef;
-GetOptions(
-	"header=s" => \$header,
-	"separator=s" => \$separator,
-	"no-text" => \$no_text,
-) or die $!;
+def get_number_or_not(s):
+	try:
+		val = int(s)
+		return val
+	except ValueError:
+		pass
+	try:
+		val = float(s)
+		if math.isnan(val) or math.isinf(val):
+			return s
+		else:
+			return val
+	except ValueError:
+		return s
 
-if(defined $header) {
-	open my $fh, '<', $header or die $!;
-	chomp(my $line = <$fh>);
-	$header_line = [ split /\t/, $line ];
-	close $fh;
-}
+parser = argparse.ArgumentParser(description='table2xlsx')
+parser.add_argument('-t','--header', help='file with a header line')
+parser.add_argument('-s','--separator', help='column separator', default='\t')
+parser.add_argument('-o','--output', help='output xlsx', required=True)
+parser.add_argument('inputs', metavar='file', help='input tables', nargs='+')
+args = parser.parse_args()
 
-if(scalar @ARGV < 2) {
-	die "Usage: table2xlsx [-h header] fileout.xlsx filein.tsv [filein2.tsv ...]\n";
-}
+header = None
+if args.header:
+	header = open(args.header).read().rstrip().split(args.separator)
 
-my ($output, @input_files) = @ARGV;
+workbook = xlsxwriter.Workbook(args.output)
 
-if(-e $output) {
-	die "Error: output [$output] already exists.\n";
-}
+for f in args.inputs:
 
-my $workbook = Excel::Writer::XLSX->new( $output );
-$workbook->set_optimization();
+	ws_name = os.path.basename(f)
+	ws_name = re.sub(r'[\[\]:*?\/\\]+', '_', ws_name)
+	ws_name = re.sub(r'\.[^\.]+$', '', ws_name) # remove extension if any
+	ws_name = ws_name[:31] # truncate to 31 char max
+	worksheet = workbook.add_worksheet(ws_name)
 
-for my $arg(@input_files) {
-	open my $fh, '<', $arg or die "Error on open [$arg]: $!\n";
-
-	my $ws_name = basename($arg);
-	$ws_name =~ s![\[\]:*?\/\\]+!_!g; # remove []:*?/\ chars
-	$ws_name =~ s/\.[^\.]+$//; # remove extension if any
-	$ws_name = substr($ws_name, 0, 31); # truncate to 31 chars
-
-	my $worksheet = $workbook->add_worksheet($ws_name);
-
-	my $row = 0;
-	if(defined $header_line) {
-		for my $i(0..$#$header_line) {
-			if($no_text) {
-				$worksheet->write($row, $i, $header_line->[$i]);
-			}
-			else {
-				$worksheet->write_string($row, $i, $header_line->[$i]);
-			}
-		}
-		$row = 1;
-	}
-
-	for(; $_ = <$fh>; $row++) {
-		chomp;
-		my @f = split $separator;
-		for my $i(0..$#f) {
-			if($no_text) {
-				$worksheet->write($row, $i, $f[$i]);
-			}
-			else {
-				$worksheet->write_string($row, $i, $f[$i]);
-			}
-		}
-	}
-}
-
+	row = 0
+	if header:
+		for col,d in enumerate(header):
+			worksheet.write_string(row, col, d)
+		row = 1
+	for line in open(f):
+		cols = line.rstrip().split(args.separator)
+		for col,d in enumerate(cols):
+			d = get_number_or_not(d)
+			worksheet.write(row, col, d)
+		row += 1
+workbook.close()
