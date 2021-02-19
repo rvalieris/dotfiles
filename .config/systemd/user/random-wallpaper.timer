@@ -1,5 +1,7 @@
 [Unit]
 Description=set a new wallpaper every day
+Requires=network-online.target
+After=network-online.target
 
 [Timer]
 OnCalendar=*-*-* 7:07:07

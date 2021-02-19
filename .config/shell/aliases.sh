@@ -10,6 +10,7 @@ alias rm='rm -i'
 alias cp='cp -i'
 alias mv='mv -i'
 alias grep='grep --color=auto'
+alias ip='ip -color=auto'
 
 # haskell stuff
 alias ghm='ghc --make -O3 -outputdir=/tmp/ -fforce-recomp'

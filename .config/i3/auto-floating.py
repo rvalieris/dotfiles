@@ -77,7 +77,7 @@ def i3_refresh():
 def on_window(i3, event):
 	if event.change == 'new':
 		k = get_key(event.container)
-		if event.container.floating == 'user_on' and k not in cache:
+		if (event.container.floating == 'user_on' or event.container.floating == 'auto_on') and k not in cache:
 			# ignore floating by default
 			ignore_window[event.container.window] = True
 			write_config()

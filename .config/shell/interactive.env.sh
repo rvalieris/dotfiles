@@ -19,4 +19,6 @@ source ~/.config/shell/aliases.sh
 source ~/.config/shell/less_colors.sh
 
 # conda base
-CONDA_CHANGEPS1=false conda activate base
+if [ -d ~/conda ]; then
+	CONDA_CHANGEPS1=false conda activate base
+fi

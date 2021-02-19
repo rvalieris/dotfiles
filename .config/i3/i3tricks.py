@@ -2,6 +2,7 @@
 import i3ipc
 import sys
 import subprocess
+import os
 i3 = i3ipc.Connection()
 
 def list_workspaces():
@@ -23,12 +24,22 @@ def prompt_select_workspace():
 	out = out.decode().rstrip()
 	i3.command('workspace '+out)
 
+def prompt_swap_window():
+	p = subprocess.Popen(['rofi','-show','window','-show-icons','-lines','10','-run-command','echo {cmd}'], stdout=subprocess.PIPE)
+	out, err = p.communicate()
+	out = out.decode().rstrip()
+	if len(out) > 0:
+		i3.command('workspace '+out)
+
 def swap_workspaces():
 	ws = i3.get_workspaces()
 	ws = list(filter(lambda i: i.visible, ws))
 	for i,w in enumerate(ws):
 		i3.command('workspace --no-auto-back-and-forth '+w.name)
 		i3.command('move workspace to output right')
+
+def snip_selection():
+	os.system('scrot -s -o /dev/stdout | feh -x -')
 
 if len(sys.argv) > 1:
 	locals()[sys.argv[1]]()

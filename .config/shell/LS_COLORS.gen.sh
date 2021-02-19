@@ -9,7 +9,7 @@ done
 
 echo 'DIR 01;34' # directory
 echo 'LINK 01;36' # symbolic link
-echo 'MULTIHARDLINK 00' # regular file with more than one link
+echo 'MULTIHARDLINK 01' # regular file with more than one link
 echo 'FIFO 40;33' # pipe
 echo 'SOCK 01;35' # socket
 echo 'BLK 40;33;01' # block device driver
