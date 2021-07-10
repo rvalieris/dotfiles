@@ -40,7 +40,7 @@ exec --no-startup-id exec blueman-tray
 assign [class="KeePassXC"] keepass
 assign [class="Steam"] steam
 assign [class="qBittorrent"] torrent
-assign [class="JDownloader"] jdown
+assign [class="(?i)JDownloader"] jdown
 
 # i3-auto-floating
 {% include ".cache/i3-auto-floating.config" ignore missing %}

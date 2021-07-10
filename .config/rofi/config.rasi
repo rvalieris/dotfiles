@@ -1,8 +1,39 @@
 configuration {
-	lines: 3;
+	lines: 10;
 	font: "Source Code Pro 16";
-	color-normal: "#222222, #ffffff, #222222, #009f6b, #222222";
-	color-urgent: "#fdf6e3, #dc322f, #eee8d5, #dc322f, #fdf6e3";
-	color-active: "#fdf6e3, #268bd2, #eee8d5, #268bd2, #fdf6e3";
-	color-window: "#222222, #009f6b, #222222";
+	display-drun: "";
+	show-icons: true;
+	display-combi: "::";
+	display-window: "::";
+	drun-match-fields: "name,generic,exec,categories";
+}
+
+* {
+	fg: #009f6b;
+	background-color: #222;
+	text-color: #fff;
+}
+
+element, entry, prompt {
+	padding: 0.2em;
+}
+
+element selected {
+	background-color: @fg;
+	text-color: #000;
+}
+
+element.active {
+	background-color: #444;
+}
+
+element-icon {
+	size: 1em;
+}
+
+window {
+	border: 0.12em;
+	padding: 0.5em;
+	border-color: @fg;
+	width: 50%;
 }

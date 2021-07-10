@@ -85,6 +85,10 @@ class Volume(Module):
 	def get_data(self):
 		d = super().get_data()
 		sink = self.get_sink()
+		if sink is None:
+			d.update({'full_text': 'no sink'})
+			return d
+
 		pct = round(100 * self.pulse.volume_get_all_chans(sink))
 		if self.dunstify:
 			if self.pct != pct:
@@ -99,10 +103,15 @@ class Volume(Module):
 		return d
 
 	def get_sink(self):
-		return self.pulse.get_sink_by_name('@DEFAULT_SINK@')
+		try:
+			return self.pulse.get_sink_by_name('@DEFAULT_SINK@')
+		except pulsectl.pulsectl.PulseIndexError:
+			return None
 
 	def on_click(self,data):
 		sink = self.get_sink()
+		if sink is None: return
+
 		if data['button'] == 2: # open pavucontrol
 			subprocess.Popen(['i3-msg','-q','exec','pavucontrol'])
 		if data['button'] == 3: # toggle mute
