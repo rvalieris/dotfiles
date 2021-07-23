@@ -50,6 +50,9 @@ for f in args.inputs:
 		cols = line.rstrip().split(args.separator)
 		for col,d in enumerate(cols):
 			d = get_number_or_not(d)
-			worksheet.write(row, col, d)
+			if isinstance(d, str):
+				worksheet.write_string(row, col, d)
+			else:
+				worksheet.write(row, col, d)
 		row += 1
 workbook.close()
