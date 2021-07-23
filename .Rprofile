@@ -2,8 +2,8 @@
 options(
 	"repos" = c(CRAN = "https://cran.rstudio.com/"),
 	"width" = tryCatch({
-			as.numeric(system("tput cols", intern=T, ignore.stderr=T))
-		}, error=function(cond) {return(120)}),
+			as.numeric(system2("tput",c("-Txterm","cols"), stdout=T, stderr=F))
+		}, error=function(e)return(120), warning=function(e)return(120)),
 	"browser" = "firefox",
 	"menu.graphics" = FALSE,
 	"digits" = 15
