@@ -53,3 +53,5 @@ for i in {bam,vcf,sam,fastq,fasta,fa,gff,gtf,bed}; do
 	echo ".$i 00;32"
 done
 
+echo '.ipynb 01;33' # jupyter notebooks
+

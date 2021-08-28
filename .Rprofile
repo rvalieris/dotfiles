@@ -25,9 +25,9 @@ if(!interactive()) {
 	}
 }
 
-#sh = function(cmdline,capture=F) {
-#	sym = substitute(cmdline)
-#	if(!is.symbol(sym)) { stop("use backticks") }
-#	.Internal(system(deparse(sym),capture,0))
-#}
+sh = function(cmdline,capture=T) {
+	sym = substitute(cmdline)
+	if(is.symbol(sym)) { cmdline = deparse(sym) }
+	.Internal(system(cmdline,capture,0))
+}
 
