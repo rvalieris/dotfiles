@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Screenshot Selection
+Exec=scrot -s -f
+Type=Application
+Icon=edit-cut
+Terminal=false

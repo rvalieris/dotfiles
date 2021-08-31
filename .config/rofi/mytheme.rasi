@@ -1,0 +1,58 @@
+
+listview {
+	lines: 10;
+	scrollbar: false;
+}
+
+* {
+	fg: #009f6b;
+	bg: #222;
+	background: @bg;
+	background-color: @bg;
+	text-color: white;
+}
+
+element, entry, prompt {
+	padding: 0.2em;
+	text-color: white;
+}
+
+element selected {
+	background-color: @fg;
+	text-color: black;
+}
+
+button selected {
+	background-color: @fg;
+	text-color: white;
+}
+
+element.active {
+	background-color: #444;
+}
+
+element-icon {
+	size: 1em;
+	background-color: inherit;
+}
+
+window {
+	border: 0.12em;
+	padding: 0.5em;
+	border-color: @fg;
+	width: 50%;
+}
+
+textbox-prompt-colon {
+	str: "";
+}
+
+entry {
+	placeholder: "";
+}
+
+element-text {
+    background-color: inherit;
+    text-color:       inherit;
+}
+

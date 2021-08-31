@@ -1,39 +1,10 @@
 configuration {
-	lines: 10;
 	font: "Source Code Pro 16";
 	display-drun: "";
 	show-icons: true;
 	display-combi: "::";
 	display-window: "::";
 	drun-match-fields: "name,generic,exec,categories";
+	theme: "mytheme";
 }
 
-* {
-	fg: #009f6b;
-	background-color: #222;
-	text-color: #fff;
-}
-
-element, entry, prompt {
-	padding: 0.2em;
-}
-
-element selected {
-	background-color: @fg;
-	text-color: #000;
-}
-
-element.active {
-	background-color: #444;
-}
-
-element-icon {
-	size: 1em;
-}
-
-window {
-	border: 0.12em;
-	padding: 0.5em;
-	border-color: @fg;
-	width: 50%;
-}
