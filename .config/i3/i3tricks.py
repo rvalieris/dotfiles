@@ -10,7 +10,7 @@ def list_workspaces():
 
 def prompt_rename_workspace():
 	cur, = list(filter(lambda i: i.focused, i3.get_workspaces()))
-	new = subprocess.check_output(['rofi','-dmenu','-lines','0','-hide-scrollbar','-p',
+	new = subprocess.check_output(['rofi','-dmenu','-l','0','-hide-scrollbar','-p',
 		"Rename workspace (current "+cur.name+")"])
 	new = new.decode().rstrip()
 	if len(new) > 0:
@@ -18,7 +18,7 @@ def prompt_rename_workspace():
 
 def prompt_move_container():
 	cur, = list(filter(lambda i: i.focused, i3.get_workspaces()))
-	new = subprocess.check_output(['rofi','-dmenu','-lines','0','-hide-scrollbar','-p',
+	new = subprocess.check_output(['rofi','-dmenu','-l','0','-hide-scrollbar','-p',
 		"Move container to (current "+cur.name+")"])
 	new = new.decode().rstrip()
 	if len(new) > 0:
