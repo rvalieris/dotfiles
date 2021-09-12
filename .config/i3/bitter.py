@@ -6,6 +6,7 @@ import sys
 import json
 import glob
 import html
+import yaml
 import shutil
 import signal
 import datetime
@@ -17,11 +18,6 @@ from collections import OrderedDict
 
 # always flush
 print = functools.partial(print, flush=True)
-
-icon_font = sys.argv[1]
-
-def pango(txt):
-	return '<span font="%s">%s</span>'%(icon_font,txt)
 
 class Module(object):
 	IMPORTS = []
@@ -38,24 +34,30 @@ class Module(object):
 			print(e, file=sys.stderr)
 			return None
 
+	def __init__(self, bitter, config):
+		self.bitter = bitter
+		self.config = config
+		for k, v in config.items():
+			if k.startswith('icon'):
+				self.config[k] = bitter.pango(v)
+
 	def name(self): return type(self).__name__
 	def get_data(self): return {'full_text': '<empty>', 'name':self.name(), 'markup': 'pango' }
 	def on_click(self,data): pass
 
 class LoadAvg(Module):
-	icon = pango('🔥')
 	n_cores = os.cpu_count()
+
 	def get_data(self):
 		t0, _, _ = os.getloadavg()
 		d = super().get_data()
-		d.update({'full_text': "{:s} {:.2f}".format(self.icon,t0), 'urgent': t0 > self.n_cores })
+		d.update({'full_text': "{:s} {:.2f}".format(self.config['icon'],t0), 'urgent': t0 > self.n_cores })
 		return d
 
 class Datetime(Module):
-	icon1 = pango('📅')
-	icon2 = pango('⌚')
+
 	def get_data(self):
-		txt = datetime.datetime.now().strftime(self.icon1+' %b %Y, %A %d '+self.icon2+' %H:%M:%S')
+		txt = datetime.datetime.now().strftime(self.config['format'].format(**self.config))
 		d = super().get_data()
 		d.update({'full_text': txt })
 		return d
@@ -66,15 +68,12 @@ class Datetime(Module):
 
 class Volume(Module):
 	IMPORTS = ['pulsectl']
-	icon = pango('🔊')
-	icon2 = pango('🔈')
-	increment = 1/100
 	pct = 0
 	dunstify = None
 	sink_name = ''
 
-	def __init__(self, wakeup):
-		self.wakeup = wakeup
+	def __init__(self, *args):
+		super().__init__(*args)
 		self.pulse = pulsectl.Pulse(threading_lock=True)
 		self.start_pulse_thread()
 		self.dunstify = shutil.which('dunstify')
@@ -97,8 +96,8 @@ class Volume(Module):
 			if self.sink_name != sink.name:
 				self.notify('Sink {}'.format(sink.name))
 				self.sink_name = sink.name
-		if sink.mute: t = self.icon2+' mute'
-		else: t = '{:s} {:d}%'.format(self.icon,pct)
+		if sink.mute: t = self.config['icon2']+' mute'
+		else: t = '{:s} {:d}%'.format(self.config['icon'],pct)
 		d.update({'full_text': t })
 		return d
 
@@ -117,9 +116,9 @@ class Volume(Module):
 		if data['button'] == 3: # toggle mute
 			self.pulse.mute(sink, not sink.mute)
 		if data['button'] == 4: # increase vol
-			self.pulse.volume_change_all_chans(sink, self.increment)
+			self.pulse.volume_change_all_chans(sink, self.config['increment'])
 		if data['button'] == 5: # decrease vol
-			self.pulse.volume_change_all_chans(sink, -self.increment)
+			self.pulse.volume_change_all_chans(sink, -self.config['increment'])
 
 	def start_pulse_thread(self):
 		self.events_t = threading.Thread(target=self.event_watcher,daemon=True)
@@ -128,21 +127,18 @@ class Volume(Module):
 	def event_watcher(self):
 		self.pulse2 = pulsectl.Pulse(threading_lock=True)
 		self.pulse2.event_mask_set('all')
-		self.pulse2.event_callback_set(lambda ev: self.wakeup.set())
+		self.pulse2.event_callback_set(lambda ev: self.bitter.wakeup.set())
 		self.pulse2.event_listen()
 
 class Battery(Module):
-	icon = pango('⚡')
-	icon2 = pango('🔌')
 	get_pct = re.compile(r'(\d+)%')
 	get_chr_time = re.compile(r'(\d+:\d+:\d+)')
-	critical = 20
 
 	def __new__(cls, *args):
 		if shutil.which('acpi') is None: return None
 		p = subprocess.run(['acpi','-b'],stdout=subprocess.PIPE)
 		if len(p.stdout) == 0: return None
-		return super(Battery,cls).__new__(cls)
+		return super().__new__(cls, *args)
 
 	def get_data(self):
 		p = subprocess.run(['acpi','-b'],stdout=subprocess.PIPE)
@@ -152,51 +148,29 @@ class Battery(Module):
 		pct = float(self.get_pct.search(txt).group(1))
 		icon2 = ''
 		if txt.find('Charging') >= 0:
-			icon2 = self.icon2
+			icon2 = self.config['icon2']
 			t2 = self.get_chr_time.search(txt)
 			if t2: icon2 += t2.group(0)
 		d = super().get_data()
-		d.update({'full_text': "{:s} {:.0f}% {:s}".format(self.icon,pct,icon2), 'urgent': pct < self.critical })
+		d.update({'full_text': "{:s} {:.0f}% {:s}".format(self.config['icon'],pct,icon2), 'urgent': pct < self.config['critical'] })
 		return d
 
 class Temperature(Module):
-	icon = pango('🌡')
-	critical = 80
-
-	@staticmethod
-	def find_thermal_zone():
-		zones = glob.glob("/sys/devices/virtual/thermal/thermal_zone*")
-		for z in zones:
-			if re.search("pkg_temp",open(z+"/type").read()):
-				return z+"/temp"
-		return None
-
-	def __new__(cls, *args):
-		if Temperature.find_thermal_zone() is not None:
-			return super(Temperature,cls).__new__(cls)
-		else:
-			print(sys.argv[0]+': Temperature disabled: cant find a valid thermal_zone.', file=sys.stderr)
-			return None
-
-	def __init__(self):
-		self.thermal_zone = Temperature.find_thermal_zone()
 
 	def get_data(self):
-		if os.path.isfile(self.thermal_zone):
-			temp = int(open(self.thermal_zone).read().rstrip())/1000
+		if os.path.isfile(self.config['thermal_zone']):
+			temp = int(open(self.config['thermal_zone']).read().rstrip())/1000
 			d = super().get_data()
-			d.update({'full_text': "{:s}{:.1f}°C".format(self.icon,temp), 'urgent': temp > self.critical })
+			d.update({'full_text': "{:s}{:.1f}°C".format(self.config['icon'],temp), 'urgent': temp > self.config['critical'] })
 			return d
 		else:
 			return {}
 
 class WindowTitle(Module):
 	IMPORTS = ['i3ipc']
-	icon = pango('💠')
-	max_short_text = 45
 
-	def __init__(self, wakeup):
-		self.wakeup = wakeup
+	def __init__(self, *args):
+		super().__init__(*args)
 		self.title = ''
 		self.events_t = threading.Thread(target=self.event_watcher,daemon=True)
 		self.events_t.start()
@@ -204,9 +178,9 @@ class WindowTitle(Module):
 	def get_data(self):
 		d = super().get_data()
 		if self.title is not None and len(self.title) > 0:
-			d.update({'full_text': self.icon+' '+html.escape(self.title) })
-			if len(self.title) > self.max_short_text:
-				d.update({'short_text': self.icon+' '+html.escape(self.title[:self.max_short_text])})
+			d.update({'full_text': self.config['icon']+' '+html.escape(self.title) })
+			if len(self.title) > self.config['max_short_text']:
+				d.update({'short_text': self.config['icon']+' '+html.escape(self.title[:self.config['max_short_text']])})
 		else: return {}
 		return d
 
@@ -215,14 +189,14 @@ class WindowTitle(Module):
 			if event.change in ['focus','rename']:
 				self.title = event.current.name
 			else: return
-			self.wakeup.set()
+			self.bitter.wakeup.set()
 		def on_window(i3, event):
 			if event.change in ['focus','title']:
 				self.title = event.container.window_title
 			elif event.change == 'close':
 				self.title = i3.get_tree().find_focused().name
 			else: return
-			self.wakeup.set()
+			self.bitter.wakeup.set()
 		i3 = i3ipc.Connection(auto_reconnect=True)
 		self.title = i3.get_tree().find_focused().name
 		i3.on(i3ipc.Event.WORKSPACE, on_workspace)
@@ -230,20 +204,16 @@ class WindowTitle(Module):
 		i3.main()
 
 class Bitter(object):
-	update_time = 5 # seconds
 	stop = False
 	wakeup = threading.Event()
 
 	def __init__(self):
+		self.config = yaml.safe_load(open(os.path.expanduser('~/.config/i3/bitter.yaml')))
 		self.modules = OrderedDict(map(lambda m: (m.name(), m),
-			filter(lambda m: m is not None, [
-				WindowTitle(self.wakeup),
-				Volume(self.wakeup),
-				Temperature(),
-				LoadAvg(),
-				#Battery(),
-				Datetime()
-			])
+			filter(lambda m: m is not None,
+				map(lambda s: globals()[s](self, self.config['module_args'][s]),
+				self.config['modules'])
+			)
 		))
 		signal.signal(signal.SIGTSTP, lambda n,f: self.set_stop(True))
 		signal.signal(signal.SIGCONT, lambda n,f: self.set_stop(False))
@@ -260,6 +230,9 @@ class Bitter(object):
 				if data['name'] in self.modules:
 					self.modules[data['name']].on_click(data)
 					self.wakeup.set()
+
+	def pango(self, txt):
+		return '<span font="%s">%s</span>'%(self.config['icon_font'],txt)
 
 	def set_stop(self, st):
 		self.stop = st
@@ -280,7 +253,7 @@ class Bitter(object):
 		print('[')
 		while True:
 			self.update()
-			self.wakeup.wait(None if self.stop else self.update_time)
+			self.wakeup.wait(None if self.stop else self.config['update_time'])
 			self.wakeup.clear()
 
 if __name__ == '__main__':

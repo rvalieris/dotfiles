@@ -1,0 +1,32 @@
+icon_font: 'NotoColorEmoji 16'
+update_time: 5
+modules:
+  - WindowTitle
+  - Volume
+  - Temperature
+  - LoadAvg
+  - Battery
+  - Datetime
+module_args:
+  LoadAvg:
+    icon: '🔥'
+  Datetime:
+    icon1: '📅'
+    icon2: '⌚'
+    format: '{icon1} %b %Y, %A %d {icon2} %H:%M:%S'
+  Volume:
+    icon: '🔊'
+    icon2: '🔈'
+    increment: 0.01
+    sink: '@DEFAULT_SINK@'
+  Battery:
+    icon: '⚡'
+    icon2: '🔌'
+    critical: 20
+  Temperature:
+    icon: '🌡'
+    thermal_zone: '/sys/devices/platform/thinkpad_hwmon/hwmon/hwmon4/temp1_input'
+    critical: 80
+  WindowTitle:
+    icon: '💠'
+    max_short_text: 45

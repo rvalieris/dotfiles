@@ -11,7 +11,7 @@ bar {
 	mode dock
 	modifier $mod
 	position bottom
-	status_command ~/.config/i3/bitter.py "$icon_font 16"
+	status_command ~/.config/i3/bitter.py
 	colors {
 		background $dgray
 		separator  $dgray
