@@ -21,9 +21,6 @@ alias ghp='ghc -prof -fprof-auto -rtsopts -outputdir=/tmp/'
 alias mupdf='mupdf -A2'
 alias cl="xsv table -d'\t'"
 alias R='R --quiet --no-save'
-alias nix-up="nix-channel --update && nix-env -u"
-alias apt-up='sudo apt update && sudo apt upgrade'
-alias up-up='apt-up && nix-up && rustup update && conda update --all'
 
 # singularity
 alias sgl=singularity
