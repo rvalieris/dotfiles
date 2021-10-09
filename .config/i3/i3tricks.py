@@ -33,18 +33,17 @@ def prompt_select_workspace():
 	i3.command('workspace '+out)
 
 def prompt_swap_window():
-	p = subprocess.Popen(['rofi','-show','window','-run-command','echo {cmd}'], stdout=subprocess.PIPE)
-	out, err = p.communicate()
+	out = subprocess.check_output(['rofi','-show','window','-run-command','echo {cmd}'])
 	out = out.decode().rstrip()
 	if len(out) > 0:
 		i3.command('workspace '+out)
 
 def swap_workspaces():
-	ws = i3.get_workspaces()
-	ws = list(filter(lambda i: i.visible, ws))
-	for i,w in enumerate(ws):
-		i3.command('workspace --no-auto-back-and-forth '+w.name)
-		i3.command('move workspace to output right')
+	ws_names = list(map(lambda i: i.name, filter(lambda i: i.visible, i3.get_workspaces())))
+	for w in i3.get_tree().workspaces():
+		if w.name in ws_names:
+			w.command('move workspace to output right')
+			w.command('focus')
 
 def snip_selection():
 	os.system('scrot -s -o /dev/stdout | feh -x -')
