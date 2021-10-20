@@ -154,5 +154,5 @@ client.urgent             $red    $red        $white  $red
 #client.focused_inative  
 
 # local stuff
-{% include ".config/i3/0.config.local" %}
+include 0.config.local
 

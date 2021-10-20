@@ -47,4 +47,4 @@ assign [class="Firefox"] number 1
 assign [class="KeePassXC"] keepass
 
 # i3-auto-floating
-{% include ".cache/i3-auto-floating.config" ignore missing %}
+include ~/.cache/i3-auto-floating.config

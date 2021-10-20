@@ -1,7 +1,11 @@
 [Unit]
 Description=set a random wallpaper
+StartLimitIntervalSec=10
 
 [Service]
 Type=oneshot
+Restart=on-failure
+RestartSec=3
+StartLimitBurst=3
 ExecStart=%h/.config/i3/random_wallpaper.py -o %h/.cache/wallpaper.png
 

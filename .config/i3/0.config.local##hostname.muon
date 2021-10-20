@@ -1,8 +1,7 @@
 set $mon1 eDP
 set $mon2 HDMI-A-0
 
-#exec --no-startup-id exec xrandr --output $mon1 --primary
-exec --no-startup-id exec xrandr --output $mon2 --auto --output $mon1 --primary --right-of $mon2
+exec --no-startup-id exec autorandr --change
 
 bar {
 	output primary
@@ -43,4 +42,4 @@ assign [class="qBittorrent"] torrent
 assign [class="(?i)JDownloader"] jdown
 
 # i3-auto-floating
-{% include ".cache/i3-auto-floating.config" ignore missing %}
+include ~/.cache/i3-auto-floating.config
