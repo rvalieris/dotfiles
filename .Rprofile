@@ -6,7 +6,8 @@ options(
 		}, error=function(e)return(120), warning=function(e)return(120)),
 	"browser" = "firefox",
 	"menu.graphics" = FALSE,
-	"digits" = 15
+	"digits" = 15,
+	"repr.matrix.max.rows" = 20
 )
 
 # autocomplete library/require

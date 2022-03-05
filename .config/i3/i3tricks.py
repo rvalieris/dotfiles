@@ -10,8 +10,8 @@ def list_workspaces():
 
 def prompt_rename_workspace():
 	cur, = list(filter(lambda i: i.focused, i3.get_workspaces()))
-	new = subprocess.check_output(['rofi','-dmenu','-l','0','-hide-scrollbar','-p',
-		"Rename workspace (current "+cur.name+")"])
+	new = subprocess.run(['rofi','-dmenu','-l','0','-hide-scrollbar','-p',
+		"Rename workspace (current "+cur.name+")"], stdout=subprocess.PIPE).stdout
 	new = new.decode().rstrip()
 	if len(new) > 0:
 		i3.command('rename workspace to '+new)

@@ -64,7 +64,7 @@ class Datetime(Module):
 
 	def on_click(self,data):
 		p = subprocess.run(['cal'],capture_output=True)
-		subprocess.run(['notify-send',p.stdout.decode()])
+		subprocess.run(['notify-send','-i','none',p.stdout.decode()])
 
 class Volume(Module):
 	IMPORTS = ['pulsectl']
@@ -78,8 +78,8 @@ class Volume(Module):
 		self.start_pulse_thread()
 		self.dunstify = shutil.which('dunstify')
 
-	def notify(self, msg):
-		subprocess.run([self.dunstify,'-r',str(os.getpid()),msg])
+	def notify(self, msg, icon='audio-volume-high'):
+		subprocess.run([self.dunstify,'-i',icon,'-r',str(os.getpid()),msg])
 
 	def get_data(self):
 		d = super().get_data()
