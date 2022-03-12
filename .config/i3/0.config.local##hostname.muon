@@ -6,7 +6,7 @@ exec --no-startup-id exec autorandr --change
 bar {
 	output primary
 	tray_output primary
-	font pango:$font 15
+	font pango:$font 18
 	mode dock
 	modifier $mod
 	position bottom
@@ -22,7 +22,7 @@ bar {
 bar {
 	output $mon2
 	mode hide
-	font pango:$font 15
+	font pango:$font 18
 	tray_output none
 	position bottom
 }

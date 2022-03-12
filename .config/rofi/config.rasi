@@ -1,10 +1,10 @@
 configuration {
-	font: "Source Code Pro 16";
+	font: "Iosevka Extended 17";
 	display-drun: "";
 	show-icons: true;
 	display-combi: "::";
 	display-window: "::";
 	drun-match-fields: "name,generic,exec,categories";
-	theme: "mytheme";
 }
 
+@theme "mytheme"

@@ -7,9 +7,9 @@ set $mod Mod4
 set $alt Mod1
 
 # fonts
-set $font SourceCodePro
+set $font IosevkaMedium
 set $icon_font NotoColorEmoji
-font pango:$font 14
+font pango:$font 16
 
 # wallpaper
 set $wallpaper ~/.cache/wallpaper.png
