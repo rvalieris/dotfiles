@@ -24,7 +24,7 @@ module_args:
     critical: 20
   Temperature:
     icon: '🌡'
-    thermal_zone: '/sys/devices/platform/thinkpad_hwmon/hwmon/hwmon4/temp1_input'
+    thermal_zone: '/sys/class/thermal/thermal_zone2/temp'
     critical: 80
   WindowTitle:
     icon: '💠'
