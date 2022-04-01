@@ -42,6 +42,12 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*' 'l:|=* r:|=*'
 zstyle ':completion:*' tag-order '!urls'
 
+# default zsh git completion is too slow
+# https://stackoverflow.com/a/9810485
+__git_files () {
+    _wanted files expl 'local files' _files
+}
+
 # zsh time format
 TIMEFMT=$'\nreal\t%E\nuser\t%U\nsys\t%S\ncpu\t%P'
 

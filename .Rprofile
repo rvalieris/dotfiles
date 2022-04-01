@@ -7,6 +7,7 @@ options(
 	"browser" = "firefox",
 	"menu.graphics" = FALSE,
 	"digits" = 15,
+	"useFancyQuotes" = FALSE,
 	"repr.matrix.max.rows" = 20
 )
 
