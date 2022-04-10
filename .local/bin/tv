@@ -1,0 +1,93 @@
+#!/usr/bin/env python
+import pexpect
+import sys
+import struct
+import fcntl
+import termios
+import signal
+import argparse
+import subprocess
+import tempfile
+import shutil
+import pty
+
+def terminal_size():
+	h, w, _, _ = struct.unpack('HHHH', fcntl.ioctl(pty.STDIN_FILENO, termios.TIOCGWINSZ, struct.pack('HHHH', 0, 0, 0, 0)))
+	return (h, w)
+
+def update_winsize(p):
+	h, w = terminal_size()
+	if not p.closed:
+		p.setwinsize(h, w)
+
+RSCRIPT1='''options(crayon.enabled = {colors})
+options(readr.show_progress=FALSE)
+options(width={width})
+x = vroom::vroom("{input}",col_types="",delim={delim})
+tryCatch({{
+print(x, n={lines})
+}},error=function(c){{
+if(!grepl("SIGPIPE",c$message)) {{ stop(c) }}
+}})
+'''
+
+RSCRIPT2='''x = vroom::vroom("{input}",col_types="",delim={delim})
+x'''
+
+R_args = ['--quiet','--no-restore','--no-save']
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-d','--delim')
+group = parser.add_mutually_exclusive_group()
+group.add_argument('-i','--interactive', action='store_true')
+group.add_argument('-p','--pager', action='store_true')
+group.add_argument('-l','--lines', type=int, default=10)
+parser.add_argument('input', nargs='?')
+
+args = parser.parse_args()
+
+if args.input:
+	input_file = args.input
+elif sys.stdin.isatty():
+	parser.print_help()
+	sys.exit(1)
+else:
+	tf_input = tempfile.NamedTemporaryFile()
+	shutil.copyfileobj(sys.stdin.buffer, tf_input)
+	tf_input.flush()
+	input_file = tf_input.name
+	sys.stdin = open('/dev/tty', 'r')
+	sys.__stdin__ = sys.stdin
+	pty.STDIN_FILENO = sys.stdin.fileno()
+
+if args.delim:
+	delim = '"'+args.delim+'"'
+else:
+	delim = 'NULL'
+
+def rscript_file(**kargs):
+	tf = tempfile.NamedTemporaryFile()
+	tf.write(RSCRIPT1.format(**kargs,delim=delim).encode())
+	tf.flush()
+	return tf
+
+if args.interactive:
+	p = pexpect.spawn(command="R", args=R_args, echo=False)
+	update_winsize(p)
+	signal.signal(signal.SIGWINCH, lambda sig, data: update_winsize(p))
+	for l in RSCRIPT2.format(input=input_file,delim=delim).split("\n"):
+		p.sendline(l)
+	p.setecho(True)
+	p.interact()
+else:
+	if args.pager:
+		rscript = rscript_file(lines='Inf',width=10000,input=input_file,colors='TRUE')
+		p2 = subprocess.Popen(['less','-R','-S'], stdin=subprocess.PIPE)
+		subprocess.run(['R']+R_args+['--no-echo','--file='+rscript.name], stdout=p2.stdin)
+		p2.communicate()
+	else:
+		h, w = terminal_size()
+		clr = 'TRUE' if sys.stdout.isatty() else 'FALSE'
+		rscript = rscript_file(lines=args.lines,width=w,input=input_file, colors=clr)
+		subprocess.run(['R']+R_args+['--no-echo','--file='+rscript.name])
+
