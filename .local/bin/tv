@@ -31,17 +31,16 @@ if(!grepl("SIGPIPE",c$message)) {{ stop(c) }}
 }})
 '''
 
-RSCRIPT2='''x = vroom::vroom("{input}",col_types="",delim={delim})
-x'''
+RSCRIPT2='''x = vroom::vroom("{input}",col_types="",delim={delim}); x'''
 
 R_args = ['--quiet','--no-restore','--no-save']
 
 parser = argparse.ArgumentParser()
 parser.add_argument('-d','--delim')
+parser.add_argument('-l','--lines')
 group = parser.add_mutually_exclusive_group()
 group.add_argument('-i','--interactive', action='store_true')
 group.add_argument('-p','--pager', action='store_true')
-group.add_argument('-l','--lines', type=int, default=10)
 parser.add_argument('input', nargs='?')
 
 args = parser.parse_args()
@@ -65,6 +64,12 @@ if args.delim:
 else:
 	delim = 'NULL'
 
+if args.lines is None:
+	if args.pager:
+		args.lines = 10000
+	else:
+		args.lines = 10
+
 def rscript_file(**kargs):
 	tf = tempfile.NamedTemporaryFile()
 	tf.write(RSCRIPT1.format(**kargs,delim=delim).encode())
@@ -81,7 +86,7 @@ if args.interactive:
 	p.interact()
 else:
 	if args.pager:
-		rscript = rscript_file(lines='Inf',width=10000,input=input_file,colors='TRUE')
+		rscript = rscript_file(lines=args.lines,width=10000,input=input_file,colors='TRUE')
 		p2 = subprocess.Popen(['less','-R','-S'], stdin=subprocess.PIPE)
 		subprocess.run(['R']+R_args+['--no-echo','--file='+rscript.name], stdout=p2.stdin)
 		p2.communicate()
