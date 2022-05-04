@@ -12,6 +12,15 @@ alias mv='mv -i'
 alias grep='grep --color=auto'
 alias ip='ip -color=auto'
 
+# pgrep but better
+pg() {
+	T=$(mktemp)
+	ps -eo pid,user,stat,ucomm,args > $T
+	head -n1 $T
+	tail -n+2 $T | grep "$@"
+	rm -f $T
+}
+
 # haskell stuff
 alias ghm='ghc --make -O3 -outputdir=/tmp/ -fforce-recomp'
 alias ghi='ghci +RTS -M1G -RTS'
