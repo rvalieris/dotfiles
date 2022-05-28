@@ -71,7 +71,6 @@ def write_config():
 	os.rename(config+'.new', config)
 
 def i3_refresh():
-	subprocess.run(['yadm','alt'], stdout=subprocess.PIPE)
 	i3.command('reload')
 
 def on_window(i3, event):
