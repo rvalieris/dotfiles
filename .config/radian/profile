@@ -1,0 +1,7 @@
+
+options(radian.indent_lines = FALSE)
+options(radian.auto_match = FALSE)
+options(radian.auto_indentation = FALSE)
+options(radian.insert_new_line = FALSE)
+options(radian.history_size = 10000)
+options(radian.global_history_file = "~/.cache/radian_history")

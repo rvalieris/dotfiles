@@ -5,6 +5,7 @@ import struct
 import fcntl
 import termios
 import signal
+import shutil
 
 if len(sys.argv) < 2:
 	print("Usage: Rint script.R [args...]")
@@ -16,9 +17,17 @@ def update_winsize(p):
 		p.setwinsize(h, w)
 
 rargs = sys.argv[2:]
-p = pexpect.spawn(command="R", args=["--quiet","--no-save","--args"]+rargs)
+radian_path = shutil.which('radian')
+if radian_path is None:
+	p = pexpect.spawn(command="R", args=["--quiet","--no-save","--args"]+rargs, echo=False)
+else:
+	p = pexpect.spawn(command="radian", args=rargs, echo=False)
+p.setecho(False)
 update_winsize(p)
 signal.signal(signal.SIGWINCH, lambda sig, data: update_winsize(p))
-for l in open(sys.argv[1]):
-	p.send(l)
+p.setecho(False)
+p.waitnoecho()
+p.send(open(sys.argv[1]).read())
+p.setecho(True)
 p.interact()
+
