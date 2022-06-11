@@ -6,6 +6,9 @@ import re
 import math
 
 def get_number_or_not(s):
+	# PEP-515
+	if '_' in s:
+		return s
 	try:
 		val = int(s)
 		return val

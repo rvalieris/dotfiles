@@ -1,4 +1,4 @@
-
+options(radian.complete_while_typing = FALSE)
 options(radian.indent_lines = FALSE)
 options(radian.auto_match = FALSE)
 options(radian.auto_indentation = FALSE)

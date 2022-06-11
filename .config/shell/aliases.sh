@@ -30,6 +30,7 @@ alias ghp='ghc -prof -fprof-auto -rtsopts -outputdir=/tmp/'
 alias mupdf='mupdf -A2'
 alias cl="xsv table -d'\t'"
 alias R='R --quiet --no-save'
+alias r='radian'
 
 # singularity
 alias sgl=singularity
