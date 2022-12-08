@@ -10,10 +10,11 @@ bar {
 	mode dock
 	modifier $mod
 	position bottom
+	i3bar_command i3bar -t # systray background bug workaround
 	status_command ~/.config/i3/bitter.py
 	colors {
-		background $dgray
-		separator  $dgray
+		background $black
+		separator  $black
 		#                  border  background  text
 		focused_workspace  $green4 $green3     $black
 		urgent_workspace   $red    $red        $white
@@ -31,9 +32,11 @@ bar {
 exec_always --no-startup-id exec ~/.config/i3/auto-floating.py
 exec --no-startup-id exec dunst
 exec --no-startup-id exec redshift-gtk
-exec --no-startup-id exec syncthing
+#exec --no-startup-id exec syncthing
 exec --no-startup-id exec udiskie -A -t
-exec --no-startup-id exec blueman-tray
+exec --no-startup-id exec blueman-applet
+exec --no-startup-id exec nm-applet
+exec --no-startup-id exec dropbox-cli start
 
 # assigns
 assign [class="KeePassXC"] keepass
