@@ -151,6 +151,10 @@ class Battery(Module):
 			icon2 = self.config['icon2']
 			t2 = self.get_chr_time.search(txt)
 			if t2: icon2 += t2.group(0)
+		elif txt.find('Discharging') >= 0:
+			icon2 = self.config['icon3']
+			t2 = self.get_chr_time.search(txt)
+			if t2: icon2 += t2.group(0)
 		d = super().get_data()
 		d.update({'full_text': "{:s} {:.0f}% {:s}".format(self.config['icon'],pct,icon2), 'urgent': pct < self.config['critical'] })
 		return d

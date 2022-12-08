@@ -12,7 +12,7 @@ module_args:
     icon: '🔥'
   Datetime:
     icon1: '📅'
-    icon2: '⌚'
+    icon2: '⏳'
     format: '{icon1} %b %Y, %A %d {icon2} %H:%M:%S'
   Volume:
     icon: '🔊'
@@ -22,11 +22,12 @@ module_args:
   Battery:
     icon: '⚡'
     icon2: '🔌'
+    icon3: '🔋'
     critical: 20
   Temperature:
     icon: '🌡'
-    thermal_zone: '/sys/devices/platform/thinkpad_hwmon/hwmon/hwmon4/temp1_input'
+    thermal_zone: '/sys/devices/platform/thinkpad_hwmon/hwmon/hwmon3/temp1_input'
     critical: 80
   WindowTitle:
-    icon: '💠'
+    icon: ''
     max_short_text: 45
