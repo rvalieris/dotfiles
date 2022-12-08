@@ -6,7 +6,6 @@ window:
 
 font:
   normal:
-    #family: Source Code Pro
     family: Iosevka Medium Extended
   size: 12.0
 
