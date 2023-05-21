@@ -1,0 +1,45 @@
+* {
+    font-family: Iosevka Medium Extended;
+    font-size: 20px;
+    border: none;
+    border-radius: 0;
+    min-height: 0;
+    padding: 0;
+    margin: 0;
+    transition-property: none;
+}
+
+window#waybar {
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+}
+
+.modules-right * {
+    margin-left: 0.3em;
+}
+
+#workspaces button {
+    color: white;
+    background-color: gray40;
+    padding: 0.2em;
+}
+
+#workspaces button:hover {
+    box-shadow: inherit;
+    text-shadow: inherit;
+    background: gray;
+}
+
+#workspaces button.focused {
+    background: #009F6B;
+    color: black;
+}
+
+#workspaces button.urgent {
+    background-color: #C40233;
+}
+
+#battery.critical:not(.charging) {
+    background-color: #C40233;
+}
+

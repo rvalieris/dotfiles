@@ -1,0 +1,189 @@
+#
+# config for sway
+#
+
+# mod key
+set $mod Mod4
+set $alt Mod1
+
+# fonts
+set $font IosevkaMedium
+set $icon_font NotoColorEmoji
+font pango:$font 16
+
+# wallpaper
+include ~/.config/sway/bg
+
+# colors
+set $red    #c40233
+set $green3 #009F6B
+set $green4 #3EB489
+set $white  #ffffff
+set $black  #000000
+set $dgray  #272822
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod normal
+
+# start a terminal
+bindsym $mod+Return exec alacritty
+
+# kill focused window
+bindsym $mod+Shift+q kill
+
+# program launcher
+bindsym $mod+d exec rofi -show combi -modi combi -combi-modi drun,run -run-command 'swaymsg exec -- {cmd}'
+
+
+# change focus
+bindsym $mod+Up    focus up
+bindsym $mod+Down  focus down
+bindsym $mod+Right focus right
+bindsym $mod+Left  focus left
+
+# move focused window
+bindsym $mod+Shift+Up    move up
+bindsym $mod+Shift+Down  move down
+bindsym $mod+Shift+Right move right
+bindsym $mod+Shift+Left  move left
+
+# resize window
+bindsym $mod+Control+Up    resize grow   height 10 px or 10 ppt
+bindsym $mod+Control+Down  resize shrink height 10 px or 10 ppt
+bindsym $mod+Control+Right resize grow   width  10 px or 10 ppt
+bindsym $mod+Control+Left  resize shrink width  10 px or 10 ppt
+
+# enter fullscreen mode for the focused container
+bindsym $mod+f fullscreen toggle
+bindsym $mod+Shift+f fullscreen toggle global
+popup_during_fullscreen leave_fullscreen
+
+# toggle container layout (stacked, tabbed, tilling)
+bindsym $mod+e layout toggle
+
+# toggle container split
+bindsym $mod+s split toggle
+
+# move workspace to next output
+bindsym $mod+x move workspace to output right
+
+# toggle tiling / floating
+bindsym $mod+Shift+space floating toggle
+
+# toggle sticky window
+bindsym $mod+Shift+s sticky toggle
+
+# change focus between tiling / floating windows
+bindsym $mod+space focus mode_toggle
+
+# focus the parent container
+bindsym $mod+a focus parent
+
+# rename workspace
+bindsym $mod+shift+n exec --no-startup-id ~/.config/i3/i3tricks.py prompt_rename_workspace
+
+# switch to workspace
+workspace_auto_back_and_forth yes
+bindsym $mod+Shift+Tab workspace prev_on_output
+bindsym $mod+Tab workspace next_on_output
+bindsym $mod+1 workspace number 1
+bindsym $mod+2 workspace number 2
+bindsym $mod+3 workspace number 3
+bindsym $mod+4 workspace number 4
+bindsym $mod+5 workspace number 5
+bindsym $mod+6 workspace number 6
+bindsym $mod+7 workspace number 7
+bindsym $mod+8 workspace number 8
+bindsym $mod+9 workspace number 9
+bindsym $mod+0 workspace number 10
+
+# move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace number 1
+bindsym $mod+Shift+2 move container to workspace number 2
+bindsym $mod+Shift+3 move container to workspace number 3
+bindsym $mod+Shift+4 move container to workspace number 4
+bindsym $mod+Shift+5 move container to workspace number 5
+bindsym $mod+Shift+6 move container to workspace number 6
+bindsym $mod+Shift+7 move container to workspace number 7
+bindsym $mod+Shift+8 move container to workspace number 8
+bindsym $mod+Shift+9 move container to workspace number 9
+bindsym $mod+Shift+0 move container to workspace number 10
+
+# list workspaces
+bindsym $mod+w exec --no-startup-id exec ~/.config/i3/i3tricks.py prompt_swap_window
+
+# move container
+bindsym $mod+m move container to workspace back_and_forth
+bindsym $mod+shift+m exec --no-startup-id exec ~/.config/i3/i3tricks.py prompt_move_container
+
+# reload config
+bindsym $mod+r reload
+
+# exit
+bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Yes' 'swaymsg exit'
+
+# volume keys
+bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.01+ -l 1.0
+bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.01- -l 1.0
+bindsym XF86AudioMute        exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+
+# scratchpad
+bindsym $mod+minus move scratchpad
+bindsym $mod+plus scratchpad show
+
+# borders
+default_border pixel 1
+hide_edge_borders smart
+bindsym $mod+b border toggle
+
+mouse_warping none
+focus_on_window_activation urgent
+
+# colors                  border  background  text    indicator
+client.focused            $green3 $green3     $black  $green4
+client.urgent             $red    $red        $white  $red
+#client.unfocused         
+#client.focused_inative  
+
+exec kanshi
+exec_always kanshictl reload
+
+exec dunst
+exec blueman-applet
+exec nm-applet
+exec dropbox-cli start
+exec gammastep
+exec swayidle
+
+output * adaptive_sync on
+
+input "1:1:AT_Translated_Set_2_keyboard" {
+    xkb_layout "br"
+    xkb_model "thinkpad"
+}
+
+input "2:7:SynPS/2_Synaptics_TouchPad" {
+    natural_scroll enabled
+    pointer_accel 0.4
+    tap enabled
+    tap_button_map lrm
+    dwt disabled
+}
+
+bar {
+    output eDP-1
+    swaybar_command waybar
+    position bottom
+    mode dock
+}
+bar bar-1 {
+    output HDMI-A-1
+    position bottom
+    mode hide
+    tray_output none
+    swaybar_command true
+}
+
+include ~/.config/sway/window-rules
+
+include /etc/sway/config.d/*

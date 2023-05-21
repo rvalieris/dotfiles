@@ -1,0 +1,4 @@
+#!/bin/bash
+unset WAYLAND_DISPLAY
+unset XDG_SESSION_TYPE
+exec "$@" 

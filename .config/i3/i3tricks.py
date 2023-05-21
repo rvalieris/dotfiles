@@ -45,9 +45,6 @@ def swap_workspaces():
 			w.command('move workspace to output right')
 			w.command('focus')
 
-def snip_selection():
-	os.system('scrot -s -o /dev/stdout | feh -x -')
-
 if len(sys.argv) > 1:
 	locals()[sys.argv[1]]()
 else:

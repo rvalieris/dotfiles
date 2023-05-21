@@ -1,0 +1,67 @@
+[{
+    "ipc": true,
+    "id": "bar-0",
+    "output": "eDP-1",
+    "layer": "top",
+    "position": "bottom",
+    "spacing": 0,
+    "modules-left": ["sway/workspaces"],
+    "modules-center": ["sway/window"],
+    "modules-right": ["pulseaudio", "cpu", "temperature", "battery", "clock", "tray"],
+    // Modules configuration
+    "sway/workspaces": {
+        "enable-bar-scroll": true
+    },
+    "sway/window": {
+        "all-outputs": true,
+    },
+    "tray": {
+        "icon-size": 30,
+        "spacing": 0
+    },
+    "clock": {
+        "interval": 7,
+        "format": "📅 {:%b %Y, %A %d ⏳ %H:%M:%S}",
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "calendar": {
+            "format": {
+                "today": "<span bgcolor='#009F6B' color='black'><b>{}</b></span>"
+                }
+        }
+    },
+    "cpu": {
+        "format": "🔥{load}",
+        "tooltip": false
+    },
+    "temperature": {
+        "hwmon-path": "/sys/devices/platform/thinkpad_hwmon/hwmon/hwmon3/temp1_input",
+        "critical-threshold": 80,
+        "format": "<span font='NotoColorEmoji'>🌡</span>{temperatureC}°C",
+    },
+    "battery": {
+        "states": {
+            "critical": 20
+        },
+        "format": "⚡{capacity}%",
+        "format-charging": "🔌{capacity}%",
+        "format-discharging": "🔋{capacity}%",
+    },
+    "pulseaudio": {
+        "scroll-step": 1, // %, can be a float
+        "format": "🔊 {volume}%",
+        "format-muted": "🔈 muted",
+        "on-click": "pavucontrol",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    },
+},{
+    "output": "HDMI-A-1",
+    "layer": "top",
+    "position": "bottom",
+    "modules-left": ["sway/workspaces"],
+    "mode": "hide",
+    "ipc": true,
+    "id": "bar-1",
+    "sway/workspaces": {
+        "enable-bar-scroll": true
+    },
+}]
