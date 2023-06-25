@@ -2,12 +2,13 @@
     "ipc": true,
     "id": "bar-0",
     "output": "eDP-1",
+    "mode": "hide",
     "layer": "top",
     "position": "bottom",
     "spacing": 0,
     "modules-left": ["sway/workspaces"],
     "modules-center": ["sway/window"],
-    "modules-right": ["pulseaudio", "cpu", "temperature", "battery", "clock", "tray"],
+    "modules-right": ["pulseaudio", "cpu", "temperature", "battery", "clock", "tray", "custom/menu"],
     // Modules configuration
     "sway/workspaces": {
         "enable-bar-scroll": true
@@ -20,8 +21,8 @@
         "spacing": 0
     },
     "clock": {
-        "interval": 7,
-        "format": "📅 {:%b %Y, %A %d ⏳ %H:%M:%S}",
+        "interval": 60,
+        "format": "📅 {:%b %Y, %a %d⏳%H:%M}",
         "tooltip-format": "<tt>{calendar}</tt>",
         "calendar": {
             "format": {
@@ -30,7 +31,7 @@
         }
     },
     "cpu": {
-        "format": "🔥{load}",
+        "format": "🔥{load:.1f}",
         "tooltip": false
     },
     "temperature": {
@@ -43,16 +44,35 @@
             "critical": 20
         },
         "format": "⚡{capacity}%",
-        "format-charging": "🔌{capacity}%",
-        "format-discharging": "🔋{capacity}%",
+        "format-time": "{H}h{m}m",
+        "format-charging": "⚡{capacity}% 🔌{time}",
+        "format-discharging": "⚡{capacity}% 🔋{time}",
     },
     "pulseaudio": {
         "scroll-step": 1, // %, can be a float
-        "format": "🔊 {volume}%",
-        "format-muted": "🔈 muted",
+        "format": "🔊{volume}%",
+        "format-muted": "🔈muted",
         "on-click": "pavucontrol",
         "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     },
+    "custom/menu": {
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+            "none": "<span font='NotoColorEmoji'>☰</span>",
+            "dnd-none": "<span font='NotoColorEmoji'>☰</span>",
+            "inhibited-none": "<span font='NotoColorEmoji'>☰</span>",
+            "dnd-inhibited-none": "<span font='NotoColorEmoji'>☰</span>",
+            "notification": "🔔",
+            "dnd-notification": "🔔",
+            "inhibited-notification": "🔔",
+            "dnd-inhibited-notification": "🔔",
+        },
+        "exec": "swaync-client -swb",
+        "escape": true,
+        "return-type": "json",
+        "on-click": "swaync-client -t -sw"
+    }
 },{
     "output": "HDMI-A-1",
     "layer": "top",

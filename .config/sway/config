@@ -7,12 +7,8 @@ set $mod Mod4
 set $alt Mod1
 
 # fonts
-set $font IosevkaMedium
-set $icon_font NotoColorEmoji
-font pango:$font 16
-
-# wallpaper
-include ~/.config/sway/bg
+set $font IosevkaSS07Medium
+font pango:$font 14
 
 # colors
 set $red    #c40233
@@ -32,8 +28,10 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+Shift+q kill
 
 # program launcher
-bindsym $mod+d exec rofi -show combi -modi combi -combi-modi drun,run -run-command 'swaymsg exec -- {cmd}'
+bindsym $mod+d exec "rofi -show combi -modi combi -combi-modi drun,run -run-command 'swaymsg exec -- {cmd}'"
 
+# lock screen
+bindsym $mod+l exec ~/.config/sway/sway_tricks.py lock_session
 
 # change focus
 bindsym $mod+Up    focus up
@@ -66,6 +64,7 @@ bindsym $mod+s split toggle
 
 # move workspace to next output
 bindsym $mod+x move workspace to output right
+bindsym $mod+shift+x exec ~/.config/sway/sway_tricks.py swap_workspaces
 
 # toggle tiling / floating
 bindsym $mod+Shift+space floating toggle
@@ -80,7 +79,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # rename workspace
-bindsym $mod+shift+n exec --no-startup-id ~/.config/i3/i3tricks.py prompt_rename_workspace
+bindsym $mod+shift+n exec ~/.config/sway/sway_tricks.py prompt_rename_workspace
 
 # switch to workspace
 workspace_auto_back_and_forth yes
@@ -110,11 +109,11 @@ bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
 # list workspaces
-bindsym $mod+w exec --no-startup-id exec ~/.config/i3/i3tricks.py prompt_swap_window
+bindsym $mod+w exec rofi -show window
 
 # move container
 bindsym $mod+m move container to workspace back_and_forth
-bindsym $mod+shift+m exec --no-startup-id exec ~/.config/i3/i3tricks.py prompt_move_container
+bindsym $mod+shift+m exec ~/.config/sway/sway_tricks.py prompt_move_container
 
 # reload config
 bindsym $mod+r reload
@@ -148,14 +147,12 @@ client.urgent             $red    $red        $white  $red
 exec kanshi
 exec_always kanshictl reload
 
-exec dunst
+exec swaync
 exec blueman-applet
 exec nm-applet
 exec dropbox-cli start
 exec gammastep
-exec swayidle
-
-output * adaptive_sync on
+exec swayidle -w
 
 input "1:1:AT_Translated_Set_2_keyboard" {
     xkb_layout "br"
@@ -174,16 +171,16 @@ bar {
     output eDP-1
     swaybar_command waybar
     position bottom
-    mode dock
+    mode hide
 }
 bar bar-1 {
     output HDMI-A-1
     position bottom
-    mode hide
     tray_output none
+    mode hide
     swaybar_command true
 }
 
 include ~/.config/sway/window-rules
-
+include ~/.cache/swaybg
 include /etc/sway/config.d/*

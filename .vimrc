@@ -74,12 +74,6 @@ noremap <leader>k <pageup>
 noremap <leader>l $
 noremap Q <nop>
 noremap ; :
-inoremap ç <esc>
-nnoremap ç <esc>
-vnoremap ç <esc>
-inoremap <f1> <esc>
-nnoremap <f1> <esc>
-vnoremap <f1> <esc>
 
 noremap <leader><left> <C-w><
 noremap <leader><down> <C-W>-

@@ -1,0 +1,24 @@
+{
+  "positionX": "right",
+  "positionY": "bottom",
+  "timeout": 10,
+  "timeout-low": 5,
+  "timeout-critical": 0,
+  "fit-to-screen": true,
+  "widgets": [
+    "inhibitors",
+    "title",
+    "dnd",
+    "notifications"
+  ],
+  "widget-config": {
+    "title": {
+      "text": "Notifications",
+      "clear-all-button": true,
+      "button-text": "Clear All"
+    },
+    "dnd": {
+      "text": "Do Not Disturb"
+    }
+  }
+}

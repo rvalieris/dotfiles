@@ -2,10 +2,15 @@
 for_window [class="R_x11"] floating enable
 for_window [app_id="pavucontrol"] floating enable
 for_window [title="Picture-in-Picture"] floating enable
+for_window [class="MuPDF"] floating enable
+for_window [title="Firefox — Sharing Indicator"] floating enable
 
 assign [class="(?i)JDownloader"] jdown
-assign [title=".*?KeePassXC.*"] keepass
-assign [class="Steam"] steam
-assign [class="qBittorrent"] torrent
+assign [title="JDownloader 2"] jdown
+assign [app_id="org.keepassxc.KeePassXC"] keepass
+assign [class="(?i)Steam"] steam
+assign [app_id="org.qbittorrent.qBittorrent"] torrent
+
+assign [class="Wfica.*"] citrix
 
 

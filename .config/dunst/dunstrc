@@ -15,6 +15,10 @@
   corner_radius = 7
   follow = mouse
   icon_path = /usr/share/icons/Adwaita/16x16/status/:/usr/share/icons/Adwaita/16x16/devices/:/usr/share/icons/Adwaita/16x16/legacy/
+  dmenu = "rofi -dmenu -p dunst"
+  mouse_left_click = do_action
+  mouse_middle_click = context
+  mouse_right_click = close_current
 
 [urgency_normal]
   background = "#000000"

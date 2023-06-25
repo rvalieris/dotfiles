@@ -6,9 +6,10 @@ window:
 
 font:
   normal:
-    family: Iosevka Medium Extended
-  size: 12.0
+    family: Iosevka SS07 Medium Extended
+  size: 15.0
 
+draw_bold_text_with_bright_colors: true
 colors:
   primary:
     background: '0x0e1019'

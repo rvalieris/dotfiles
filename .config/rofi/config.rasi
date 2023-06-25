@@ -1,5 +1,5 @@
 configuration {
-	font: "Iosevka Extended 17";
+	font: "Iosevka SS07 Extended Medium 18";
 	display-drun: "";
 	show-icons: true;
 	display-combi: "::";

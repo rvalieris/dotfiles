@@ -3,6 +3,7 @@
 [ -x "$(command -v lesspipe)" ] && eval "$(lesspipe)"
 [ -x "$(command -v lesspipe.sh)" ] && eval "$(lesspipe.sh)"
 export LESSHISTFILE=~/.cache/lesshst
+export SYSTEMD_LESS="FSRM"
 
 # ls colors
 if [ ~/.cache/LS_COLORS -nt ~/.config/shell/LS_COLORS.gen.sh ]; then
