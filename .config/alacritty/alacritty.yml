@@ -16,21 +16,21 @@ colors:
     foreground: '0xfffaf4'
   normal:
     black:   '0x232323'
-    red:     '0xff000f'
+    red:     '0xf8282a'
     green:   '0x2cc631'
     yellow:  '0xffb900'
     blue:    '0x1670ff'
     magenta: '0xF92672'
-    cyan:    '0x00d8eb'
+    cyan:    '0x3ad5ce'
     white:   '0xb9c0cb'
   bright:
     black:   '0x444444'
-    red:     '0xf8282a'
+    red:     '0xff000f'
     green:   '0x8ce10b'
     yellow:  '0xfdd727'
     blue:    '0x008df8'
     magenta: '0xFF5590'
-    cyan:    '0x3ad5ce'
+    cyan:    '0x00d8eb'
     white:   '0xffffff'
 
 shell:

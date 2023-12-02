@@ -7,5 +7,5 @@ Type=oneshot
 Restart=on-failure
 RestartSec=3
 StartLimitBurst=3
-ExecStart=%h/.config/i3/random_wallpaper.py -o %h/.cache/wallpaper.png
+ExecStart=%h/.config/sway/random_wallpaper2.py
 

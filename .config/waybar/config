@@ -84,4 +84,15 @@
     "sway/workspaces": {
         "enable-bar-scroll": true
     },
+},{
+    "output": "DP-1",
+    "layer": "top",
+    "position": "bottom",
+    "modules-left": ["sway/workspaces"],
+    "mode": "hide",
+    "ipc": true,
+    "id": "bar-1",
+    "sway/workspaces": {
+        "enable-bar-scroll": true
+    },
 }]

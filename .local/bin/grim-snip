@@ -1,2 +1,2 @@
 #!/bin/bash
-grim -g "$(slurp)"
+exec grim -g "$(slurp)"

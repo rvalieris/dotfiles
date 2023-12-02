@@ -39,9 +39,18 @@ def swap_workspaces():
 		if len(w['focus']) > 0:
 			sway_ipc.cmd(msg=f'''[con_id="{w['focus'][0]}"] move workspace to output right''')
 
+def _get_bg_file(out):
+	return os.path.expanduser(f'~/.cache/wallpaper-{out}.png')
+
 def reload_bg():
-	if not os.path.exists(BG_CONFIG):
-		sys.exit(1)
+	fh1 = open(BG_CONFIG, 'wt')
+	fh2 = open(LOCK_CONFIG, 'wt')
+	for d in sway_ipc.get_outputs():
+		of = _get_bg_file(d['name'])
+		fh1.write(f"output {d['name']} bg {of} fill\n")
+		fh2.write(f"image={d['name']}:{of}\n")
+	fh1.close()
+	fh2.close()
 	txt = open(BG_CONFIG).read()
 	sway_ipc.cmd(msg=txt)
 

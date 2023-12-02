@@ -6,10 +6,10 @@
   "timeout-critical": 0,
   "fit-to-screen": true,
   "widgets": [
+    "notifications",
     "inhibitors",
-    "title",
     "dnd",
-    "notifications"
+    "title"
   ],
   "widget-config": {
     "title": {

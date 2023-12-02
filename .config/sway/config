@@ -153,6 +153,7 @@ exec nm-applet
 exec dropbox-cli start
 exec gammastep
 exec swayidle -w
+exec udiskie --smart-tray --no-automount
 
 input "1:1:AT_Translated_Set_2_keyboard" {
     xkb_layout "br"
@@ -175,6 +176,13 @@ bar {
 }
 bar bar-1 {
     output HDMI-A-1
+    position bottom
+    tray_output none
+    mode hide
+    swaybar_command true
+}
+bar bar-2 {
+    output DP-1
     position bottom
     tray_output none
     mode hide
