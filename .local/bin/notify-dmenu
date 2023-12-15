@@ -1,0 +1,20 @@
+#!/usr/bin/python3
+import argparse
+import sys
+import subprocess
+
+parser = argparse.ArgumentParser()
+parser.add_argument('-p', '--prompt', default='dmenu')
+parser.add_argument('-i', '--icon')
+
+args = parser.parse_args()
+actions = sys.stdin.readlines()
+
+cmdline = ['notify-send']
+cmdline += [f'--action={k}={k}' for k in actions]
+cmdline += [f'--icon={args.icon}'] if args.icon else []
+cmdline += [args.prompt]
+
+out = subprocess.check_output(cmdline)
+print(out.decode(), end='')
+

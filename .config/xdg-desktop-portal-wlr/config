@@ -1,3 +1,3 @@
 [screencast]
 chooser_type = dmenu
-chooser_cmd = rofi -dmenu -l 3 -p 'Select Output'
+chooser_cmd = ~/.local/bin/notify-dmenu -i video-display -p 'Select Output'
