@@ -1,3 +1,4 @@
-timeout 250 '~/.config/sway/sway_tricks.py lock_session'
-timeout 300 'swaymsg "output * power off"' resume 'swaymsg "output * power on"'
+timeout 240 'brightnessctl -d amdgpu_bl0 set 50' resume 'brightnessctl -d amdgpu_bl0 set 255'
+timeout 300 '~/.config/sway/sway_tricks.py lock_session'
+timeout 360 'swaymsg "output * power off"' resume 'swaymsg "output * power on"'
 before-sleep '~/.config/sway/sway_tricks.py lock_session'

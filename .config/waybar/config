@@ -8,7 +8,7 @@
     "spacing": 0,
     "modules-left": ["sway/workspaces"],
     "modules-center": ["sway/window"],
-    "modules-right": ["pulseaudio", "cpu", "temperature", "battery", "clock", "tray", "custom/menu"],
+    "modules-right": ["pulseaudio", "cpu", "temperature", "battery", "clock", "tray", "idle_inhibitor","custom/menu"],
     // Modules configuration
     "sway/workspaces": {
         "enable-bar-scroll": true
@@ -54,6 +54,13 @@
         "format-muted": "🔈muted",
         "on-click": "pavucontrol",
         "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "☕",
+            "deactivated": "🍵"
+        }
     },
     "custom/menu": {
         "tooltip": false,
