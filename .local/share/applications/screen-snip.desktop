@@ -1,6 +1,6 @@
 [Desktop Entry]
 Name=Screenshot Selection
-Exec=scrot -s -f
+Exec=/bin/sh -c '$HOME/.local/bin/grim-snip'
 Type=Application
 Icon=edit-cut
 Terminal=false

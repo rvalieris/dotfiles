@@ -1,0 +1,9 @@
+[Unit]
+Description=sway service
+PartOf=sway-session.target
+
+[Service]
+Type=simple
+ExecStartPre=systemctl --user unset-environment WAYLAND_DISPLAY DISPLAY
+ExecStart=/usr/bin/sway
+EnvironmentFile=%h/.config/sway/env

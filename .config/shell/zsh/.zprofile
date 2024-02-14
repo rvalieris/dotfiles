@@ -1,4 +1,4 @@
 if [ -z "${WAYLAND_DISPLAY}" ] && [ -z "${DISPLAY}" ] && [ "${XDG_VTNR}" -eq 1 ]; then
-	source ~/.config/sway/env
-	exec sway > ~/sway.log 2>&1
+	systemctl --user import-environment PATH
+	exec systemctl --wait --user start sway.service
 fi

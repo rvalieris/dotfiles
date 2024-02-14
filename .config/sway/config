@@ -122,9 +122,12 @@ bindsym $mod+r reload
 bindsym $mod+Shift+e exec swaynag -t warning -m 'Exit sway?' -B 'Yes' 'swaymsg exit'
 
 # volume keys
-bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.01+ -l 1.0
-bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.01- -l 1.0
-bindsym XF86AudioMute        exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym XF86AudioMute              exec swayosd-client --output-volume mute-toggle
+bindsym XF86AudioRaiseVolume       exec swayosd-client --output-volume +1 --max-volume 100
+bindsym XF86AudioLowerVolume       exec swayosd-client --output-volume -1 --max-volume 100
+bindsym Shift+XF86AudioRaiseVolume exec swayosd-client --output-volume +5 --max-volume 100
+bindsym Shift+XF86AudioLowerVolume exec swayosd-client --output-volume -5 --max-volume 100
+bindsym XF86AudioMicMute           exec swayosd-client --input-volume mute-toggle
 
 # scratchpad
 bindsym $mod+minus move scratchpad
@@ -144,17 +147,6 @@ client.urgent             $red    $red        $white  $red
 #client.unfocused         
 #client.focused_inative  
 
-exec kanshi
-exec_always kanshictl reload
-
-exec swaync
-exec blueman-applet
-exec nm-applet
-exec dropbox-cli start
-exec gammastep
-exec swayidle -w
-exec udiskie --smart-tray --no-automount
-
 input "1:1:AT_Translated_Set_2_keyboard" {
     xkb_layout "br"
     xkb_model "thinkpad"
@@ -168,27 +160,42 @@ input "2:7:SynPS/2_Synaptics_TouchPad" {
     dwt disabled
 }
 
+include /etc/sway/config.d/*
+include ~/.config/sway/window-rules
+include ~/.cache/swaybg
+
 bar {
+    id bar-0
     output eDP-1
-    swaybar_command waybar
-    position bottom
-    mode hide
-}
-bar bar-1 {
-    output HDMI-A-1
-    position bottom
-    tray_output none
-    mode hide
     swaybar_command true
+    position bottom
+    mode hide
 }
-bar bar-2 {
+bar {
+    id bar-1
     output DP-1
     position bottom
     tray_output none
     mode hide
     swaybar_command true
 }
+bar {
+    id bar-2
+    output HDMI-A-1
+    position bottom
+    tray_output none
+    mode hide
+    swaybar_command true
+}
 
-include ~/.config/sway/window-rules
-include ~/.cache/swaybg
-include /etc/sway/config.d/*
+exec kanshi
+exec_always kanshictl reload
+exec swaync
+exec blueman-applet
+exec nm-applet
+exec gammastep
+exec swayidle -w
+exec udiskie --smart-tray --no-automount
+exec swayosd-server
+exec_always systemctl --user start sway-session.target
+

@@ -1,6 +1,8 @@
 [Unit]
 Description=set a random wallpaper
 StartLimitIntervalSec=10
+PartOf=sway-session.target
+After=sway-session.target
 
 [Service]
 Type=oneshot

@@ -1,0 +1,45 @@
+[colors]
+draw_bold_text_with_bright_colors = true
+
+[colors.bright]
+black = "0x444444"
+blue = "0x008df8"
+cyan = "0x00d8eb"
+green = "0x8ce10b"
+magenta = "0xFF5590"
+red = "0xff000f"
+white = "0xffffff"
+yellow = "0xfdd727"
+
+[colors.normal]
+black = "0x232323"
+blue = "0x1670ff"
+cyan = "0x3ad5ce"
+green = "0x2cc631"
+magenta = "0xF92672"
+red = "0xf8282a"
+white = "0xb9c0cb"
+yellow = "0xffb900"
+
+[colors.primary]
+background = "0x0e1019"
+foreground = "0xfffaf4"
+
+[env]
+TERM = "xterm-256color"
+
+[font]
+size = 15.0
+
+[font.normal]
+family = "Iosevka SS07 Medium Extended"
+
+[[hints.enabled]]
+command = "None"
+regex = "None"
+
+[shell]
+program = "zsh"
+
+[window]
+dynamic_padding = true
