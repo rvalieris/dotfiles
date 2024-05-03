@@ -18,5 +18,7 @@
 	ff = only
 [credential "https://github.com"]
 	helper = store
+[credential "https://gitlab.com"]
+	helper = store
 [credential]
 	helper = cache

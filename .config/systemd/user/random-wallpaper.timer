@@ -1,5 +1,7 @@
 [Unit]
 Description=set a new wallpaper every day
+PartOf=sway-session.target
+After=sway-session.target
 
 [Timer]
 OnCalendar=*-*-* 7:07:07

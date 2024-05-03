@@ -188,8 +188,6 @@ bar {
     swaybar_command true
 }
 
-exec kanshi
-exec_always kanshictl reload
 exec swaync
 exec blueman-applet
 exec nm-applet
@@ -198,4 +196,7 @@ exec swayidle -w
 exec udiskie --smart-tray --no-automount
 exec swayosd-server
 exec_always systemctl --user start sway-session.target
+
+exec kanshi
+exec_always kanshictl reload
 
