@@ -25,10 +25,11 @@ bar {
 	mode hide
 	modifier $mod
 	position bottom
+	i3bar_command i3bar -t
 	status_command exec ~/conda/envs/pulse/bin/python ~/.config/i3/bitter.py "$icon_font 15"
 	colors {
-		background $dgray
-		separator  $dgray
+		background $black
+		separator  $black
 		#                  border  background  text
 		focused_workspace  $green4 $green3     $black
 		urgent_workspace   $red    $red        $white
@@ -40,12 +41,15 @@ exec_always --no-startup-id exec ~/conda/envs/pulse/bin/python ~/.config/i3/auto
 exec --no-startup-id exec dunst
 exec --no-startup-id exec redshift-gtk
 #exec --no-startup-id exec syncthing
+exec --no-startup-id exec dropbox start
 exec --no-startup-id exec udiskie -A -t
 exec --no-startup-id exec setxkbmap br
+exec --no-startup-id exec nm-applet
 
 # assigns
 assign [class="Firefox"] number 1
 assign [class="KeePassXC"] keepass
+assign [class="Bitwarden"] bitwarden
 
 # i3-auto-floating
 include ~/.cache/i3-auto-floating.config

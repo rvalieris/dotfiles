@@ -6,7 +6,7 @@ options(
 		}, error=function(e)return(120), warning=function(e)return(120)),
 	"browser" = "firefox",
 	"menu.graphics" = FALSE,
-	"digits" = 15,
+	"digits" = 7,
 	"useFancyQuotes" = FALSE,
 	"repr.matrix.max.rows" = 20
 )

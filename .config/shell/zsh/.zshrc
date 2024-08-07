@@ -34,7 +34,8 @@ disable r # zshbuiltins
 setopt no_beep
 
 # advanced tab completion
-autoload -U compinit && compinit
+autoload -U compinit
+compinit -d ~/.cache/zcompdump
 setopt glob_dots
 zstyle ':completion:*' menu select
 zmodload zsh/complist

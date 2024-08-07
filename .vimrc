@@ -20,14 +20,14 @@ set scrolloff=2
 set number
 set fillchars=vert:\ 
 set list " make tabs visible
-set listchars=tab:»\ 
+set listchars=tab:»\ ,trail:·
 
 " syntax, highlighting and spelling
 " https://github.com/vim/vim/issues/3608
 let &t_8f = "\<Esc>[38;2;%lu;%lu;%lum"
 let &t_8b = "\<Esc>[48;2;%lu;%lu;%lum"
 set termguicolors
-syntax on
+syntax enable
 colorscheme molokai
 set background=dark
 set hlsearch

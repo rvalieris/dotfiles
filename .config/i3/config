@@ -7,7 +7,7 @@ set $mod Mod4
 set $alt Mod1
 
 # fonts
-set $font IosevkaMedium
+set $font IosevkaSS07Medium
 set $icon_font NotoColorEmoji
 font pango:$font 16
 
