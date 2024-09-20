@@ -28,7 +28,7 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+Shift+q kill
 
 # program launcher
-bindsym $mod+d exec "rofi -show combi -modi combi -combi-modi drun,run -run-command 'swaymsg exec -- {cmd}'"
+bindsym $mod+d exec "rofi -show combi -modi combi -combi-modi drun,run -run-command 'swaymsg -q exec -- {cmd}'"
 
 # lock screen
 bindsym $mod+l exec ~/.config/sway/sway_tricks.py lock_session

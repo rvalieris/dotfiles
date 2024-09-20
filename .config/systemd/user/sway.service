@@ -4,6 +4,7 @@ PartOf=sway-session.target
 
 [Service]
 Type=simple
+OOMPolicy=continue
 ExecStartPre=systemctl --user unset-environment WAYLAND_DISPLAY DISPLAY
 ExecStart=/usr/bin/sway
 EnvironmentFile=%h/.config/sway/env

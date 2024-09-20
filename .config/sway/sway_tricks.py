@@ -19,15 +19,13 @@ def _rofi_prompt(prompt):
 	return p.stdout.decode().rstrip()
 
 def prompt_rename_workspace():
-	data = sway_ipc.get_workspaces()
-	cur, = list(filter(lambda wb: wb['focused'], data))
+	cur, = sway_ipc.get_focused_workspaces()
 	new = _rofi_prompt(f"Rename workspace (current {cur['name']})")
 	if new is not None and len(new) > 0:
 		sway_ipc.cmd(msg=f'rename workspace to {new}')
 
 def prompt_move_container():
-	data = sway_ipc.get_workspaces()
-	cur, = list(filter(lambda wb: wb['focused'], data))
+	cur, = sway_ipc.get_focused_workspaces()
 	new = _rofi_prompt(f"Move container to (current {cur['name']})")
 	if new is not None and len(new) > 0:
 		sway_ipc.cmd(msg=f'move container to workspace {new}')
@@ -56,6 +54,29 @@ def reload_bg():
 
 def lock_session():
 	os.execvp('swaylock', ['swaylock', '-f', '-F', '-C', LOCK_CONFIG])
+
+# adapted from https://github.com/emersion/xdg-desktop-portal-wlr/issues/107#issuecomment-2132150014
+def create_headless():
+	headless = sway_ipc.get_headless_outputs()
+	if len(headless) > 0:
+		hn = headless[0]['name']
+		subprocess.check_output(['notify-send', f'Headless output already exists: {hn}'])
+	else:
+		sway_ipc.cmd(msg='create_output')
+		headless_out, = sway_ipc.get_headless_outputs()
+		sway_ipc.cmd(msg=f'output "{headless_out["name"]}" bg "#220900" solid_color')
+		cur_ws, = sway_ipc.get_focused_workspaces()
+		sway_ipc.cmd(msg=f'workspace sshw')
+		sway_ipc.cmd(msg=f'move workspace to output {headless_out["name"]}')
+		sway_ipc.cmd(msg=f'workspace {cur_ws["name"]}')
+		subprocess.check_output(['notify-send', f'Created new output: {headless_out["name"]}\nworkspace: sshw'])
+
+def delete_headless():
+	for d in sway_ipc.get_headless_outputs():
+		sway_ipc.cmd(msg=f'output {d["name"]} unplug')
+		subprocess.check_output(['notify-send', f'Deleted output: {d["name"]}'])
+
+# ----------------------
 
 if __name__ == '__main__':
 	if len(sys.argv) > 1:
