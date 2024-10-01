@@ -1,0 +1,71 @@
+{
+    "sway/workspaces": {
+        "enable-bar-scroll": true
+    },
+    "sway/window": {
+        "all-outputs": true
+    },
+    "tray": {
+        "icon-size": 30,
+        "spacing": 0
+    },
+    "clock": {
+        "interval": 60,
+        "format": "📅 {:%b %Y, %a %d⏳%H:%M}",
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "calendar": {
+            "format": {
+                "today": "<span bgcolor='#009F6B' color='black'><b>{}</b></span>"
+                }
+        }
+    },
+    "cpu": {
+        "format": "🔥{load:.1f}",
+        "tooltip": false
+    },
+    "temperature": {
+        "critical-threshold": 80,
+        "format": "<span font='NotoColorEmoji'>🌡</span>{temperatureC}°C"
+    },
+    "battery": {
+        "states": {
+            "critical": 20
+        },
+        "format": "⚡{capacity}%",
+        "format-time": "{H}h{m}m",
+        "format-charging": "⚡{capacity}% 🔌{time}",
+        "format-discharging": "⚡{capacity}% 🔋{time}"
+    },
+    "pulseaudio": {
+        "scroll-step": 1,
+        "format": "🔊{volume}%",
+        "format-muted": "🔈muted",
+        "on-click": "pavucontrol",
+        "on-click-right": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": "☕",
+            "deactivated": "🍵"
+        }
+    },
+    "custom/menu": {
+        "tooltip": false,
+        "format": "{icon}",
+        "format-icons": {
+            "none": "<span font='NotoColorEmoji'>☰</span>",
+            "dnd-none": "<span font='NotoColorEmoji'>☰</span>",
+            "inhibited-none": "<span font='NotoColorEmoji'>☰</span>",
+            "dnd-inhibited-none": "<span font='NotoColorEmoji'>☰</span>",
+            "notification": "🔔",
+            "dnd-notification": "🔔",
+            "inhibited-notification": "🔔",
+            "dnd-inhibited-notification": "🔔"
+        },
+        "exec": "swaync-client -swb",
+        "escape": true,
+        "return-type": "json",
+        "on-click": "swaync-client -t -sw"
+    }
+}

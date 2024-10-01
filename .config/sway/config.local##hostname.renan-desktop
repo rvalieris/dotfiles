@@ -1,0 +1,35 @@
+
+input "16700:8195:Dell_Dell_USB_Keyboard" {
+    xkb_layout "br"
+}
+
+output DP-1 pos 0 0
+output HDMI-A-2 pos 1600 0
+
+bar {
+    id bar-0
+    output HDMI-A-2
+    swaybar_command true
+    position bottom
+    mode hide
+}
+bar {
+    id bar-1
+    output DP-1
+    position bottom
+    tray_output none
+    mode hide
+    swaybar_command true
+}
+
+exec nm-applet
+exec gammastep
+exec swayidle -w
+exec_always systemctl --user start sway-session.target
+
+#exec swaync
+#exec waybar
+#exec udiskie --smart-tray --no-automount
+#exec swayosd-server
+#exec kanshi
+#exec_always kanshictl reload
