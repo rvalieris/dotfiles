@@ -1,0 +1,3 @@
+#!/bin/bash
+# https://github.com/Vladimir-csp/xdg-terminal-exec
+exec alacritty -e "$@"

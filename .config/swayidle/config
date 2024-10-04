@@ -1,4 +1,5 @@
 timeout 240 'brightnessctl -c backlight -s set 20%' resume 'brightnessctl -c backlight -r'
 timeout 300 '~/.config/sway/sway_tricks.py lock_session'
 timeout 360 'swaymsg -q "output * power off"' resume 'swaymsg -q "output * power on"'
+timeout 600 'dbus-send --dest=org.gnome.keyring --print-reply /org/freedesktop/secrets org.freedesktop.Secret.Service.LockService'
 before-sleep '~/.config/sway/sway_tricks.py lock_session'

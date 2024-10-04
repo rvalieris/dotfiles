@@ -14,11 +14,9 @@
 	wsErrorHighlight = all
 [alias]
 	gh-pr-pull = !sh -c 'git fetch origin pull/$1/head:pr/$1' -
+	pull-all = pull --recurse-submodules
+	sub-update = submodule update --recursive --remote
 [pull]
 	ff = only
-[credential "https://github.com"]
-	helper = store
-[credential "https://gitlab.com"]
-	helper = store
 [credential]
-	helper = cache
+	helper = /$HOME/.local/lib/git-credential-libsecret
