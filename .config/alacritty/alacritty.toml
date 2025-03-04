@@ -38,7 +38,7 @@ family = "Iosevka SS07 Medium Extended"
 command = "None"
 regex = "None"
 
-[shell]
+[terminal.shell]
 program = "zsh"
 
 [window]
