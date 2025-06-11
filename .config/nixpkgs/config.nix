@@ -1,6 +1,7 @@
 with import <nixpkgs> {};
 {
   allowUnfree = true;
+  hardware.opengl.enable = true;
 
   packageOverrides = pkgs: {
     # https://github.com/NixOS/nixpkgs/issues/124965

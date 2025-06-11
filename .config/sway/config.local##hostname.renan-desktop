@@ -3,8 +3,11 @@ input "16700:8195:Dell_Dell_USB_Keyboard" {
     xkb_layout "br"
 }
 
-output DP-1 pos 0 0
-output HDMI-A-2 pos 1600 0
+# samsung
+output DP-2 pos 0 0
+
+# dell
+output HDMI-A-2 pos 2560 0
 
 bar {
     id bar-0
@@ -15,7 +18,7 @@ bar {
 }
 bar {
     id bar-1
-    output DP-1
+    output DP-2
     position bottom
     tray_output none
     mode hide
