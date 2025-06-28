@@ -10,23 +10,23 @@ import sway_ipc
 BG_CONFIG = os.path.expanduser('~/.cache/swaybg')
 LOCK_CONFIG = os.path.expanduser('~/.cache/swaylock')
 
-def _rofi_prompt(prompt):
-	p = subprocess.run(['rofi', '-dmenu', '-l', '0',
-		'-hide-scrollbar', '-p', prompt],
-		stdout=subprocess.PIPE, input='')
+def _dmenu_prompt(prompt):
+	p = subprocess.run(['fuzzel', '--dmenu', '-l', '0',
+		'-p', prompt],
+		stdout=subprocess.PIPE, input=b'string')
 	if p.returncode != 0:
 		return None
 	return p.stdout.decode().rstrip()
 
 def prompt_rename_workspace():
 	cur, = sway_ipc.get_focused_workspaces()
-	new = _rofi_prompt(f"Rename workspace (current {cur['name']})")
+	new = _dmenu_prompt(f"Rename workspace (current {cur['name']}): ")
 	if new is not None and len(new) > 0:
 		sway_ipc.cmd(msg=f'rename workspace to {new}')
 
 def prompt_move_container():
 	cur, = sway_ipc.get_focused_workspaces()
-	new = _rofi_prompt(f"Move container to (current {cur['name']})")
+	new = _dmenu_prompt(f"Move container to (current {cur['name']}): ")
 	if new is not None and len(new) > 0:
 		sway_ipc.cmd(msg=f'move container to workspace {new}')
 

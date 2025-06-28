@@ -28,7 +28,7 @@ bindsym $mod+Return exec alacritty
 bindsym $mod+Shift+q kill
 
 # program launcher
-bindsym $mod+d exec "rofi -show combi -modi combi -combi-modi drun,run -run-command 'swaymsg -q exec -- {cmd}'"
+bindsym $mod+d exec "fuzzel"
 
 # lock screen
 bindsym $mod+l exec ~/.config/sway/sway_tricks.py lock_session
@@ -109,7 +109,7 @@ bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
 # list workspaces
-bindsym $mod+w exec rofi -show window
+bindsym $mod+w exec swayr switch-window
 
 # move container
 bindsym $mod+m move container to workspace back_and_forth
