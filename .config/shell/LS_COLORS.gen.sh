@@ -48,10 +48,21 @@ for i in {doc,docx,xlsx,xls,pdf,pptx,ppt,ods,odt}; do
 	echo ".$i 00;33"
 done
 
+# plain-text structured files
+for i in {tsv,csv,json,yaml,yml,toml,ini}; do
+	echo ".$i 38;5;63"
+done
+
+# script files
+for i in {py,R,r,pl,sh}; do
+	echo ".$i 38;5;78"
+done
+
 # genomics
 for i in {bam,vcf,sam,fastq,fasta,fa,gff,gtf,bed}; do
 	echo ".$i 00;32"
 done
 
-echo '.ipynb 01;33' # jupyter notebooks
+# jupyter notebooks
+echo '.ipynb 01;33'
 
