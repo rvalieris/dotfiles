@@ -29,7 +29,7 @@ for i in {gz,tar,tgz,lzma,zip,z,xz,zst,bz2,deb,rpm,jar,rar,cpio,7z,cab}; do
 done
 
 # images
-for i in {jpg,jpeg,gif,bmp,tga,tif,tiff,png,svg}; do
+for i in {jpg,jpeg,gif,bmp,tga,tif,tiff,png,svg,avif}; do
 	echo ".$i 00;35"
 done
 
@@ -49,13 +49,8 @@ for i in {doc,docx,xlsx,xls,pdf,pptx,ppt,ods,odt}; do
 done
 
 # plain-text structured files
-for i in {tsv,csv,json,yaml,yml,toml,ini}; do
-	echo ".$i 38;5;63"
-done
-
-# script files
-for i in {py,R,r,pl,sh}; do
-	echo ".$i 38;5;78"
+for i in {tsv,csv,json,yaml,yml,toml,ini,md,xml,conf}; do
+	echo ".$i 38;5;193"
 done
 
 # genomics
@@ -63,6 +58,12 @@ for i in {bam,vcf,sam,fastq,fasta,fa,gff,gtf,bed}; do
 	echo ".$i 00;32"
 done
 
-# jupyter notebooks
-echo '.ipynb 01;33'
+# script files
+echo '.ipynb 38;5;208'
+echo '.py 38;5;48'
+echo '.R 38;5;38'
+echo '.pl 38;5;93'
+for i in {sh,zsh,bash}; do
+	echo ".$i 38;5;228"
+done
 
