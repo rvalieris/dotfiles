@@ -1,0 +1,74 @@
+#!/bin/bash
+EXE=duckdb
+LOAD_EX='load parquet'
+LIMIT=10
+
+read -r -d '' HELP_TXT <<EOF
+  d [options] [FILE]
+  -l --limit N    limit rows to print
+  -p --pager      pipe results to less
+  -h --help       print help
+EOF
+
+set -e
+
+while [[ $# -gt 0 ]]; do
+	case $1 in
+		-l|--limit)
+			USE_LIMIT=1
+			LIMIT="$2"
+			shift # past argument
+			shift # past value
+		;;
+		-p|--pager)
+			USE_PAGER=1
+			shift # past argument
+		;;
+		-h|--help)
+			echo "$HELP_TXT"
+			exit
+		;;
+		-*|--*)
+			echo "Unknown option: $1"
+			exit 1
+		;;
+		*)
+			FILE=$1
+			shift # past argument
+		;;
+	esac
+done
+
+sql=''
+if [ ! -z "LOAD_EX" ]; then
+	sql="$LOAD_EX; "
+fi
+
+if [ -z "$USE_LIMIT" ] && [ ! -z "$USE_PAGER" ]; then
+	# extra default limit in pager mode
+	LIMIT=1000
+fi
+
+if [ -t 0 ]; then
+	# no pipe
+	if [ -z "$FILE" ]; then
+		# no file
+		exec $EXE -cmd "$LOAD_EX;"
+	else
+		sql="$sql SELECT * FROM '$FILE' LIMIT $LIMIT"
+		if [ -z "$USE_PAGER" ]; then
+			exec $EXE -c "$sql"
+		else
+			exec $EXE -box -c "$sql" | less -S -R
+		fi
+	fi
+else
+	# stdin pipe
+	sql="$sql SELECT * FROM read_csv('/dev/stdin') LIMIT $LIMIT"
+	if [ -z "$USE_PAGER" ]; then
+		exec $EXE -cmd ".maxwidth $(tput cols)" -c "$sql"
+	else
+		exec $EXE -box -c "$sql" | less -S -R
+	fi
+fi
+
