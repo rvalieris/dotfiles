@@ -1,0 +1,6 @@
+[Desktop Entry]
+Name=Poweroff
+Exec=/usr/bin/poweroff
+Type=Application
+Icon=system-shutdown
+Terminal=false
