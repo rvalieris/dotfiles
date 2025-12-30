@@ -6,8 +6,8 @@ profile docked {
 }
 
 profile docked2 {
-    output DP-1 position 0,0
-    output eDP-1 position 2560,0
+    output eDP-1 position 0,0
+    output HDMI-A-1 position 1920,0
     exec ~/.config/sway/sway_tricks.py reload_bg
 }
 

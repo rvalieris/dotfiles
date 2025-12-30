@@ -52,6 +52,7 @@ exec gammastep
 exec swayidle -w
 exec udiskie --smart-tray --no-automount
 exec swayosd-server
+exec tailscale systray
 exec_always systemctl --user start sway-session.target
 
 exec kanshi

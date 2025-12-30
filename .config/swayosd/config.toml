@@ -1,0 +1,3 @@
+[server]
+max_volume = 100
+show_percentage = true
