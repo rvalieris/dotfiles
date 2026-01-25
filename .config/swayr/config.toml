@@ -1,0 +1,13 @@
+
+[menu]
+executable='fuzzel'
+args=[
+	'--dmenu',
+	'--width=99'
+]
+
+[format]
+#window_format = 'img:{app_icon} {app_name} {title}”</b>{urgency_end} on workspace {workspace_name} <i>{marks}</i>    <span alpha="20000">({id})</span>'
+#window_format = "img:{app_icon}:text: {app_name:{:<15.15}} {title:{:<60.60}...} <span alpha='20000'>{workspace_name:{:>12.12}}.{id}</span>"
+window_format = "{workspace_name:{:<10.10}} {app_name:{:<15.15}} {title:{:<60.60}...} {id:{:<3.3}}\u0000icon\u001f{app_icon}"
+

@@ -1,0 +1,34 @@
+[{
+    "ipc": true,
+    "id": "bar-0",
+    "output": "eDP-1",
+    "mode": "hide",
+    "layer": "top",
+    "position": "bottom",
+    "spacing": 0,
+    "include": ["~/.config/waybar/modules.json"],
+    "modules-left": ["sway/workspaces"],
+    "modules-center": ["sway/window"],
+    "modules-right": ["pulseaudio", "cpu", "temperature", "battery", "clock", "tray", "idle_inhibitor","custom/menu"],
+    "temperature": {
+        "hwmon-path": "/sys/devices/platform/thinkpad_hwmon/hwmon/hwmon5/temp1_input"
+    }
+},{
+    "output": "HDMI-A-1",
+    "layer": "top",
+    "position": "bottom",
+    "include": ["~/.config/waybar/modules.json"],
+    "modules-left": ["sway/workspaces"],
+    "mode": "hide",
+    "ipc": true,
+    "id": "bar-1",
+},{
+    "output": "DP-1",
+    "layer": "top",
+    "position": "bottom",
+    "include": ["~/.config/waybar/modules.json"],
+    "modules-left": ["sway/workspaces"],
+    "mode": "hide",
+    "ipc": true,
+    "id": "bar-1",
+}]
