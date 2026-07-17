@@ -11,6 +11,7 @@ input "9610:268:BY_Tech_Gaming_Keyboard" {
 
 input "1739:52839:SYNA8022:00_06CB:CE67_Touchpad" {
     tap enabled
+    natural_scroll enabled
 }
 
 bar {
@@ -20,6 +21,7 @@ bar {
     swaybar_command true
     position bottom
     mode hide
+    modifier $mod
 }
 
 bar {
@@ -28,10 +30,13 @@ bar {
     position bottom
     tray_output none
     mode hide
+    modifier $mod
     swaybar_command true
 }
 
-exec swaync
+bindsym XF86MonBrightnessDown exec swayosd-client --brightness=lower
+bindsym XF86MonBrightnessUp   exec swayosd-client --brightness=raise
+
 exec blueman-applet
 exec nm-applet
 exec gammastep

@@ -3,7 +3,7 @@
 #
 
 # mod key
-set $mod Mod4
+set $mod Super
 set $alt Mod1
 
 # fonts
