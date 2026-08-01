@@ -17,6 +17,7 @@ assign [app_id="org.keepassxc.KeePassXC"] keepass
 assign [class="(?i)Steam"] steam
 assign [app_id="org.qbittorrent.qBittorrent"] torrent
 assign [class="Bitwarden"] bitwarden
+assign [app_id="Bitwarden"] bitwarden
 assign [class="Wfica.*"] citrix
 assign [class="parsecd"] parsec
 

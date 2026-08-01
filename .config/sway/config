@@ -108,9 +108,6 @@ bindsym $mod+Shift+8 move container to workspace number 8
 bindsym $mod+Shift+9 move container to workspace number 9
 bindsym $mod+Shift+0 move container to workspace number 10
 
-# list workspaces
-bindsym $mod+w exec swayr switch-window
-
 # move container
 bindsym $mod+m move container to workspace back_and_forth
 bindsym $mod+shift+m exec ~/.config/sway/sway_tricks.py prompt_move_container
