@@ -1,0 +1,15 @@
+[{
+    "ipc": true,
+    "id": "bar-0",
+    "output": "DP-1",
+    "layer": "top",
+    "position": "bottom",
+    "spacing": 0,
+    "include": ["~/.config/waybar/modules.json"],
+    "modules-left": ["sway/workspaces"],
+    "modules-center": ["sway/window"],
+    "modules-right": ["pulseaudio", "cpu", "temperature", "battery", "clock", "tray", "idle_inhibitor","custom/menu"],
+    "temperature": {
+        "hwmon-path": "/sys/class/thermal/thermal_zone0/temp"
+    }
+}]

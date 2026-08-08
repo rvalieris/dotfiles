@@ -1,0 +1,23 @@
+
+output DP-1 mode 2560x1440@144hz
+output DP-1 adaptive_sync on
+output DP-1 subpixel rgb
+
+bar {
+    id bar-0
+    output DP-1
+    position bottom
+    swaybar_command true
+    position bottom
+}
+
+exec blueman-applet
+#exec nm-applet
+#exec gammastep
+exec swayidle -w
+#exec udiskie --smart-tray --no-automount
+exec swayosd-server
+exec tailscale systray
+exec_always systemctl --user start sway-session.target
+
+
