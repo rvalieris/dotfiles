@@ -19,4 +19,4 @@
 [pull]
 	ff = only
 [credential]
-	helper = /$HOME/.local/lib/git-credential-libsecret
+	helper = libsecret
